@@ -8,19 +8,69 @@
 
 .leaderboard-item {
 	color: white;
-	height: 60px;
+	height: 70px;
 	margin: 5px 20px;
-	padding: 10px;
+	padding: 5px;
 
 	div {
 		padding: 0 10px 0 10px;
 	}
 
-	.hero-info {
-		img {
+	.player-info {
+		height: 60px;
+		width: 320px;
+
+		.hero-icon {
 			padding: 0 10px 0 0;
+			height: 60px;
+			width: 60px;
+		}
+
+		.name-block {
+			padding: 1px 0;
+			width: 240px;
+
+			.hero-name {
+				font-size: 24pt;
+				vertical-align: top;
+				display: block;
+			}
+
+			.player-name {
+				vertical-align: bottom;
+				display: block;
+				font-size: 12pt;
+			}
 		}
 	}
+
+	.hero-level {
+		font-size: 18pt;
+		font-weight: 700;
+	}
+
+	.hero-kda {
+		font-weight: 600;
+
+		.hero-kills {
+			color: lighten(green, 20%);
+		}
+		.hero-deaths {
+			color: lighten(red, 10%);
+		}
+		.hero-assists {
+			color: lighten(blue, 30%);
+		}
+	}
+
+	.hero-cs {
+			.hero-lh {
+				color: gold;
+			}
+			.hero-denies {
+				color: pink;
+			}
+		}
 
 	.hero-items-list {
 		width: 90px;
