@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import Navbar from './navbar';
 import Leaderboard from './leaderboard';
-import './App.css';
+import './App.scss';
 
 import Create from './components/create.component';
 import Edit from './components/edit.component';

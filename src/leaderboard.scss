@@ -1,15 +1,17 @@
 .leaderboard-container {
-	width: 1000px;
-	background-color: black;
-	outline: 2px solid white;
+	width: 1050px;
+	background-color: #333;
+	outline: 1px solid white;
 	outline-offset: -4px;
 	overflow: hidden;
+	margin: 20px auto;
+	display: block;
 }
 
 .leaderboard-item {
 	color: white;
 	height: 70px;
-	margin: 5px 20px;
+	margin: 10px 20px 10px 5px;
 	padding: 5px;
 
 	div {
@@ -30,13 +32,13 @@
 			padding: 1px 0;
 			width: 240px;
 
-			.hero-name {
-				font-size: 24pt;
+			.player-name {
+				font-size: 20pt;
 				vertical-align: top;
 				display: block;
 			}
 
-			.player-name {
+			.hero-name {
 				vertical-align: bottom;
 				display: block;
 				font-size: 12pt;
@@ -44,26 +46,34 @@
 		}
 	}
 
-	.hero-level {
-		font-size: 18pt;
-		font-weight: 700;
+	.hero-role {
+		transform: rotate(-45deg);
+		font-size: 10pt;
 	}
 
-	.hero-kda {
-		font-weight: 600;
+	.hero-statline {
+		font-size: 12pt;
 
-		.hero-kills {
-			color: lighten(green, 20%);
+		.hero-level {
+			font-size: 18pt;
+			font-weight: 700;
 		}
-		.hero-deaths {
-			color: lighten(red, 10%);
-		}
-		.hero-assists {
-			color: lighten(blue, 30%);
-		}
-	}
 
-	.hero-cs {
+		.hero-kda {
+			font-weight: 600;
+
+			.hero-kills {
+				color: lighten(green, 20%);
+			}
+			.hero-deaths {
+				color: lighten(red, 10%);
+			}
+			.hero-assists {
+				color: lighten(blue, 30%);
+			}
+		}
+
+		.hero-cs {
 			.hero-lh {
 				color: gold;
 			}
@@ -72,13 +82,21 @@
 			}
 		}
 
+		.hero-networth {
+			color: gold;
+			font-weight: 900;
+		}
+	}
+
 	.hero-items-list {
 		width: 90px;
 		height: 100%;
 		padding: 0;
 
 		.statline-item {
-			width: 30px;
+			width: 28px;
+			height: 28px;
+			margin: 1px;
 		}
 	}
 }

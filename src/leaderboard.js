@@ -9,6 +9,9 @@ export default class Navbar extends Component {
             return (
                   <div className = "leaderboard-container">
                         < LeaderboardItem />
+                        < LeaderboardItem />
+                        < LeaderboardItem />
+                        < LeaderboardItem />
                   </div>
             )
       }
