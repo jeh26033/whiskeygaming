@@ -20,10 +20,18 @@
 	padding: 0;
 }
 
+#join-link {
+	float: right;
+	border: 1px solid white;
+	padding: 0 20px 0 20px;
+}
+
 .nav-link {
 	display: inline-block;
 	color: white;
 	margin: 15px;
 	font-size: 30pt;
 	font-weight: 800;
+	font-family: RIGHTEOUS;
+	cursor: pointer;
 }
