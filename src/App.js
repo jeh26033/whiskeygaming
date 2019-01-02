@@ -1,8 +1,9 @@
 // App.js
 
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './navbar';
+import Leaderboard from './leaderboard';
+import './App.css';
 
 import Create from './components/create.component';
 import Edit from './components/edit.component';
@@ -13,6 +14,7 @@ class App extends Component {
     return (
       <div className = "container">
         < Navbar />
+        < Leaderboard />
       </div>
     );
   }

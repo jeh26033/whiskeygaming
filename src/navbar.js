@@ -9,17 +9,9 @@ export default class Navbar extends Component {
     	return (
             <Router>
             	<div className = "nav-container">
-            		<div className = "nav-link" id = "home-link">
-                        <Link to={'/'}>HOME</Link>
-                    </div>
-            		<div className = "nav-link" id = "leaderboard-link">
-                        <Link to={'/'}>LEADERBOARD</Link>
-                    </div>
-    	        	<div className = "button" id = "hamburger-icon">&#9776;</div>
-            		<div className = "nav-link" id = "join-link">
-                        <Link to={'/'}>JOIN</Link>
-                    </div>
-        		</div>
+                  <Link to={'/'} className = "nav-item nav-link">LEADERBOARD</Link>
+                  <Link to={'/create'} className = "nav-item nav-link">JOIN</Link>
+        		  </div>
             </Router>
 
       //       <Router>

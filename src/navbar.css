@@ -35,3 +35,7 @@
 	font-family: RIGHTEOUS;
 	cursor: pointer;
 }
+
+a {
+	text-decoration: none;
+}
