@@ -7,9 +7,11 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Create from './components/create.component';
 import Edit from './components/edit.component';
 import Index from './components/index.component';
+
 class App extends Component {
   render() {
     return (
+
       <Router>
         <div className="container">
           <nav className="navbar navbar-expand-lg navbar-light bg-light">

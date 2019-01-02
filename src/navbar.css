@@ -1,0 +1,37 @@
+.nav-container {
+	width: 100%;
+	height: 80px;
+	background-color: black;
+	outline: 2px solid white;
+	outline-offset: -4px;
+	overflow: hidden;
+}
+
+#steam-login-button {
+	float: right;
+	font-weight: 700;
+}
+
+#hamburger-icon {
+	height: 60px;
+	float: right;
+	font-size:30pt;
+	border: none;
+	padding: 0;
+}
+
+#join-link {
+	float: right;
+	border: 1px solid white;
+	padding: 0 20px 0 20px;
+}
+
+.nav-link {
+	display: inline-block;
+	color: white;
+	margin: 15px;
+	font-size: 30pt;
+	font-weight: 800;
+	font-family: RIGHTEOUS;
+	cursor: pointer;
+}
