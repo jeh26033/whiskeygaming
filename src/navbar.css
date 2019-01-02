@@ -11,7 +11,7 @@
 	float: right;
 	font-weight: 700;
 }
-/*
+
 #hamburger-icon {
 	height: 60px;
 	float: right;
@@ -34,4 +34,8 @@
 	font-weight: 800;
 	font-family: RIGHTEOUS;
 	cursor: pointer;
-}*/
+}
+
+a {
+	text-decoration: none;
+}

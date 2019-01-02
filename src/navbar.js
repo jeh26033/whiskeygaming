@@ -9,10 +9,8 @@ export default class Navbar extends Component {
     	return (
             <Router>
             	<div className = "nav-container">
-                <nav className = "nav nav-fill">
                   <Link to={'/'} className = "nav-item nav-link">LEADERBOARD</Link>
                   <Link to={'/create'} className = "nav-item nav-link">JOIN</Link>
-                </nav>
         		  </div>
             </Router>
 
