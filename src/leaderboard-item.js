@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 export default class Navbar extends Component {
 
@@ -9,7 +10,9 @@ export default class Navbar extends Component {
                   	<div className = "player-info">
                   		<img src = "/img/rubick_test.png" className = "hero-icon" />
                               <div className = "name-block">
-                                    <div className = "player-name">Dark Arbiter</div>
+                                    <div className = "player-name">
+                                          <a href="https://www.dotabuff.com">Dark Arbiter</a>
+                                    </div>
                                     <div className = "hero-name">Rubick</div>
                               </div>
                   	</div>

@@ -36,6 +36,14 @@
 				font-size: 20pt;
 				vertical-align: top;
 				display: block;
+
+				a {
+					color: #00A7BB;
+
+					&:hover {
+						color: lighten(#00A7BB, 40%);
+					};
+				}
 			}
 
 			.hero-name {
