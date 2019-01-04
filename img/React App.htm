@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)http://localhost:3000/lesson/5 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <link rel="shortcut icon" href="http://localhost:3000/favicon.ico">
+    <link rel="stylesheet" href="./React App_files/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="http://localhost:3000/manifest.json">
+    <!--
+      Notice the use of  in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  <style type="text/css">body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+/* Reset */
+
+html, body, h1, h2, h3, h4, h5, ol, ul {
+    margin: 0;
+}
+
+body {
+    background-color: #fff;
+    color: #000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 16px;
+}
+
+img {
+    border: none;
+}
+
+li {
+    list-style-type: none;
+}
+
+ol, ul {
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Core */
+
+.background-shift {
+    height: 100vh;
+    opacity: 1;
+    overflow: hidden;
+    position: absolute;
+    -webkit-transition: all 1.2s ease;
+    transition: all 1.2s ease;
+    width: 100vw;
+    z-index: -1;
+    background: url(/static/media/CES_bg_img.d108a480.jpg);
+    background-size: cover;
+}
+
+.background-shift_image {
+    background-repeat: no-repeat;
+    background-size: 100%;
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    -webkit-transition: all 0.6s ease;
+    transition: all 0.6s ease;
+    width: 100%;
+}
+
+.footer {
+    display: none;
+    padding: 0 20px 18px 20px;
+}
+
+.hide {
+    opacity: 0;
+}
+
+.lesson_click-navigation {
+    bottom: 48px;
+    color: #333;
+    font-size: 14px;
+    line-height: 20px;
+    position: absolute;
+    right: 80px;
+}
+
+.lesson_click-navigation-button {
+    background-color: #333;
+    border-radius: 100%;
+    display: inline-block;
+    height: 68px;
+    vertical-align: middle;
+    width: 68px;
+}
+
+.lesson_click-navigation-button-icon {
+    left: 50%;
+    position: relative;
+    top: calc(50% - 4px);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.lesson_click-navigation-button-icon.backward {
+    left: calc(50% - 1px);
+}
+
+.lesson_click-navigation-button-icon.forward {
+    left: calc(50% + 1px);
+}
+
+.lesson_click-navigation-indicator {
+    display: inline-block;
+    padding: 0 28px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.page {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.page_background-pattern {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 448px;
+}
+
+.page_click-navigation {
+    bottom: 48px;
+    color: #fff;
+    font-size: 14px;
+    left: 80px;
+    line-height: 20px;
+    position: absolute;
+    -webkit-transition: all 0.6s ease;
+    transition: all 0.6s ease;
+}
+
+.page_click-navigation-button {
+    background-color: #fff;
+    border-radius: 100%;
+    display: inline-block;
+    height: 68px;
+    vertical-align: middle;
+    width: 68px;
+}
+
+.page_click-navigation-button-icon {
+    left: 50%;
+    position: relative;
+    top: calc(50% - 4px);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.page_click-navigation-button-icon.backward {
+    left: calc(50% - 1px);
+}
+
+.page_click-navigation-button-icon.forward {
+    left: calc(50% + 1px);
+}
+
+.page_click-navigation-indicator {
+    display: inline-block;
+    padding: 0 28px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.page_content {
+    color: #333;
+    margin: 0 auto;
+    padding-top: 80px;
+    position: relative;
+    max-width: 864px;
+    z-index: 1;
+}
+
+.page_content-key {
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.page_content-media {
+    display: inline-block;
+    height: 428px;
+    vertical-align: top;
+    width: 588px;
+}
+
+.page_content-summary {
+    display: inline-block;
+    margin-left: 40px;
+    max-width: 236px;
+    vertical-align: top;
+}
+
+.page_content-summary-description {
+    display: block;
+    font-size: 16px;
+    line-height: 26px;
+    margin-top: 20px;
+}
+
+.page_content-summary-title {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 30px;
+    margin-top: 8px;
+}
+
+.page_exit {
+    background-color: rgba(23, 25, 26, .98);
+    bottom: 0;
+    color: #fff;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 700;
+    height: 100px;
+    left: 0;
+    line-height: 28px;
+    min-width: 228px;
+    padding: 0 40px;
+    position: absolute;
+}
+
+.page_exit-value {
+    display: block;
+    left: 50%;
+    position: relative;
+    text-align: center;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.page_navigation {
+    padding: 28px 40px 0;
+    position: relative;
+    -webkit-transition: all 0.6s ease;
+    transition: all 0.6s ease;
+}
+
+.page_navigation-li {
+    color: #777;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 26px;
+    margin-left: 28px;
+}
+
+.page_navigation-li:first-child {
+    margin-left: 0;
+}
+
+.page_navigation-li.active {
+    color: #333;
+}
+
+.page_navigation-li.active::after {
+    background-color: #333;
+    content: "";
+    display: block;
+    height: 2px;
+    margin-top: 8px;
+    width: 100%;
+}
+
+.page_submit {
+    //background-color: rgba(23, 25, 26, .98);
+    background-color: #5299D1;
+    bottom: 40px;
+    color: #fff;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 700;
+    height: 100px;
+    line-height: 28px;
+    min-width: 250px;
+    padding: 0 40px;
+    position: absolute;
+    right: 40px;
+    -webkit-transition: all 0.6s ease;
+    transition: all 0.6s ease;
+    text-decoration: none;
+}
+
+.page_submit--icon {
+    margin-left: 15px;
+}
+
+.page_submit-value {
+    display: block;
+    left: 50%;
+    position: relative;
+    text-align: center;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    margin-left: 16px;
+}
+
+.page_summary {
+    //background-color: rgba(78, 84, 87, 1);
+    background-color: #173060;
+    bottom: 0;
+    color: #fff;
+    height: 60vh;
+    min-height: 500px;
+    padding: 40px 38px;
+    position: absolute;
+    right: 80px;
+    -webkit-transition: all 0.6s ease;
+    transition: all 0.6s ease;
+    width: 370px;
+}
+
+.page_summary-description {
+    display: block;
+    font-size: 16px;
+    line-height: 26px;
+    margin-top: 20px;
+}
+
+.page_summary-description_container {
+    text-align: center;
+    padding-top: 30px;
+}
+
+.page_summary-description_container {
+
+}
+
+.page_summary-label {
+    display: block;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.page_summary-title {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 30px;
+    margin-top: 8px;
+}
+
+.page_title {
+    color: #fff;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 26px;
+    padding: 28px 40px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.page_title::after {
+    background-color: #fff;
+    content: "";
+    display: block;
+    height: 2px;
+    margin-top: 8px;
+    width: 100%;
+}
+
+/* iPad */
+
+@media only screen and (min-width: 768px)  {
+    /* */
+}
+
+#bridgeScanElement {
+  z-index:100;
+}
+
+.button {
+	color: #70E2FF;
+	cursor: pointer;
+	padding: 2px 10px 5px 10px;
+	border: 1px solid white;
+	border-radius: 5px;
+	background-color: #101010;
+  margin-top: 10px;
+}
+
+.app-background {
+  position: fixed;
+  z-index: -1;
+}
+
+.label {
+  display: inline-block;
+}
+
+.color-button {
+  display: inline-block;
+  cursor: pointer;
+  padding: 2px 10px 5px 10px;
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: #101010;
+  margin: 10px;
+  z-index: 100;
+}
+
+#toggle {
+  display: inline-block;
+  min-width: 200px;
+}
+
+#red-button {
+  background-color: red;
+}
+
+#blue-button {
+  background-color: blue;
+}
+
+#white-button {
+  background-color: white;
+  color: black;
+}
+
+.main--lesson {
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+}
+
+.lesson--sidebar {
+    background: #4E5157;
+    padding: 20px;
+    height: 100vh;
+    width: 30%;
+    position: relative;
+    background: url(/static/media/sidebar-img.a1f0bcb4.jpg);
+    background-size: cover;
+}
+
+.lesson--sidebar h3 {
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, .2);
+    padding: 0 0 5px 0;
+    font-weight: 600;
+    font-size: 1rem;
+    display: inline-block;
+}
+
+.end--lesson {
+    position: absolute;
+    bottom: 0;
+    background: #000;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 700;
+    height: auto;
+    min-width: 250px;
+    left: 0;
+    padding: 30px 0 25px 0;
+}
+
+.lesson--nav {
+    position: absolute;
+    width: 248px;
+    height: 88px;
+    left: 1060px;
+    top: 888px;
+    z-index: 1000;
+    opacity: 0;
+    -webkit-transition: opacity .5s ease-in-out;
+    transition: opacity .5s ease-in-out;
+}
+
+.lesson--nav.visible {
+    opacity: 1;
+    -webkit-transition: opacity .5s ease-in-out;
+    transition: opacity .5s ease-in-out;
+}
+
+.lesson--nav-link {
+    text-decoration: none;
+}
+
+.lesson--nav-link span {
+    display: block;
+    text-align: center;
+    color: #000;
+    line-height: normal;
+    font-size: 28px;
+    text-align: center;
+    text-decoration: none;
+    margin: 28px auto;
+    font-weight: 600;
+}
+
+.lesson--nav-link {
+    height: 100%;
+    width: 100%;
+    background: white;
+    border-radius: 7px;
+    display: inline-block;
+}
+
+.lesson--nav-link img {
+    margin: 43px 0 0 31px;
+}
+
+.lesson--nav-link--back {
+    margin-right: 40px;
+    background: rgba(0, 0, 0, .25);
+}
+
+.lesson--nav-link--back img {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+}
+
+.end--lesson img {
+    margin-left: 5px;
+}
+
+.video--content {
+    display: none;
+    position: absolute;
+    top: 128px;
+    left: 0;
+    z-index: 995;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 1366px;
+    height: 767.44px;
+    -webkit-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+.video--content h2 {
+    font-weight: 300;
+    margin-top: 5px;
+}
+
+.video--content.shrink {
+    top: 40px;
+    left: 35px;
+    width: 380px;
+    -webkit-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+.video--content.shrink .video--control {
+    width: 90px;
+    height: 90px;
+    right: 30px;
+    bottom: -30px;
+}
+
+.video--player video {
+    width: 100%;
+    background: #000;
+}
+
+.video--player {
+    
+}
+
+.video--instructions {
+    padding: 150px 40px;
+    text-align: center;
+    width: 70%;
+    float: right;
+    text-align: left;
+    opacity: 0;
+    height: 10px;
+    overflow: hidden;
+    -webkit-transition: all 1.25s ease;
+    transition: all 1.25s ease;
+}
+
+.video--instructions.visible {
+    opacity: 1;
+    height: auto;
+    -webkit-transition: all 1.25s ease;
+    transition: all 1.25s ease;
+}
+
+.video--instructions h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.video--instructions h3 {
+    font-size: 1.6rem;
+    line-height: 2.25rem;
+    font-weight: 500;
+    max-width: 800px;
+}
+
+.video--instructions h4 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.video--instructions .bold {
+    font-weight: 500;
+}
+
+.video--instructions p {
+    font-size: 1.25rem;
+    color: #444;
+}
+
+.box--controls {
+    //border: 1px solid #f4f4f4;
+    z-index: 999;
+    position: fixed;
+    margin: 70px auto;
+    width: auto;
+    left: 413px;
+    display: inline-block;
+    box-shadow: 0 0px 20px 0px rgba(50, 50, 50, .05);
+}
+
+/*.box--controls-btn {
+    display: inline-block;
+    background: #222;
+    color: #fff;
+    font-size: 1.25rem;
+    padding: 1.5rem 4.5rem;
+    margin: 0 2rem 0 0;
+    text-transform: uppercase;
+}*/
+
+.box--controls-btn {
+    background: #f4f4f4;
+    border: 1px solid #e4e4e4;
+    border-radius: 50%;
+    display: inline-block;
+    height: 150px;
+    width: 150px;
+    margin: 0 30px 0 0;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.box--controls-btn img {
+    display: block;
+    margin: 0 auto 5px auto;
+    width: 70px;
+    opacity: .1;
+}
+
+.video--instructions--final {
+    text-align: left;
+    max-width: 700px;
+}
+
+.video--instructions--final p {
+    font-size: 1.15rem;
+    line-height: 1.4rem;
+}
+
+.video--instructions h4 {
+    font-weight: 200;
+    color: #333;
+}
+
+.video--instructions h4 span {
+    font-weight: 500;
+}
+
+.instructions--block {
+    display: block;
+    float: left;
+    width: 100%;
+}
+
+.instructions--left {
+    float: left;
+    width: 25%;
+}
+
+.instructions--right {
+    float: left;
+    width: 75%;
+    padding-top: 30px;
+}
+
+.video--control {
+    position: absolute;
+    height: 38px;
+    width: 30px;
+    left: 58px;
+    top: 810px;
+    color: white;
+    font-size: 38px;
+}
+
+.playButton::after {
+    content: "\25BA";
+}
+
+.pauseButton::after {
+    content: "\25BA";
+}
+
+.video--control span {
+    display: none;
+}
+.video--control img {
+    opacity: .9;
+}
+
+.video--control.play img {
+    padding-left: 5px;
+}
+
+.video--control.pause img {
+    width: 40px;
+}
+
+
+.page--selection {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#scene--selection--container {
+    position: fixed;
+    top: 170px;
+    left: 307px;
+    z-index: 999;
+}
+
+.scene--selection {
+    z-index: 999;
+    background: black;
+    border-radius: 7px;
+    top: 70px;
+    left: 327px;
+    border: 2px solid white;
+    color: #fff;
+    text-decoration: none;
+    height: 88px;
+    width: 224px;
+    display: inline-block;
+    font-size: 28px;
+    padding: 24px 0;
+    text-align: center;
+    margin-right: 40px;
+}
+
+#Night {
+    left: 543px;
+}
+
+#Colored {
+    left: 791px;
+}
+
+.os--selection {
+    z-index: 999;
+    position: absolute;
+    background: black;
+    border-radius: 7px;
+    top: 70px;
+    left: 395px;
+    border: 2px solid white;
+    color: #fff;
+    text-decoration: none;
+    height: 88px;
+    width: 248px;
+    display: inline-block;
+    font-size: 28px;
+    padding: 24px 0;
+    text-align: center;
+}
+
+.os--selection--container {
+    display: none;
+}
+
+.os--selection--container.visible {
+    display: inline-block;
+}
+
+#android--select {
+    left: 723px;
+}
+
+.feedback--survey {
+    margin: 3.5rem 0 0 0;
+    display: block;
+}
+
+.feedback--survey-btn {
+    display: inline-block;
+    text-align: center;
+    background: #ccc;
+    padding-top: 22px;
+    margin: 0 20px 0 0;
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+    font-size: 1.75rem;
+    text-decoration: none;
+    color: #333;
+}
+
+.feedback--no-thanks {
+    color: #aaa;
+    font-size: 1.25rem;
+    margin-top: 3.5rem;
+    display: inline-block;
+}
+
+.logo {
+
+}
+
+.main--content-container {
+    z-index: 1;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: rgba(30, 30, 30, .65);
+    padding: 4%;
+}
+
+.main--content {
+    color: #fff;
+    margin: 230px 0 0 60px;
+    width: 30%;
+}
+
+.main--content h1 {
+    margin-bottom: 5px;
+}
+
+.main--content h3 {
+    font-weight: 100;
+    font-size: .9rem;
+    margin-bottom: 1.5rem;
+}
+
+.main--content p {
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+}
+
+.main--content .lesson--nav-link {
+    width: 220px;
+    padding: 20px 10px;
+    color: #000;
+    font-weight: 500;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.main--content .lesson--nav-link img {
+    margin: 0 20px 0 0;
+}
+
+
+#landingVideo {
+    position: fixed;
+    right: 0; 
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+    width: auto; 
+    height: auto;
+    z-index: -100;
+}</style><style type="text/css">.hue-control {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 500px;
+  padding-bottom: 2em;
+  padding-top: 2em;
+}
+
+.hue-control__input {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 1px solid gray;
+  border-radius: 5px;
+  display: block;
+  margin-bottom: 1em;
+  margin-top: .5em;
+  padding: 1em;
+}
+
+.emphasis {
+  color: gray;
+  font-size: .8em;
+}
+
+.hue-control li {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+}
+
+.hue-control li:not(:last-child) {
+  border-bottom: 1px solid black;
+}
+
+.hue-control button,
+.hue-control input[type="submit"] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: #000;
+  border-radius: 5px;
+  border-width: 0;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  opacity: .8;
+  padding: 1em 2em;
+  -webkit-transition: opacity .2s ease-in-out;
+  transition: opacity .2s ease-in-out;
+}
+
+.hue-control button:hover,
+.hue-control input[type="submit"]:hover {
+  opacity: 1;
+}
+</style></head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"><main></main></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  <script src="./React App_files/bundle.js"></script><script src="./React App_files/1.chunk.js"></script><script src="./React App_files/main.chunk.js"></script><script src="./React App_files/main.7658105f061877949c31.hot-update.js"></script>
+
+</body></html>
