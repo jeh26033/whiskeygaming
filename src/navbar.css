@@ -6,6 +6,7 @@
 	overflow: hidden;
 	background-image: linear-gradient(to bottom right, #BB5102, #6F3102, black,black);
 	position: fixed;
+	top: 0px;
 }
 
 #steam-login-button {
