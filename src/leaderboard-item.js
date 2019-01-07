@@ -90,9 +90,15 @@ export default class Navbar extends Component {
                               this.setState({latestHeroData: data[this.state.latestHeroID-2]});
                               console.log(this.state.latestHeroData);
 
+                        {/* some quick math to trim the hero icon filepath to something usable */}
+                              this.setState({trimLength: this.state.latestHeroData.icon.length - 26});
+                              this.setState({heroIcon: (this.state.latestHeroData.icon).slice((this.state.latestHeroData.icon).length-this.state.trimLength, this.state.latestHeroData.icon.length)})
+                              this.setState({heroIcon: "/images/heroes/" + this.state.heroIcon.split("_")[0]+".png"})
+                              console.log(this.state.heroIcon);
+
                               let playerInfo = 
                                     <div className = "player-info">
-                                          <img src = {this.state.latestHeroData.icon} className = "hero-icon" />
+                                          <img src = {this.state.heroIcon} className = "hero-icon" />
                                           <div className = "name-block">
                                                 <div className = "player-name">
                                                       <a href="https://www.dotabuff.com">{this.state.latestPlayerData.personaname}</a>
