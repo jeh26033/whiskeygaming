@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1";
-const latestMatchesURL = "https://api.opendota.com/api/players/22319665/matches?limit=1&api_key=" + api_key;
 var lastMatchID = null;
 var lastMatchURL = "https://api.opendota.com/api/matches/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
+var itemConstants = Object.entries(require('./item_constants.json'));
 
 export default class Navbar extends Component {
 
-      constructor() {
-            super();
+      constructor(playerID) {
+            super(playerID);
             this.state = {
                   latestMatch: null,
                   latestPlayerData: null,
                   playerSlot: null,
                   latestHeroID: 0,
                   text_role: null,
+                  itemsArray: [],
+                  latestMatchesURL: "https://api.opendota.com/api/players/" + this.props.playerID + "/matches?limit=1&api_key=" + api_key,
             }
       };
 
       componentDidMount() {
-            fetch(latestMatchesURL)
+            fetch(this.state.latestMatchesURL)
             .then(response => response.json())
             .then(data => {
                   this.setState({lastMatchID: data[0].match_id})
@@ -36,7 +38,6 @@ export default class Navbar extends Component {
                         this.setState({latestMatch: data});
                         this.setState({latestPlayerData: data.players[this.state.playerSlot]})                        
                         this.setState({latestHeroID: this.state.latestPlayerData.hero_id})
-                        console.log(getHeroURL);
 
                   {/* Now we pull and rendering a bunch of stats */}
                         let kda =
@@ -81,7 +82,52 @@ export default class Navbar extends Component {
                               <div className = "hero-role"> {(this.state.text_role)} </div>
                         this.setState({role: role});
 
-                  {/* Now we have some fun pulling hero data */}
+                  //{/* Now we pull the items into an array */}
+
+                        this.state.itemsArray.push(this.state.latestPlayerData.item_0);
+                        this.state.itemsArray.push(this.state.latestPlayerData.item_1);
+                        this.state.itemsArray.push(this.state.latestPlayerData.item_2);
+                        this.state.itemsArray.push(this.state.latestPlayerData.item_3);
+                        this.state.itemsArray.push(this.state.latestPlayerData.item_4);
+                        this.state.itemsArray.push(this.state.latestPlayerData.item_5);
+                        console.log(this.state.itemsArray);
+
+                  {/* we search the constant database for the correct items */}
+
+                        for (var i = 0; i < 6; i++) {
+                              let item = itemConstants.find(item => item[1].id == this.state.itemsArray[i]);
+                              this.setState({item: item});
+                              this.state.itemsArray.push(this.state.item);
+                        }
+
+                  {/* now we clear the first 6 elements of the array */}
+
+                        for (var i = 0; i < 6; i++) {
+                              this.state.itemsArray.shift();
+                        }
+
+                        for (var i = 0; i < 6; i++) {
+                              if(this.state.itemsArray[i] != undefined) {
+                                    this.state.itemsArray.push(<img src = {"/images/items/" + this.state.itemsArray[i][1].img.split("/")[5]} className = "statline-item" />);
+                              }
+                        }
+
+                        for (var i = 0; i < 6; i++) {
+                              this.state.itemsArray.shift();
+                        }
+
+                        
+                        console.log(this.state.itemsArray);
+
+                        let itemsHTML =
+                              <div className = "hero-items-list">
+                                   { this.state.itemsArray }
+                              </div>
+
+                        this.setState({itemsHTML: itemsHTML});
+
+
+                  //{/* Now we have some fun pulling hero data */}
                   
                   }).then(data => {
                         fetch(getHeroURL)
@@ -94,7 +140,6 @@ export default class Navbar extends Component {
                               this.setState({trimLength: this.state.latestHeroData.icon.length - 26});
                               this.setState({heroIcon: (this.state.latestHeroData.icon).slice((this.state.latestHeroData.icon).length-this.state.trimLength, this.state.latestHeroData.icon.length)})
                               this.setState({heroIcon: "/images/heroes/" + this.state.heroIcon.split("_")[0]+".png"})
-                              console.log(this.state.heroIcon);
                               this.setState({playerURL: "https://www.dotabuff.com/players/"+ this.state.latestPlayerData.account_id});
 
                               let playerInfo = 
@@ -102,7 +147,7 @@ export default class Navbar extends Component {
                                           <img src = {this.state.heroIcon} className = "hero-icon" />
                                           <div className = "name-block">
                                                 <div className = "player-name">
-                                                      <a href= {this.state.playerURL} >{this.state.latestPlayerData.personaname}</a>
+                                                      <a href= {this.state.playerURL} >{this.state.latestPlayerData.personaname.split(".")[1]}</a>
                                                 </div>
                                                 <div className = "hero-name">{this.state.latestHeroData.localized_name}</div>
                                           </div>
@@ -128,14 +173,7 @@ export default class Navbar extends Component {
                   		{this.state.perMinute}
                               {this.state.netWorth}
                   	</div>
-                  	<div className = "hero-items-list">
-                  		<img src = "test-item.png" className = "statline-item" />
-                  		<img src = "test-item.png" className = "statline-item" />
-                  		<img src = "test-item.png" className = "statline-item" />
-                  		<img src = "test-item.png" className = "statline-item" />
-                  		<img src = "test-item.png" className = "statline-item" />
-                  		<img src = "test-item.png" className = "statline-item" />
-                  	</div>
+                  	{this.state.itemsHTML}
                   </div>
             )
       }
