@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import './leaderboard.scss';
 import LeaderboardItem from './leaderboard-item';
 
-export default class Navbar extends Component {
+export default class Leaderboard extends Component {
+
+      constructor() {
+            super();
+
+            this.state = {
+                  dotaArray: []
+            }
+      };
 
 
       render() {
