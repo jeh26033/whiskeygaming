@@ -12,10 +12,8 @@ export default class Navbar extends Component {
             this.state = {
                   latestMatch: null,
                   latestPlayerData: null,
-                  kda: null,
-                  perMinute: null,
-                  cs: [],
                   playerSlot: null,
+                  latestHeroID: 0,
             }
       };
 
@@ -34,7 +32,8 @@ export default class Navbar extends Component {
                   .then(data =>{
                         console.log(data)
                         this.setState({latestMatch: data});
-                        this.setState({latestPlayerData: data.players[this.state.playerSlot]})
+                        this.setState({latestPlayerData: data.players[this.state.playerSlot]})                        
+                        this.setState({latestHeroID: this.state.latestPlayerData.hero_id})
                         let kda =
                               <div className = "hero-kda">
                                     <span className="hero-kills">{this.state.latestPlayerData.kills} </span>&nbsp;/&nbsp;
@@ -49,7 +48,15 @@ export default class Navbar extends Component {
                                     <span className = "hero-xpm">{this.state.latestPlayerData.xp_per_min}</span>
                               </div>
                         this.setState({perMinute: perMinute});
-                        console.log(this.state.perMinute);
+                        let cs = 
+                              <div className = "hero-cs">
+                                    <span className = "hero-lh">{this.state.latestPlayerData.last_hits}</span>&nbsp;/&nbsp;
+                                    <span className = "hero-denies">{this.state.latestPlayerData.denies}</span>
+                              </div>
+                        this.setState({cs: cs});
+                        let netWorth = 
+                              <div className = "hero-networth"> {(this.state.latestPlayerData.total_gold / 1000).toFixed(1)}k </div>
+                        this.setState({netWorth: netWorth});
                   });
             })
             
@@ -72,9 +79,9 @@ export default class Navbar extends Component {
                   	<div className = "hero-statline">
                               <div className = "hero-level">19</div>
                   		{this.state.kda}
-                              <div className = "hero-cs"><span className = "hero-lh">104</span>/<span className = "hero-denies">10</span></div>
+                              {this.state.cs}
                   		{this.state.perMinute}
-                              <div className = "hero-networth">25.4k</div>
+                              {this.state.netWorth}
                   	</div>
                   	<div className = "hero-items-list">
                   		<img src = "test-item.png" className = "statline-item" />
