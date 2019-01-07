@@ -1,34 +1,58 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1";
-const lastMatchURL = "https://api.opendota.com/api/players/22319665/matches?limit=10&api_key=" + api_key;
+const latestMatchesURL = "https://api.opendota.com/api/players/22319665/matches?limit=1&api_key=" + api_key;
+var lastMatchID = null;
+var lastMatchURL = "https://api.opendota.com/api/matches/"
 
 export default class Navbar extends Component {
 
       constructor() {
             super();
             this.state = {
-                  latestMatches: [],
+                  latestMatch: null,
+                  latestPlayerData: null,
                   kda: null,
+                  perMinute: null,
+                  cs: [],
+                  playerSlot: null,
             }
       };
 
       componentDidMount() {
-            fetch(lastMatchURL)
+            fetch(latestMatchesURL)
             .then(response => response.json())
             .then(data => {
-                  let latestMatches = data.map((match) => {
-                        console.log(match.kills);
-                        return(
-                              <div key={match.response} className = "hero-kda">
-                                    <span className="hero-kills">{match.kills}</span> / 
-                                    <span className = "hero-deaths">{match.deaths}</span> /
-                                    <span className = "hero-assists">{match.assists}</span>
+                  this.setState({lastMatchID: data[0].match_id})
+                  lastMatchURL = lastMatchURL + this.state.lastMatchID +"/"+ api_key
+                  this.setState({playerSlot: data[0].player_slot});
+                  return lastMatchURL;
+            })
+            .then(data =>{
+                  fetch(lastMatchURL)
+                  .then(response => response.json())
+                  .then(data =>{
+                        console.log(data)
+                        this.setState({latestMatch: data});
+                        this.setState({latestPlayerData: data.players[this.state.playerSlot]})
+                        let kda =
+                              <div className = "hero-kda">
+                                    <span className="hero-kills">{this.state.latestPlayerData.kills} </span>&nbsp;/&nbsp;
+                                    <span className = "hero-deaths">{this.state.latestPlayerData.deaths}</span>&nbsp;/&nbsp;
+                                    <span className = "hero-assists">{this.state.latestPlayerData.assists}</span>
                               </div>
-                        )
-                  })
-                  this.setState({latestMatches: latestMatches});
-            });
+                        this.setState({kda: kda});
+                        console.log(this.state.latestPlayerData);
+                        let perMinute = 
+                              <div className = "per-minute">
+                                    <span className="hero-gpm">{this.state.latestPlayerData.gold_per_min}</span>&nbsp;/&nbsp; 
+                                    <span className = "hero-xpm">{this.state.latestPlayerData.xp_per_min}</span>
+                              </div>
+                        this.setState({perMinute: perMinute});
+                        console.log(this.state.perMinute);
+                  });
+            })
+            
       };
 
 
@@ -47,10 +71,9 @@ export default class Navbar extends Component {
                         <div className = "hero-role">SUPPORT</div>
                   	<div className = "hero-statline">
                               <div className = "hero-level">19</div>
-                  		{this.state.latestMatches[0]}
+                  		{this.state.kda}
                               <div className = "hero-cs"><span className = "hero-lh">104</span>/<span className = "hero-denies">10</span></div>
-                  		<div className = "hero-gpm">322 gpm</div>
-                  		<div className = "hero-xpm">450 xpm</div>
+                  		{this.state.perMinute}
                               <div className = "hero-networth">25.4k</div>
                   	</div>
                   	<div className = "hero-items-list">

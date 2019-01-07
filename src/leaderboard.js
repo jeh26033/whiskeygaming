@@ -17,9 +17,6 @@ export default class Leaderboard extends Component {
             return (
                   <div className = "leaderboard-container">
                         < LeaderboardItem />
-                        < LeaderboardItem />
-                        < LeaderboardItem />
-                        < LeaderboardItem />
                   </div>
             )
       }
