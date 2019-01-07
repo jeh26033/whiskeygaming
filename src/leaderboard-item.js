@@ -4,6 +4,7 @@ const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1";
 const latestMatchesURL = "https://api.opendota.com/api/players/22319665/matches?limit=1&api_key=" + api_key;
 var lastMatchID = null;
 var lastMatchURL = "https://api.opendota.com/api/matches/"
+var getHeroURL = "https://api.opendota.com/api/herostats/"
 
 export default class Navbar extends Component {
 
@@ -14,6 +15,7 @@ export default class Navbar extends Component {
                   latestPlayerData: null,
                   playerSlot: null,
                   latestHeroID: 0,
+                  text_role: null,
             }
       };
 
@@ -34,6 +36,9 @@ export default class Navbar extends Component {
                         this.setState({latestMatch: data});
                         this.setState({latestPlayerData: data.players[this.state.playerSlot]})                        
                         this.setState({latestHeroID: this.state.latestPlayerData.hero_id})
+                        console.log(getHeroURL);
+
+                  {/* Now we pull and rendering a bunch of stats */}
                         let kda =
                               <div className = "hero-kda">
                                     <span className="hero-kills">{this.state.latestPlayerData.kills} </span>&nbsp;/&nbsp;
@@ -57,7 +62,48 @@ export default class Navbar extends Component {
                         let netWorth = 
                               <div className = "hero-networth"> {(this.state.latestPlayerData.total_gold / 1000).toFixed(1)}k </div>
                         this.setState({netWorth: netWorth});
-                  });
+                        let level = 
+                              <div className = "hero-level"> {(this.state.latestPlayerData.level)} </div>
+                        this.setState({level: level});
+
+                  {/* Here's where we determine the text value of the role ID */}
+                        if(this.state.latestPlayerData.lane_role < 3) {
+                              this.setState({text_role: "SUPPORT"});
+                        } else if (this.state.latestPlayerData.lane_role = 3) {
+                              this.setState({text_role: "OFFLANE"});
+                        } else if (this.state.latestPlayerData.lane_role = 2) {
+                              this.setState({text_role: "MID LANE"});
+                        } else {
+                              this.setState({text_role: "SAFELANE"});
+                        }
+
+                        let role = 
+                              <div className = "hero-role"> {(this.state.text_role)} </div>
+                        this.setState({role: role});
+
+                  {/* Now we have some fun pulling hero data */}
+                  
+                  }).then(data => {
+                        fetch(getHeroURL)
+                        .then(response => response.json())
+                        .then(data => {
+                              this.setState({latestHeroData: data[this.state.latestHeroID-2]});
+                              console.log(this.state.latestHeroData);
+
+                              let playerInfo = 
+                                    <div className = "player-info">
+                                          <img src = {this.state.latestHeroData.icon} className = "hero-icon" />
+                                          <div className = "name-block">
+                                                <div className = "player-name">
+                                                      <a href="https://www.dotabuff.com">{this.state.latestPlayerData.personaname}</a>
+                                                </div>
+                                                <div className = "hero-name">{this.state.latestHeroData.localized_name}</div>
+                                          </div>
+                                    </div>
+                              this.setState({playerInfo: playerInfo});
+                        })
+                  })
+
             })
             
       };
@@ -66,18 +112,10 @@ export default class Navbar extends Component {
       render() {
             return (
                   <div className = "leaderboard-item">
-                  	<div className = "player-info">
-                  		<img src = "/img/rubick_test.png" className = "hero-icon" />
-                              <div className = "name-block">
-                                    <div className = "player-name">
-                                          <a href="https://www.dotabuff.com">Dark Arbiter</a>
-                                    </div>
-                                    <div className = "hero-name">Rubick</div>
-                              </div>
-                  	</div>
-                        <div className = "hero-role">SUPPORT</div>
+                  	{this.state.playerInfo}
+                        {this.state.role}
                   	<div className = "hero-statline">
-                              <div className = "hero-level">19</div>
+                              {this.state.level}
                   		{this.state.kda}
                               {this.state.cs}
                   		{this.state.perMinute}
