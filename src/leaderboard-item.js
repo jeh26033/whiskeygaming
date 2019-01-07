@@ -95,13 +95,14 @@ export default class Navbar extends Component {
                               this.setState({heroIcon: (this.state.latestHeroData.icon).slice((this.state.latestHeroData.icon).length-this.state.trimLength, this.state.latestHeroData.icon.length)})
                               this.setState({heroIcon: "/images/heroes/" + this.state.heroIcon.split("_")[0]+".png"})
                               console.log(this.state.heroIcon);
+                              this.setState({playerURL: "https://www.dotabuff.com/players/"+ this.state.latestPlayerData.account_id});
 
                               let playerInfo = 
                                     <div className = "player-info">
                                           <img src = {this.state.heroIcon} className = "hero-icon" />
                                           <div className = "name-block">
                                                 <div className = "player-name">
-                                                      <a href="https://www.dotabuff.com">{this.state.latestPlayerData.personaname}</a>
+                                                      <a href= {this.state.playerURL} >{this.state.latestPlayerData.personaname}</a>
                                                 </div>
                                                 <div className = "hero-name">{this.state.latestHeroData.localized_name}</div>
                                           </div>
