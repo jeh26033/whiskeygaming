@@ -147,7 +147,7 @@ export default class Navbar extends Component {
                                           <img src = {this.state.heroIcon} className = "hero-icon" />
                                           <div className = "name-block">
                                                 <div className = "player-name">
-                                                      <a href= {this.state.playerURL} >{this.state.latestPlayerData.personaname.split(".")[1]}</a>
+                                                      <a href= {this.state.playerURL} >{this.state.latestPlayerData.personaname}</a>
                                                 </div>
                                                 <div className = "hero-name">{this.state.latestHeroData.localized_name}</div>
                                           </div>
