@@ -18,21 +18,21 @@ export default class LatestGames extends Component {
             super();
 
             this.state = {
-                  leaderboard: [],
+                  latestGames: [],
             }
       }
 
       componentDidMount() {
             for (var i = 0; i < playerArray.length; i++) {
-                  this.state.leaderboard.push(< LatestGameComp playerID = { playerArray[i] } />)
+                  this.state.latestGames.push(< LatestGameComp playerID = { playerArray[i] } />)
             };
 
-            let leaderboardHTML = 
-                  <div className = "leaderboard-container">
-                        {this.state.leaderboard}
+            let latestGamesHTML = 
+                  <div className = "latest-game-container">
+                        {this.state.latestGames}
                   </div>
 
-            this.setState({leaderboardHTML: leaderboardHTML})
+            this.setState({latestGamesHTML: latestGamesHTML})
       }    
 
 
@@ -40,7 +40,7 @@ export default class LatestGames extends Component {
 
             return (
                   <div className = "container">
-                        {this.state.leaderboardHTML}
+                        {this.state.latestGamesHTML}
                         {/*<div className = "discord-container">
                               <iframe src="https://discordapp.com/widget?id=238406882056863744&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
                         </div> */}
