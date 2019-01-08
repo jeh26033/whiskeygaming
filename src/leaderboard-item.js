@@ -18,6 +18,7 @@ export default class Navbar extends Component {
                   text_role: null,
                   itemsArray: [],
                   latestMatchesURL: "https://api.opendota.com/api/players/" + this.props.playerID + "/matches?limit=1&api_key=" + api_key,
+                  localLastMatchURL: null,
             }
       };
 
@@ -35,10 +36,12 @@ export default class Navbar extends Component {
                   fetch(this.state.localLastMatchURL)
                   .then(response => response.json())
                   .then(data =>{
-                        console.log(data)
                         this.setState({latestMatch: data});
-                        this.setState({latestPlayerData: data.players[this.state.playerSlot]})                     
-                        this.setState({latestHeroID: this.state.latestPlayerData.hero_id})
+                        this.setState({latestPlayerData: data.players[this.state.playerSlot]})
+                        let latestPlayerData = data.players.find(player => player.player_slot == this.state.playerSlot);
+                        this.setState({latestPlayerData: latestPlayerData});           
+                        this.setState({latestHeroID: this.state.latestPlayerData.hero_id});
+                        console.log(data);
 
                   {/* Now we pull and rendering a bunch of stats */}
                         let kda =
@@ -48,7 +51,6 @@ export default class Navbar extends Component {
                                     <span className = "hero-assists">{this.state.latestPlayerData.assists}</span>
                               </div>
                         this.setState({kda: kda});
-                        console.log(this.state.latestPlayerData);
                         let perMinute = 
                               <div className = "per-minute">
                                     <span className="hero-gpm">{this.state.latestPlayerData.gold_per_min}</span>&nbsp;/&nbsp; 
@@ -80,7 +82,7 @@ export default class Navbar extends Component {
                         }
 
                         let role = 
-                              <div className = "hero-role"> {(this.state.text_role)} </div>
+                              <div className="roleContainer"><div className = "hero-role"> {(this.state.text_role)} </div></div>
                         this.setState({role: role});
 
                   //{/* Now we pull the items into an array */}
@@ -91,7 +93,6 @@ export default class Navbar extends Component {
                         this.state.itemsArray.push(this.state.latestPlayerData.item_3);
                         this.state.itemsArray.push(this.state.latestPlayerData.item_4);
                         this.state.itemsArray.push(this.state.latestPlayerData.item_5);
-                        console.log(this.state.itemsArray);
 
                   {/* we search the constant database for the correct items */}
 
@@ -117,8 +118,6 @@ export default class Navbar extends Component {
                               this.state.itemsArray.shift();
                         }
 
-                        
-                        console.log(this.state.itemsArray);
 
                         let itemsHTML =
                               <div className = "hero-items-list">
@@ -134,8 +133,7 @@ export default class Navbar extends Component {
                         fetch(getHeroURL)
                         .then(response => response.json())
                         .then(data => {
-                              this.setState({latestHeroData: data[this.state.latestHeroID-1]});
-                              console.log(this.state.latestHeroData);
+                              this.setState({latestHeroData: data[this.state.latestHeroID-2]});
 
                         {/* some quick math to trim the hero icon filepath to something usable */}
                               this.setState({trimLength: this.state.latestHeroData.icon.length - 26});

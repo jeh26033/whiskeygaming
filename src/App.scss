@@ -10,7 +10,7 @@ a {
   background: black;
   width: 100vw;
   height: 100vh;
-  padding-top: 100px;
+  padding-top: 50px;
 }
 
 .button {
@@ -23,4 +23,9 @@ a {
   color: white;
   overflow: hidden;
   cursor: pointer;
+}
+
+.discord-container {
+  position: absolute;
+  float: right;
 }
