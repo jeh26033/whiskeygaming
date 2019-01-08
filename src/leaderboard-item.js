@@ -45,13 +45,13 @@ export default class Navbar extends Component {
                   .then(data =>{
                         this.setState({latestMatch: data});
                         this.setState({latestPlayerData: data.players[this.state.playerSlot]})
-                        let latestPlayerData = data.players.find(player => player.player_slot == this.state.playerSlot);
+                        let latestPlayerData = data.players.find(player => player.player_slot === this.state.playerSlot);
                         this.setState({latestPlayerData: latestPlayerData});           
                         this.setState({latestHeroID: this.state.latestPlayerData.hero_id});
 
-                        if (this.state.team = "Radiant" && data.radiant_win) {
+                        if (this.state.team === "Radiant" && data.radiant_win) {
                               this.setState({won: "won"});
-                        } else if(this.state.team = "Dire" && !data.radiant_win) {
+                        } else if(this.state.team === "Dire" && !data.radiant_win) {
                               this.setState({won: "won"});
                         } else {
                               this.setState({won: "lost"});
@@ -93,10 +93,10 @@ export default class Navbar extends Component {
                         if(this.state.latestPlayerData.lane_role > 3) {
                               this.setState({text_role: "SUPPORT"});
                               this.setState({roleStyle: "support"});
-                        } else if (this.state.latestPlayerData.lane_role == 3) {
+                        } else if (this.state.latestPlayerData.lane_role === 3) {
                               this.setState({text_role: "OFFLANE"});
                               this.setState({roleStyle: "core"});
-                        } else if (this.state.latestPlayerData.lane_role == 2) {
+                        } else if (this.state.latestPlayerData.lane_role === 2) {
                               this.setState({text_role: "MID LANE"});
                               this.setState({roleStyle: "core"});
                         } else {
@@ -108,7 +108,7 @@ export default class Navbar extends Component {
                               <div className="role-container"><div className = "hero-role" id={this.state.roleStyle}> {(this.state.text_role)} </div></div>
                         this.setState({role: role});
 
-                  //{/* Now we pull the items into an array */}
+                  {/* Now we pull the items into an array */}
 
                         this.state.itemsArray.push(this.state.latestPlayerData.item_0);
                         this.state.itemsArray.push(this.state.latestPlayerData.item_1);
@@ -120,24 +120,24 @@ export default class Navbar extends Component {
                   {/* we search the constant database for the correct items */}
 
                         for (var i = 0; i < 6; i++) {
-                              let item = itemConstants.find(item => item[1].id == this.state.itemsArray[i]);
+                              let item = itemConstants.find(item => item[1].id === this.state.itemsArray[i]);
                               this.setState({item: item});
                               this.state.itemsArray.push(this.state.item);
                         }
 
                   {/* now we clear the first 6 elements of the array */}
 
-                        for (var i = 0; i < 6; i++) {
+                        for (i = 0; i < 6; i++) {
                               this.state.itemsArray.shift();
                         }
 
-                        for (var i = 0; i < 6; i++) {
-                              if(this.state.itemsArray[i] != undefined) {
+                        for (i = 0; i < 6; i++) {
+                              if(this.state.itemsArray[i] !== undefined) {
                                     this.state.itemsArray.push(<img src = {"/images/items/" + this.state.itemsArray[i][1].img.split("/")[5]} className = "statline-item" />);
                               }
                         }
 
-                        for (var i = 0; i < 6; i++) {
+                        for (i = 0; i < 6; i++) {
                               this.state.itemsArray.shift();
                         }
 
@@ -157,7 +157,7 @@ export default class Navbar extends Component {
                         .then(response => response.json())
                         .then(data => {
                               
-                              let latestHeroData = data.find(hero => hero.id == (this.state.latestHeroID));
+                              let latestHeroData = data.find(hero => hero.id === (this.state.latestHeroID));
                               this.setState({latestHeroData: latestHeroData});
 
                         {/* some quick math to trim the hero icon filepath to something usable */}
@@ -165,11 +165,10 @@ export default class Navbar extends Component {
                               this.setState({heroIcon: (this.state.latestHeroData.icon).slice((this.state.latestHeroData.icon).length-this.state.trimLength, this.state.latestHeroData.icon.length)})
                               this.setState({heroIcon: "/images/heroes/" + this.state.heroIcon.split("_")[0]+".png"})
                               this.setState({playerURL: "https://www.dotabuff.com/players/"+ this.state.latestPlayerData.account_id});
-                              console.log(this.state.latestHeroData);
 
                               let playerInfo = 
                                     <div className = "player-info">
-                                          <img src = {this.state.heroIcon} className = "hero-icon" id={this.state.won}/>
+                                          <img src = {this.state.heroIcon} className = "hero-icon"/>
                                           <div className = "name-block">
                                                 <div className = "player-name">
                                                       <a href= {this.state.playerURL} >{this.state.latestPlayerData.personaname}</a>
@@ -188,7 +187,7 @@ export default class Navbar extends Component {
 
       render() {
             return (
-                  <div className = "leaderboard-item">
+                  <div className = "leaderboard-item"  id={this.state.won}>
                   	{this.state.playerInfo}
                         {this.state.role}
                   	<div className = "hero-statline">
