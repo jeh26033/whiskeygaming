@@ -13,13 +13,15 @@ import Index from './components/index.component';
 class App extends Component {
   render() {
     return (
-      <div className = "container">
-        < Navbar />
-        <Switch>
-          <Route exact path ='/' component = {LatestGames} />
-          <Route path ='/leaderboard' component = {Leaderboard} />
-        </Switch>
-      </div>
+        <main>
+          <div className = "container">
+            < Navbar />
+            <Switch>
+              <Route exact path ='/' component = {LatestGames} />
+              <Route path ='/leaderboard' component = {Leaderboard} />
+            </Switch>
+          </div>
+        </main>
     );
   }
 }
