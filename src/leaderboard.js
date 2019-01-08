@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
 import './leaderboard.scss';
+const playerArray = [
+      22319665,
+      80456250,
+      108839928,
+      40322344,
+      35019058,
+      240507106,
+      8626597,
+      73590735
+      ];
 
 
 export default class Leaderboard extends Component {
@@ -12,12 +22,15 @@ export default class Leaderboard extends Component {
             }
       }
 
+      componentDidMount() {
+
+      }
+
 
       render() {
 
             return (
-                  <div className = "container">
-                        
+                  <div className = "leaderboard-container">
                   </div>
 
             )

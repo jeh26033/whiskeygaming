@@ -27,10 +27,7 @@ export default class LatestGames extends Component {
                   this.state.latestGames.push(< LatestGameComp playerID = { playerArray[i] } />)
             };
 
-            let latestGamesHTML = 
-                  <div className = "latest-game-container">
-                        {this.state.latestGames}
-                  </div>
+            let latestGamesHTML = this.state.latestGames;
 
             this.setState({latestGamesHTML: latestGamesHTML})
       }    
@@ -39,13 +36,9 @@ export default class LatestGames extends Component {
       render() {
 
             return (
-                  <div className = "container">
+                  <div className = "latest-game-container">
                         {this.state.latestGamesHTML}
-                        {/*<div className = "discord-container">
-                              <iframe src="https://discordapp.com/widget?id=238406882056863744&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
-                        </div> */}
                   </div>
-
             )
       }
 }	
