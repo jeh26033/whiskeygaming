@@ -1,11 +1,20 @@
 .leaderboard-container {
-	width: 1050px;
+	width: 1100px;
 	background-color: #333;
 	outline: 1px solid white;
 	outline-offset: -4px;
 	overflow: hidden;
 	margin: 20px auto;
 	display: block;
+}
+
+.duration {
+    font-weight: 700;
+    font-size: 14pt;
+    margin-left: 40px;
+    border: 2px solid darken(gold, 20%);
+    text-align: center;
+    line-height: 20pt;
 }
 
 .leaderboard-item {

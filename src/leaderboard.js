@@ -8,7 +8,8 @@ const playerArray = [
       40322344,
       35019058,
       240507106,
-      8626597
+      8626597,
+      73590735
       ];
 
 export default class Leaderboard extends Component {

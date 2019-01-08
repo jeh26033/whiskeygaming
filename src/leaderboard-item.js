@@ -58,6 +58,11 @@ export default class Navbar extends Component {
                               this.setState({won: "lost"});
                         }
 
+                  {/* game duration */}
+                        let duration = 
+                              <div className = "duration">{Math.floor(this.state.latestMatch.duration / 60)}:{("0"+((this.state.latestMatch.duration)-Math.floor(this.state.latestMatch.duration / 60) * 60).toString().slice(-1))}</div>
+                        this.setState({duration: duration});
+
                   {/* Now we pull and rendering a bunch of stats */}
                         let kda =
                               <div className = "hero-kda">
@@ -193,6 +198,7 @@ export default class Navbar extends Component {
                               {this.state.netWorth}
                   	</div>
                   	{this.state.itemsHTML}
+                        {this.state.duration}
                   </div>
             )
       }
