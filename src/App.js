@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import Navbar from './navbar';
-import Leaderboard from './leaderboard';
+import LatestGames from './latestGames';
 import './App.scss';
 
 import Create from './components/create.component';
@@ -14,7 +14,7 @@ class App extends Component {
     return (
       <div className = "container">
         < Navbar />
-        < Leaderboard />
+        < LatestGames />
       </div>
     );
   }

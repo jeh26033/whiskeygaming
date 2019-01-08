@@ -12,7 +12,7 @@ const playerArray = [
       73590735
       ];
 
-export default class Leaderboard extends Component {
+export default class LatestGames extends Component {
 
       constructor() {
             super();
