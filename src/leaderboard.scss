@@ -20,6 +20,7 @@
 
 	.per-minute {
 		padding: 0;
+		width: 80px;
 	}
 
 	.player-info {
@@ -60,6 +61,10 @@
 		}
 	}
 
+	.role-container {
+		width: 120px;
+	}
+
 	.hero-role {
 		transform: rotate(-45deg);
 		font-size: 10pt;
@@ -75,6 +80,8 @@
 
 		.hero-kda {
 			font-weight: 600;
+			font-size: 12pt;
+			width: 100px;
 
 			.hero-kills {
 				color: lighten(green, 20%);
@@ -88,6 +95,8 @@
 		}
 
 		.hero-cs {
+			width: 80px;
+
 			.hero-lh {
 				color: gold;
 			}
@@ -97,6 +106,7 @@
 		}
 
 		.hero-networth {
+			width: 80px;
 			color: gold;
 			font-weight: 900;
 		}
