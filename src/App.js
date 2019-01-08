@@ -1,8 +1,9 @@
 // App.js
-
+import { Switch, Route, Link } from 'react-router-dom'
 import React, { Component } from 'react';
 import Navbar from './navbar';
 import LatestGames from './latestGames';
+import Leaderboard from './leaderboard';
 import './App.scss';
 
 import Create from './components/create.component';
@@ -14,7 +15,10 @@ class App extends Component {
     return (
       <div className = "container">
         < Navbar />
-        < LatestGames />
+        <Switch>
+          <Route exact path ='/' component = {LatestGames} />
+          <Route path ='/leaderboard' component = {Leaderboard} />
+        </Switch>
       </div>
     );
   }

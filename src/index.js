@@ -4,6 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import Leaderboard from './leaderboard.js'
+import LatestGames from './latestGames.js'
+import * as routes from './routes.js'
 
 ReactDOM.render(
 	<BrowserRouter>

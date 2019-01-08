@@ -10,7 +10,7 @@ export default class Navbar extends Component {
             <Router>
             	<div className = "nav-container">
                   <Link to={'/'} className = "nav-link">LATEST</Link>
-                  <Link to={'/leaderboard'} className = "nav-link">LEADERBOARD</Link>
+                  <Link to='/leaderboard' className = "nav-link">LEADERBOARD</Link>
                   <Link to={'/create'} className = "nav-link">JOIN</Link>
                   <img src = "/wskg_notext.png" className = "wskb-logo"/>
         		  </div>
