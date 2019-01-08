@@ -38,7 +38,7 @@
 			width: 190px;
 
 			.player-name {
-				font-size: 20pt;
+				font-size: 18pt;
 				vertical-align: top;
 				display: block;
 				overflow: hidden;
@@ -68,6 +68,15 @@
 	.hero-role {
 		transform: rotate(-45deg);
 		font-size: 10pt;
+	}
+	#core {
+		color:black;
+		text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+	}
+
+	#support {
+		color: lighten(gray, 20%);
+		text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 	}
 
 	.hero-statline {

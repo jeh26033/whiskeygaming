@@ -73,16 +73,20 @@ export default class Navbar extends Component {
                   {/* Here's where we determine the text value of the role ID */}
                         if(this.state.latestPlayerData.lane_role < 3) {
                               this.setState({text_role: "SUPPORT"});
+                              this.setState({roleStyle: "support"});
                         } else if (this.state.latestPlayerData.lane_role = 3) {
                               this.setState({text_role: "OFFLANE"});
+                              this.setState({roleStyle: "core"});
                         } else if (this.state.latestPlayerData.lane_role = 2) {
                               this.setState({text_role: "MID LANE"});
+                              this.setState({roleStyle: "core"});
                         } else {
                               this.setState({text_role: "SAFELANE"});
+                              this.setState({roleStyle: "core"});
                         }
 
                         let role = 
-                              <div className="roleContainer"><div className = "hero-role"> {(this.state.text_role)} </div></div>
+                              <div className="roleContainer"><div className = "hero-role" id={this.state.roleStyle}> {(this.state.text_role)} </div></div>
                         this.setState({role: role});
 
                   //{/* Now we pull the items into an array */}
