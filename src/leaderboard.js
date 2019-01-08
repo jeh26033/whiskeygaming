@@ -17,8 +17,7 @@ export default class Leaderboard extends Component {
 
             return (
                   <div className = "leaderboard-container">
-                        < LeaderboardItem playerID = { playerArray[0] } />
-
+                        < LeaderboardItem playerID = { playerArray[0] } />    
                   </div>
             )
       }

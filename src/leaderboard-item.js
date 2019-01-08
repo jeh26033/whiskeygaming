@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1";
 var lastMatchID = null;
-var lastMatchURL = "https://api.opendota.com/api/matches/"
+const lastMatchURL = "https://api.opendota.com/api/matches/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 var itemConstants = Object.entries(require('./item_constants.json'));
 
@@ -26,17 +26,18 @@ export default class Navbar extends Component {
             .then(response => response.json())
             .then(data => {
                   this.setState({lastMatchID: data[0].match_id})
-                  lastMatchURL = lastMatchURL + this.state.lastMatchID +"/"+ api_key
+                  let localLastMatchURL = lastMatchURL + this.state.lastMatchID +"/"+ api_key
                   this.setState({playerSlot: data[0].player_slot});
-                  return lastMatchURL;
+                  this.setState({localLastMatchURL: localLastMatchURL})
+                  return localLastMatchURL;
             })
             .then(data =>{
-                  fetch(lastMatchURL)
+                  fetch(this.state.localLastMatchURL)
                   .then(response => response.json())
                   .then(data =>{
                         console.log(data)
                         this.setState({latestMatch: data});
-                        this.setState({latestPlayerData: data.players[this.state.playerSlot]})                        
+                        this.setState({latestPlayerData: data.players[this.state.playerSlot]})                     
                         this.setState({latestHeroID: this.state.latestPlayerData.hero_id})
 
                   {/* Now we pull and rendering a bunch of stats */}
@@ -133,7 +134,7 @@ export default class Navbar extends Component {
                         fetch(getHeroURL)
                         .then(response => response.json())
                         .then(data => {
-                              this.setState({latestHeroData: data[this.state.latestHeroID-2]});
+                              this.setState({latestHeroData: data[this.state.latestHeroID-1]});
                               console.log(this.state.latestHeroData);
 
                         {/* some quick math to trim the hero icon filepath to something usable */}
@@ -147,7 +148,7 @@ export default class Navbar extends Component {
                                           <img src = {this.state.heroIcon} className = "hero-icon" />
                                           <div className = "name-block">
                                                 <div className = "player-name">
-                                                      <a href= {this.state.playerURL} >{this.state.latestPlayerData.personaname.split(".")[1]}</a>
+                                                      <a href= {this.state.playerURL} >{this.state.latestPlayerData.personaname}</a>
                                                 </div>
                                                 <div className = "hero-name">{this.state.latestHeroData.localized_name}</div>
                                           </div>
