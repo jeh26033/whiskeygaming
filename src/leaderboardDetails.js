@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import farmRankingArray from './farmRankings.json'
 const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1";
 var lastMatchID = null;
-const lastMatchURL = "https://api.opendota.com/api/matches/"
+const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 const getPlayerURL = "https://api.opendota.com/api/players/"
 var itemConstants = Object.entries(require('./item_constants.json'));
+var csRankingArray = [];
+var kdaRankingArray = [];
 
 export default class LeaderboardDetailItem extends Component {
 
@@ -19,6 +22,15 @@ export default class LeaderboardDetailItem extends Component {
                   playerExternalURL: "https://www.dotabuff.com/players/" + this.props.playerID,
                   playerName: null,
                   playerRank: null,
+                  supportRank: 0,
+                  carryRank: 0,
+                  midRank: 0,
+                  offlaneRank: 0,
+                  farmingRank: 0,
+                  csRank: 0,
+                  kdaRank: 0,
+                  recentMatches: [],
+                  recentMatchesURL: recentMatchesBaseURL + this.props.playerID + "/recentMatches?limit=20"
             }
       };
 
@@ -30,7 +42,38 @@ export default class LeaderboardDetailItem extends Component {
                   this.setState({playerName: this.state.latestPlayerData.profile.personaname})
                   this.setState({playerPic: this.state.latestPlayerData.profile.avatarmedium})
                   this.setState({playerRank: this.state.latestPlayerData.mmr_estimate.estimate})
-                  console.log(data);
+            });
+            fetch(this.state.recentMatchesURL)
+            .then(response => response.json())
+            .then(data => {
+                  this.setState({recentMatches: data});
+
+            {/* this calculates average gpm */}
+                  for (var i = 0; i < this.state.recentMatches.length; i++) {
+                        let localGPM = this.state.recentMatches[i].gold_per_min;
+                        this.setState({localGPM: localGPM})
+                        this.setState({farmingRank: Math.floor(this.state.localGPM + (this.state.localGPM / i))})
+                  }
+                  farmRankingArray.push(this.state.farmingRank);
+                  // this.setState({farmRankingArray: farmRankingArray});
+
+            {/* this calculates average cs, which is currently (last hits) */}
+                  for (var i = 0; i < this.state.recentMatches.length; i++) {
+                        let localCS = this.state.recentMatches[i].last_hits;
+                        this.setState({localCS: localCS})
+                        this.setState({csRank: Math.floor((this.state.csRank)*(i/(i+1)) + (this.state.localCS / (i+1)))})
+                  }
+                  csRankingArray.push(this.state.csRank);
+                  // this.setState({csRankingArray: csRankingArray});
+
+            {/* this calculates average kda, which is currently (kills + assists - deaths) */}
+                  for (var i = 0; i < this.state.recentMatches.length; i++) {
+                        let localKDA = this.state.recentMatches[i].kills + this.state.recentMatches[i].assists - this.state.recentMatches[i].deaths;
+                        this.setState({localKDA: localKDA})
+                        this.setState({kdaRank: Math.floor((this.state.kdaRank)*(i/(i+1)) + (this.state.localKDA / (i+1)))})
+                  }
+                  kdaRankingArray.push(this.state.kdaRank);
+                  // this.setState({kdaRankingArray: kdaRankingArray});
             })
       };
 
@@ -46,6 +89,11 @@ export default class LeaderboardDetailItem extends Component {
                                     </div>
                                     <div className = "rank-estimate">MMRE: <span className="mmr">{this.state.playerRank}</span></div>
                               </div>
+                        </div>
+                        <div className = "ranks-container">
+                              <div className = "rank-box" id = "farm-rank"> {this.state.farmingRank} gpm</div>
+                              <div className = "rank-box" id = "cs-rank"> {this.state.csRank} Lh</div>
+                              <div className = "rank-box" id = "farm-rank"> {this.state.kdaRank} kda</div>
                         </div>
                   </div>
             )

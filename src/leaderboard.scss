@@ -18,53 +18,71 @@
 }
 
 .player-info {
-		height: 60px;
-		width: 320px;
+	height: 60px;
+	width: 320px;
 
-		.player-pic {
-			height: 70px;
-			width: 70px;
-			margin-right: 10px;
+	.player-pic {
+		height: 70px;
+		width: 70px;
+		margin-right: 10px;
+	}
+
+	.name-block {
+		padding: 1px 0;
+		width: 220px;
+
+		.player-name {
+			font-size: 18pt;
+			vertical-align: top;
+			display: block;
+			overflow: hidden;
+			white-space: nowrap;
+
+			a {
+				color: #00A7BB;
+
+				&:hover {
+					color: lighten(#00A7BB, 40%);
+				};
+			}
 		}
 
-		.name-block {
-			padding: 1px 0;
-			width: 220px;
+		.rank-estimate{
+			vertical-align: text-bottom;
+			line-height: 12pt;
+			font-size: 9pt;
+			color: lighten(gray, 20%);
 
-			.player-name {
-				font-size: 18pt;
-				vertical-align: top;
-				display: block;
-				overflow: hidden;
-				white-space: nowrap;
-
-				a {
-					color: #00A7BB;
-
-					&:hover {
-						color: lighten(#00A7BB, 40%);
-					};
-				}
-			}
-
-			.rank-estimate{
-				vertical-align: text-bottom;
-				line-height: 12pt;
-				font-size: 9pt;
-				color: lighten(gray, 20%);
-
-				.mmr {
-					line-height: 18pt;
-					font-size: 12pt;
-					font-weight: 700;
-					color: white;
-				}
-			}
-
-			.hero-name {
-				vertical-align: bottom;
-				display: block;
+			.mmr {
+				line-height: 18pt;
 				font-size: 12pt;
+				font-weight: 700;
+				color: white;
 			}
+		}
+
+		.hero-name {
+			vertical-align: bottom;
+			display: block;
+			font-size: 12pt;
 		}
 	}
+}
+
+.ranks-container {
+	width: 300px;
+	height: 60px;
+	padding: 15px 0;
+	margin: 0 0 0 20px;
+
+	.rank-box {
+		width: 100px;
+		padding: 5px;
+		font-size: 11pt;
+	}
+
+	.leader {
+		font-weight: 900;
+		background-image: linear-gradient(to left, transparent, green); 
+	}
+}

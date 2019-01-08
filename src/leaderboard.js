@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import './leaderboard.scss';
 import LeaderboardDetailItem from './leaderboardDetails';
-const playerArray = [
-      22319665,
-      80456250,
-      108839928,
-      40322344,
-      35019058,
-      240507106,
-      8626597,
-      73590735
-      ];
+import farmRankingArray from './farmRankings.json'
 
+import playerIDList from './playerIDList.json';
 
 export default class Leaderboard extends Component {
 
@@ -24,9 +16,13 @@ export default class Leaderboard extends Component {
       }
 
       componentDidMount() {
-            for (var i = 0; i < playerArray.length; i++) {
-                  this.state.playersHTML.push(< LeaderboardDetailItem playerID = {playerArray[i]} />)
+            for (var i = 0; i < playerIDList.length; i++) {
+                  this.state.playersHTML.push(< LeaderboardDetailItem playerID = {playerIDList[i]} />)
             };
+
+            if(farmRankingArray.length = playerIDList.length) {
+                  console.log(farmRankingArray);
+            }
 
             let playersHTML = this.state.playersHTML;
 
