@@ -48,7 +48,6 @@ export default class Navbar extends Component {
                         let latestPlayerData = data.players.find(player => player.player_slot == this.state.playerSlot);
                         this.setState({latestPlayerData: latestPlayerData});           
                         this.setState({latestHeroID: this.state.latestPlayerData.hero_id});
-                        console.log(data);
 
                         if (this.state.team = "Radiant" && data.radiant_win) {
                               this.setState({won: "won"});
@@ -90,7 +89,6 @@ export default class Navbar extends Component {
                               <div className = "hero-level"> {(this.state.latestPlayerData.level)} </div>
                         this.setState({level: level});
 
-                        console.log(this.state.latestPlayerData.lane_role);
                   {/* Here's where we determine the text value of the role ID */}
                         if(this.state.latestPlayerData.lane_role > 3) {
                               this.setState({text_role: "SUPPORT"});
@@ -158,13 +156,16 @@ export default class Navbar extends Component {
                         fetch(getHeroURL)
                         .then(response => response.json())
                         .then(data => {
-                              this.setState({latestHeroData: data[this.state.latestHeroID-2]});
+                              
+                              let latestHeroData = data.find(hero => hero.id == (this.state.latestHeroID));
+                              this.setState({latestHeroData: latestHeroData});
 
                         {/* some quick math to trim the hero icon filepath to something usable */}
                               this.setState({trimLength: this.state.latestHeroData.icon.length - 26});
                               this.setState({heroIcon: (this.state.latestHeroData.icon).slice((this.state.latestHeroData.icon).length-this.state.trimLength, this.state.latestHeroData.icon.length)})
                               this.setState({heroIcon: "/images/heroes/" + this.state.heroIcon.split("_")[0]+".png"})
                               this.setState({playerURL: "https://www.dotabuff.com/players/"+ this.state.latestPlayerData.account_id});
+                              console.log(this.state.latestHeroData);
 
                               let playerInfo = 
                                     <div className = "player-info">
