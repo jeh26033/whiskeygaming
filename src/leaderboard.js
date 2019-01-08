@@ -27,7 +27,6 @@ export default class Leaderboard extends Component {
             this.setState({playersHTML: playersHTML});
       }
 
-
       render() {
 
             return (

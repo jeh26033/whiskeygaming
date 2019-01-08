@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import farmRankingArray from './farmRankings.json'
+import csRankingArray from './csRankings.json'
+import kdaRankingArray from './kdaRankings.json'
 import playerIDList from './playerIDList.json';
 const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1";
 var lastMatchID = null;
@@ -8,8 +10,6 @@ const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 const getPlayerURL = "https://api.opendota.com/api/players/"
 var itemConstants = Object.entries(require('./item_constants.json'));
-var csRankingArray = [];
-var kdaRankingArray = [];
 
 export default class LeaderboardDetailItem extends Component {
 
@@ -33,6 +33,9 @@ export default class LeaderboardDetailItem extends Component {
                   recentMatches: [],
                   recentMatchesURL: recentMatchesBaseURL + this.props.playerID + "/recentMatches?limit=20",
                   updated: false,
+                  farmWinner: "",
+                  csWinner: "",
+                  kdamWinner: "",
             }
       };
 
@@ -78,19 +81,44 @@ export default class LeaderboardDetailItem extends Component {
                   kdaRankingArray.push({"name": this.state.playerName, "rank": this.state.kdaRank});
                   // this.setState({kdaRankingArray: kdaRankingArray});
             })
-      };
+      }
 
       componentDidUpdate() {
+      {/*check to see who is winning the gpm contest */}
             if(farmRankingArray.length === playerIDList.length && !this.state.updated && (this.state.farmLeader != Math.max.apply(Math, farmRankingArray))) {
                   this.setState({farmLeader: Math.max.apply(Math, farmRankingArray)});
-                  console.log(Math.max.apply(Math, farmRankingArray));
-                  console.log("Leader: " + this.state.farmLeader);
 
 
-                  if (this.state.farmingRank == Math.max.apply(Math, farmRankingArray) && Math.max.apply(Math, farmRankingArray) !== null) {
-                        console.log("Name: "+this.state.playerName);
+                  if (this.state.farmingRank == Math.max.apply(Math, farmRankingArray) && Math.max.apply(Math, farmRankingArray) !== null && this.state.farmWinner == "") {
+                        this.setState({farmWinner: "leader"})
                   }
             }
+
+      {/*check to see who is winning the cs contest */}
+            if(csRankingArray.length === playerIDList.length && !this.state.updated && (this.state.csLeader != Math.max.apply(Math, csRankingArray))) {
+                  this.setState({csLeader: Math.max.apply(Math, csRankingArray)});
+                  console.log(Math.max.apply(Math, csRankingArray));
+                  console.log("Leader: " + this.state.csLeader);
+
+
+                  if (this.state.csRank == Math.max.apply(Math, csRankingArray) && Math.max.apply(Math, csRankingArray) !== null && this.state.csWinner == "") {
+                        console.log("Name: "+this.state.playerName);
+                        this.setState({csWinner: "leader"})
+                  }
+            }
+
+      // {/*check to see who is winning the kda contest */}
+      //       if(kdaRankingArray.length === playerIDList.length && !this.state.updated && (this.state.kdaLeader != Math.max.apply(Math, kdaRankingArray))) {
+      //             this.setState({kdaLeader: Math.max.apply(Math, kdaRankingArray)});
+      //             console.log(Math.max.apply(Math, kdaRankingArray));
+      //             console.log("Leader: " + this.state.kdaLeader);
+
+
+      //             if (this.state.kdaRank == Math.max.apply(Math, kdaRankingArray) && Math.max.apply(Math, kdaRankingArray) !== null && this.state.kdaWinner == "") {
+      //                   console.log("Name: "+this.state.playerName);
+      //                   this.setState({kdaWinner: "leader"})
+      //             }
+      //       }
       }
 
 
@@ -107,9 +135,9 @@ export default class LeaderboardDetailItem extends Component {
                               </div>
                         </div>
                         <div className = "ranks-container">
-                              <div className = "rank-box" id = "farm-rank"> {this.state.farmingRank} gpm</div>
-                              <div className = "rank-box" id = "cs-rank"> {this.state.csRank} Lh</div>
-                              <div className = "rank-box" id = "farm-rank"> {this.state.kdaRank} kda</div>
+                              <div className = "rank-box" id = {this.state.farmWinner}> {this.state.farmingRank} gpm</div>
+                              <div className = "rank-box" id = {this.state.csWinner}> {this.state.csRank} Lh</div>
+                              <div className = "rank-box" id = {this.state.kdaWinner}> {this.state.kdaRank} kda</div>
                         </div>
                   </div>
             )
