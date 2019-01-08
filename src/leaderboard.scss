@@ -28,9 +28,20 @@
 		width: 320px;
 
 		.hero-icon {
-			padding: 0 10px 0 0;
 			height: 60px;
 			width: 107px;
+		}
+
+		#won {
+			border-width: 3px;
+			border-style: solid;
+			border-image: linear-gradient(to top, white, green) 0 100%;
+		}
+
+		#lost {
+			border-width: 3px;
+			border-style: solid;
+			border-image: linear-gradient(to top, black, red) 0 100%;
 		}
 
 		.name-block {
@@ -62,12 +73,14 @@
 	}
 
 	.role-container {
-		width: 120px;
+		width: 100px;
 	}
 
 	.hero-role {
 		transform: rotate(-45deg);
 		font-size: 10pt;
+		text-align: center;
+		width: 100%;
 	}
 	#core {
 		color:black;

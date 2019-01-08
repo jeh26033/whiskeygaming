@@ -19,6 +19,8 @@ export default class Navbar extends Component {
                   itemsArray: [],
                   latestMatchesURL: "https://api.opendota.com/api/players/" + this.props.playerID + "/matches?limit=1&api_key=" + api_key,
                   localLastMatchURL: null,
+                  team: null,
+                  won: null,
             }
       };
 
@@ -29,6 +31,11 @@ export default class Navbar extends Component {
                   this.setState({lastMatchID: data[0].match_id})
                   let localLastMatchURL = lastMatchURL + this.state.lastMatchID +"/"+ api_key
                   this.setState({playerSlot: data[0].player_slot});
+                  if (this.state.playerSlot < 10) {
+                        this.setState({team: "Radiant"})
+                  } else {
+                        this.setState({team: "Dire"})
+                  };
                   this.setState({localLastMatchURL: localLastMatchURL})
                   return localLastMatchURL;
             })
@@ -42,6 +49,14 @@ export default class Navbar extends Component {
                         this.setState({latestPlayerData: latestPlayerData});           
                         this.setState({latestHeroID: this.state.latestPlayerData.hero_id});
                         console.log(data);
+
+                        if (this.state.team = "Radiant" && data.radiant_win) {
+                              this.setState({won: "won"});
+                        } else if(this.state.team = "Dire" && !data.radiant_win) {
+                              this.setState({won: "won"});
+                        } else {
+                              this.setState({won: "lost"});
+                        }
 
                   {/* Now we pull and rendering a bunch of stats */}
                         let kda =
@@ -70,23 +85,24 @@ export default class Navbar extends Component {
                               <div className = "hero-level"> {(this.state.latestPlayerData.level)} </div>
                         this.setState({level: level});
 
+                        console.log(this.state.latestPlayerData.lane_role);
                   {/* Here's where we determine the text value of the role ID */}
-                        if(this.state.latestPlayerData.lane_role < 3) {
+                        if(this.state.latestPlayerData.lane_role > 3) {
                               this.setState({text_role: "SUPPORT"});
                               this.setState({roleStyle: "support"});
-                        } else if (this.state.latestPlayerData.lane_role = 3) {
+                        } else if (this.state.latestPlayerData.lane_role == 3) {
                               this.setState({text_role: "OFFLANE"});
                               this.setState({roleStyle: "core"});
-                        } else if (this.state.latestPlayerData.lane_role = 2) {
+                        } else if (this.state.latestPlayerData.lane_role == 2) {
                               this.setState({text_role: "MID LANE"});
                               this.setState({roleStyle: "core"});
                         } else {
-                              this.setState({text_role: "SAFELANE"});
+                              this.setState({text_role: "CARRY"});
                               this.setState({roleStyle: "core"});
                         }
 
                         let role = 
-                              <div className="roleContainer"><div className = "hero-role" id={this.state.roleStyle}> {(this.state.text_role)} </div></div>
+                              <div className="role-container"><div className = "hero-role" id={this.state.roleStyle}> {(this.state.text_role)} </div></div>
                         this.setState({role: role});
 
                   //{/* Now we pull the items into an array */}
@@ -147,7 +163,7 @@ export default class Navbar extends Component {
 
                               let playerInfo = 
                                     <div className = "player-info">
-                                          <img src = {this.state.heroIcon} className = "hero-icon" />
+                                          <img src = {this.state.heroIcon} className = "hero-icon" id={this.state.won}/>
                                           <div className = "name-block">
                                                 <div className = "player-name">
                                                       <a href= {this.state.playerURL} >{this.state.latestPlayerData.personaname}</a>
