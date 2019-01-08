@@ -16,6 +16,9 @@ export default class LeaderboardDetailItem extends Component {
                   latestPlayerData: null,
                   latestHeroID: 0,
                   playerURL: getPlayerURL + this.props.playerID,
+                  playerExternalURL: "https://www.dotabuff.com/players/" + this.props.playerID,
+                  playerName: null,
+                  playerRank: null,
             }
       };
 
@@ -23,8 +26,11 @@ export default class LeaderboardDetailItem extends Component {
             fetch(this.state.playerURL)
             .then(response => response.json())
             .then(data => {
-                  console.log(data);
                   this.setState({latestPlayerData: data})
+                  this.setState({playerName: this.state.latestPlayerData.profile.personaname})
+                  this.setState({playerPic: this.state.latestPlayerData.profile.avatarmedium})
+                  this.setState({playerRank: this.state.latestPlayerData.mmr_estimate.estimate})
+                  console.log(data);
             })
       };
 
@@ -32,7 +38,15 @@ export default class LeaderboardDetailItem extends Component {
       render() {
             return (
                   <div className = "leaderboard-detail-item">
-                  	{this.props.playerID}
+                        <div className = "player-info">
+                              <img src = {this.state.playerPic} className = "player-pic"/>
+                              <div className = "name-block">
+                                    <div className = "player-name">
+                                          <a href= {this.state.playerExternalURL} >{this.state.playerName}</a>
+                                    </div>
+                                    <div className = "rank-estimate">MMRE: <span className="mmr">{this.state.playerRank}</span></div>
+                              </div>
+                        </div>
                   </div>
             )
       }
