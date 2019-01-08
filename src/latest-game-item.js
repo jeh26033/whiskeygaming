@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1";
 var lastMatchID = null;
 const lastMatchURL = "https://api.opendota.com/api/matches/"
-var getHeroURL = "https://api.opendota.com/api/herostats/"
+var getHeroURL = "https://api.opendota.com/api/herostats?api_key=" + api_key;
 var itemConstants = Object.entries(require('./item_constants.json'));
 
 export default class LatestGameComp extends Component {
@@ -29,7 +29,7 @@ export default class LatestGameComp extends Component {
             .then(response => response.json())
             .then(data => {
                   this.setState({lastMatchID: data[0].match_id})
-                  let localLastMatchURL = lastMatchURL + this.state.lastMatchID +"/"+ api_key
+                  let localLastMatchURL = lastMatchURL + this.state.lastMatchID +"?api_key="+ api_key
                   this.setState({playerSlot: data[0].player_slot});
                   if (this.state.playerSlot < 10) {
                         this.setState({team: "Radiant"})
