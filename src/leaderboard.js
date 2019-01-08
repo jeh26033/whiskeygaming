@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './leaderboard.scss';
+import LeaderboardDetailItem from './leaderboardDetails';
 const playerArray = [
       22319665,
       80456250,
@@ -18,19 +19,26 @@ export default class Leaderboard extends Component {
             super();
 
             this.state = {
-                  latestGames: [],
+                  playersHTML: [],
             }
       }
 
       componentDidMount() {
+            for (var i = 0; i < playerArray.length; i++) {
+                  this.state.playersHTML.push(< LeaderboardDetailItem playerID = {playerArray[i]} />)
+            };
 
-      }
+            let playersHTML = this.state.playersHTML;
+
+            this.setState({playersHTML: playersHTML});
+      } 
 
 
       render() {
 
             return (
                   <div className = "leaderboard-container">
+                        {this.state.playersHTML}
                   </div>
 
             )
