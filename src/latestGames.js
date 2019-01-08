@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './leaderboard.scss';
-import LeaderboardItem from './leaderboard-item';
+import './latestGames.scss';
+import LatestGameComp from './latest-game-item';
 const playerArray = [
       22319665,
       80456250,
@@ -24,7 +24,7 @@ export default class LatestGames extends Component {
 
       componentDidMount() {
             for (var i = 0; i < playerArray.length; i++) {
-                  this.state.leaderboard.push(< LeaderboardItem playerID = { playerArray[i] } />)
+                  this.state.leaderboard.push(< LatestGameComp playerID = { playerArray[i] } />)
             };
 
             let leaderboardHTML = 
