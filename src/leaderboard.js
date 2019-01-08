@@ -12,22 +12,20 @@ export default class Leaderboard extends Component {
 
             this.state = {
                   playersHTML: [],
+                  localFarmRankings: [],
             }
       }
 
       componentDidMount() {
             for (var i = 0; i < playerIDList.length; i++) {
                   this.state.playersHTML.push(< LeaderboardDetailItem playerID = {playerIDList[i]} />)
-            };
-
-            if(farmRankingArray.length = playerIDList.length) {
-                  console.log(farmRankingArray);
+                  this.setState({localFarmRankings: farmRankingArray});
             }
 
             let playersHTML = this.state.playersHTML;
 
             this.setState({playersHTML: playersHTML});
-      } 
+      }
 
 
       render() {

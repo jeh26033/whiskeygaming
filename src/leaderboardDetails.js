@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import farmRankingArray from './farmRankings.json'
+import playerIDList from './playerIDList.json';
 const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1";
 var lastMatchID = null;
 const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
@@ -30,7 +31,8 @@ export default class LeaderboardDetailItem extends Component {
                   csRank: 0,
                   kdaRank: 0,
                   recentMatches: [],
-                  recentMatchesURL: recentMatchesBaseURL + this.props.playerID + "/recentMatches?limit=20"
+                  recentMatchesURL: recentMatchesBaseURL + this.props.playerID + "/recentMatches?limit=20",
+                  updated: false,
             }
       };
 
@@ -72,10 +74,24 @@ export default class LeaderboardDetailItem extends Component {
                         this.setState({localKDA: localKDA})
                         this.setState({kdaRank: Math.floor((this.state.kdaRank)*(i/(i+1)) + (this.state.localKDA / (i+1)))})
                   }
-                  kdaRankingArray.push(this.state.kdaRank);
+
+                  kdaRankingArray.push({"name": this.state.playerName, "rank": this.state.kdaRank});
                   // this.setState({kdaRankingArray: kdaRankingArray});
             })
       };
+
+      componentDidUpdate() {
+            if(farmRankingArray.length === playerIDList.length && !this.state.updated && (this.state.farmLeader != Math.max.apply(Math, farmRankingArray))) {
+                  this.setState({farmLeader: Math.max.apply(Math, farmRankingArray)});
+                  console.log(Math.max.apply(Math, farmRankingArray));
+                  console.log("Leader: " + this.state.farmLeader);
+
+
+                  if (this.state.farmingRank == Math.max.apply(Math, farmRankingArray) && Math.max.apply(Math, farmRankingArray) !== null) {
+                        console.log("Name: "+this.state.playerName);
+                  }
+            }
+      }
 
 
       render() {
