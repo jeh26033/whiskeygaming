@@ -1,5 +1,5 @@
 .latest-game-container {
-	width: 1150px;
+	width: 1200px;
 	background-color: #333;
 	outline: 1px solid white;
 	outline-offset: -4px;
@@ -83,7 +83,7 @@
 	}
 
 	.role-container {
-		width: 100px;
+		width: 120px;
 	}
 
 	.hero-role {
@@ -91,16 +91,26 @@
 		font-size: 10pt;
 		text-align: center;
 		width: 100%;
-	}
-	#core {
-		color:black;
-		text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+		font-weight: 700;
+
+		.lane {
+			text-align: center;
+			width: 100%;
+			font-weight: 700;
+			font-size: 8pt;
+			color: lighten(gray, 20%);
+			text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+		}
+
+		.role-in-lane {
+			text-align: center;
+			font-size: 13pt;
+			width: 100%;
+			font-weight: 700;
+			text-shadow: 1px 0 black;
+		}
 	}
 
-	#support {
-		color: lighten(gray, 20%);
-		text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
-	}
 
 	.hero-statline {
 		font-size: 12pt;

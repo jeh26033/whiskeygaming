@@ -91,21 +91,17 @@ export default class LatestGameComp extends Component {
 
                   {/* Here's where we determine the text value of the role ID */}
                         if(this.state.latestPlayerData.lane_role > 3) {
-                              this.setState({text_role: "SUPPORT"});
-                              this.setState({roleStyle: "support"});
+                              this.setState({text_role: "ROAMING"});
                         } else if (this.state.latestPlayerData.lane_role === 3) {
                               this.setState({text_role: "OFFLANE"});
-                              this.setState({roleStyle: "core"});
                         } else if (this.state.latestPlayerData.lane_role === 2) {
-                              this.setState({text_role: "MID LANE"});
-                              this.setState({roleStyle: "core"});
+                              this.setState({text_role: "MID"});
                         } else {
-                              this.setState({text_role: "CARRY"});
-                              this.setState({roleStyle: "core"});
+                              this.setState({text_role: "SAFELANE"});
                         }
 
                         let role = 
-                              <div className="role-container"><div className = "hero-role" id={this.state.roleStyle}> {(this.state.text_role)} </div></div>
+                              <div className="role-container"><div className = "hero-role"><span className="lane" id={this.state.roleStyle}>{(this.state.text_role)}</span><br /><span className = "role-in-lane">{this.state.roleStyle}</span></div></div>
                         this.setState({role: role});
 
                   {/* Now we pull the items into an array */}
@@ -159,6 +155,25 @@ export default class LatestGameComp extends Component {
                               
                               let latestHeroData = data.find(hero => hero.id === (this.state.latestHeroID));
                               this.setState({latestHeroData: latestHeroData});
+                              if(this.state.latestHeroData.roles.indexOf("Carry") >= 0) {
+                                    if (this.state.text_role == "MID") {
+                                          this.setState({text_role: ""});
+                                          this.setState({roleStyle: "MID"});
+                                    } else if (this.state.text_role == "SAFELANE") {
+                                          this.setState({text_role: ""});
+                                          this.setState({roleStyle: "CARRY"});
+                                    } else {
+                                          this.setState({text_role: ""});
+                                          this.setState({roleStyle: "OFFLANE"});
+                                    }
+                              } else {
+                                    this.setState({roleStyle: "SUPPORT"});
+                                    console.log(this.state.roleStyle)
+                              }
+
+                              let role = 
+                              <div className="role-container"><div className = "hero-role"><span className="lane" id={this.state.roleStyle}>{(this.state.text_role)}</span><br /><span className = "role-in-lane">{this.state.roleStyle}</span></div></div>
+                        this.setState({role: role});
 
                         {/* some quick math to trim the hero icon filepath to something usable */}
                               this.setState({trimLength: this.state.latestHeroData.icon.length - 26});
