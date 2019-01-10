@@ -1,5 +1,5 @@
 .latest-game-container {
-	width: 1200px;
+	width: 1220px;
 	background-color: #333;
 	outline: 1px solid white;
 	outline-offset: -4px;
@@ -12,7 +12,7 @@
 .duration {
     font-weight: 700;
     font-size: 14pt;
-    margin-left: 40px;
+    margin-left: 25px;
     border: 2px solid darken(gold, 20%);
     text-align: center;
     line-height: 20pt;
@@ -29,8 +29,21 @@
 .latest-game-item {
 	color: white;
 	height: 90px;
-	margin: 5px 20px 5px 5px;
+	margin: 5px 5px 5px 5px;
 	padding: 10px;
+	font-family: righteous;
+	position: relative;
+
+	&:before {
+		content:'';
+		width:400px;
+		height:90px;
+		position: absolute;
+		left:0;
+		top:0;
+		background:linear-gradient(to right, transparent 350px, #333);
+		pointer-events: none;
+	}
 
 	div {
 		padding: 0 10px 0 10px;
@@ -43,7 +56,7 @@
 
 	.player-info {
 		height: 60px;
-		width: 320px;
+		width: 400px;
 
 		.hero-icon {
 			height: 60px;
@@ -56,7 +69,7 @@
 
 		.name-block {
 			padding: 1px 0;
-			width: 190px;
+			width: 272px;
 
 			.player-name {
 				font-size: 18pt;

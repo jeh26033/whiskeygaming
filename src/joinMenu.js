@@ -20,7 +20,7 @@ export default class JoinMenu extends Component {
             var input = this;
             var content = document.querySelectorAll('.join-ID-field')[0].value;
             content = parseInt(content)
-            if(Number.isInteger(content)) {
+            if(Number.isInteger(content) && content.toString().length > 6) {
                   playerIDList.push(parseInt(content));
                   console.log(playerIDList);
             } else {
@@ -33,7 +33,7 @@ export default class JoinMenu extends Component {
             return (
                   <div className = "join-menu-container">
                         <div className = "join-input-container">
-                                    <input className = "join-ID-field"></input>
+                                    <input className = "join-ID-field" placeholder="Paste your Dotabuff or Opendota ID here"></input>
                                     <button className = "ID-submit-button" onClick = {this.handleSubmit} >Submit</button>
                               
                         </div>
