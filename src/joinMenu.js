@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './joinmenu.scss';
 import playerIDList from './playerIDList.json';
+const fs = require('fs');
 
 export default class JoinMenu extends Component {
 
@@ -18,8 +19,13 @@ export default class JoinMenu extends Component {
       handleSubmit(event) {
             var input = this;
             var content = document.querySelectorAll('.join-ID-field')[0].value;
-            playerIDList.push(parseInt(content));
-            console.log(playerIDList);
+            content = parseInt(content)
+            if(Number.isInteger(content)) {
+                  playerIDList.push(parseInt(content));
+                  console.log(playerIDList);
+            } else {
+                  alert("That doesn't look like a player ID");
+            }
       }
 
       render() {
