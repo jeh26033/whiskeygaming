@@ -71,7 +71,8 @@ export default class LeaderboardDetailItem extends Component {
 
             {/* this calculates average cs, which is currently (last hits) */}
                   for (c = 0; c < gamesCount; c++) {
-                        let localCS = this.state.recentMatches[c].last_hits;
+                        let localCS = this.state.recentMatches[c].last_hits / (this.state.recentMatches[c].duration / 600)
+                        console.log(localCS);
                         this.setState({localCS: localCS})
                         this.setState({csRank: Math.floor((this.state.csRank)*(c/(c+1)) + (this.state.localCS / (c+1)))})
                   }
@@ -131,7 +132,7 @@ export default class LeaderboardDetailItem extends Component {
                         </div>
                         <div className = "ranks-container">
                               <div className = "farm rank-box"><span className = "rank">{this.state.farmingRank}</span><span>&nbsp;gpm</span></div>
-                              <div className = "cs rank-box"><span className = "rank">{this.state.csRank}</span><span>&nbsp;Lh</span></div>
+                              <div className = "cs rank-box"><span className = "rank">{this.state.csRank}</span><span>&nbsp;Lh/10</span></div>
                               <div className = "kda rank-box"><span className = "rank">{this.state.kdaRank}</span><span>&nbsp;kda</span></div>
                         </div>
                   </div>
