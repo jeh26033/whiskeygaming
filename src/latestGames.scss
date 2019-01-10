@@ -48,6 +48,10 @@
 		.hero-icon {
 			height: 60px;
 			width: 107px;
+
+			&:hover {
+				outline: 2px solid white;
+			};
 		}
 
 		.name-block {

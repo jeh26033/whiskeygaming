@@ -14,6 +14,7 @@ export default class LatestGameComp extends Component {
                   playerSlot: null,
                   latestHeroID: 0,
                   text_role: null,
+                  latestMatchURL: null,
                   itemsArray: [],
                   latestMatchesURL: "https://api.opendota.com/api/players/" + this.props.playerID + "/matches?limit=1&api_key=" + api_key,
                   localLastMatchURL: null,
@@ -42,6 +43,7 @@ export default class LatestGameComp extends Component {
                   .then(response => response.json())
                   .then(data =>{
                         this.setState({latestMatch: data});
+                        this.setState({latestMatchURL: "https://www.dotabuff.com/matches/" + this.state.latestMatch.match_id})
                         this.setState({latestPlayerData: data.players[this.state.playerSlot]})
                         let latestPlayerData = data.players.find(player => player.player_slot === this.state.playerSlot);
                         this.setState({latestPlayerData: latestPlayerData});           
@@ -166,7 +168,7 @@ export default class LatestGameComp extends Component {
 
                               let playerInfo = 
                                     <div className = "player-info">
-                                          <img src = {this.state.heroIcon} className = "hero-icon"/>
+                                          <a className = "matchLink" href={this.state.latestMatchURL} ><img src = {this.state.heroIcon} className = "hero-icon"/></a>
                                           <div className = "name-block">
                                                 <div className = "player-name">
                                                       <a href= {this.state.playerURL} >{this.state.latestPlayerData.personaname}</a>
