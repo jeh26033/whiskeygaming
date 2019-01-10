@@ -72,7 +72,6 @@ export default class LeaderboardDetailItem extends Component {
             {/* this calculates average cs, which is currently (last hits) */}
                   for (c = 0; c < gamesCount; c++) {
                         let localCS = this.state.recentMatches[c].last_hits / (this.state.recentMatches[c].duration / 600)
-                        console.log(localCS);
                         this.setState({localCS: localCS})
                         this.setState({csRank: Math.floor((this.state.csRank)*(c/(c+1)) + (this.state.localCS / (c+1)))})
                   }
