@@ -10,6 +10,13 @@ const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 const getPlayerURL = "https://api.opendota.com/api/players/"
 var itemConstants = Object.entries(require('./item_constants.json'));
+var gamesCount = 20;
+var farmWinner = 0;
+var csWinner = 0;
+var kdaWinner = 0;
+var g;
+var c;
+var k;
 
 export default class LeaderboardDetailItem extends Component {
 
@@ -31,11 +38,8 @@ export default class LeaderboardDetailItem extends Component {
                   csRank: 0,
                   kdaRank: 0,
                   recentMatches: [],
-                  recentMatchesURL: recentMatchesBaseURL + this.props.playerID + "/recentMatches?limit=20&api_key="+api_key,
+                  recentMatchesURL: recentMatchesBaseURL + this.props.playerID + "/recentMatches?limit=" + gamesCount + "&api_key="+api_key,
                   updated: false,
-                  farmWinner: "",
-                  csWinner: "",
-                  kdamWinner: "",
             }
       };
 
@@ -54,71 +58,63 @@ export default class LeaderboardDetailItem extends Component {
                   this.setState({recentMatches: data});
 
             {/* this calculates average gpm */}
-                  for (var i = 0; i < this.state.recentMatches.length; i++) {
-                        let localGPM = this.state.recentMatches[i].gold_per_min;
+                  for (g = 0; g < gamesCount; g++) {
+                        let localGPM = this.state.recentMatches[g].gold_per_min;
                         this.setState({localGPM: localGPM})
-                        this.setState({farmingRank: Math.floor(this.state.localGPM + (this.state.localGPM / i))})
+                        this.setState({farmingRank: Math.floor(this.state.localGPM + (this.state.localGPM / g))})
                   }
                   farmRankingArray.push(this.state.farmingRank);
+
+                  if (this.state.farmingRank > farmWinner && g === gamesCount) {
+                        farmWinner = this.state.farmingRank;
+                  }
                   // this.setState({farmRankingArray: farmRankingArray});
 
             {/* this calculates average cs, which is currently (last hits) */}
-                  for (var i = 0; i < this.state.recentMatches.length; i++) {
-                        let localCS = this.state.recentMatches[i].last_hits;
+                  for (c = 0; c < gamesCount; c++) {
+                        let localCS = this.state.recentMatches[c].last_hits;
                         this.setState({localCS: localCS})
-                        this.setState({csRank: Math.floor((this.state.csRank)*(i/(i+1)) + (this.state.localCS / (i+1)))})
+                        this.setState({csRank: Math.floor((this.state.csRank)*(c/(c+1)) + (this.state.localCS / (c+1)))})
                   }
                   csRankingArray.push(this.state.csRank);
+
+                  if (this.state.csRank > csWinner && c === gamesCount) {
+                        csWinner = this.state.csRank;
+                  }
                   // this.setState({csRankingArray: csRankingArray});
 
             {/* this calculates average kda, which is currently (kills + assists - deaths) */}
-                  for (var i = 0; i < this.state.recentMatches.length; i++) {
-                        let localKDA = this.state.recentMatches[i].kills + this.state.recentMatches[i].assists - this.state.recentMatches[i].deaths;
+                  for (k = 0; k < gamesCount; k++) {
+                        let localKDA = this.state.recentMatches[k].kills + this.state.recentMatches[k].assists - this.state.recentMatches[k].deaths;
                         this.setState({localKDA: localKDA})
-                        this.setState({kdaRank: Math.floor((this.state.kdaRank)*(i/(i+1)) + (this.state.localKDA / (i+1)))})
+                        this.setState({kdaRank: Math.floor((this.state.kdaRank)*(k/(k+1)) + (this.state.localKDA / (k+1)))})
                   }
 
                   kdaRankingArray.push({"name": this.state.playerName, "rank": this.state.kdaRank});
+
+                  if (this.state.kdaRank > kdaWinner && k === gamesCount) {
+                        kdaWinner = this.state.kdaRank;
+                  }
                   // this.setState({kdaRankingArray: kdaRankingArray});
             })
       }
 
       componentDidUpdate() {
-      {/*check to see who is winning the gpm contest */}
-            if(farmRankingArray.length === playerIDList.length && !this.state.updated && (this.state.farmLeader != Math.max.apply(Math, farmRankingArray))) {
-                  this.setState({farmLeader: Math.max.apply(Math, farmRankingArray)});
+      
+      
+            {/*check to see who is winning the gpm/cs/kda contests */}
+            for (var i = 0; i< playerIDList.length; i++) {
 
-
-                  if (this.state.farmingRank == Math.max.apply(Math, farmRankingArray) && Math.max.apply(Math, farmRankingArray) !== null && this.state.farmWinner == "") {
-                        this.setState({farmWinner: "leader"})
+                  if (csRankingArray.length == playerIDList.length && document.querySelectorAll('div.cs span.rank')[i].textContent == csWinner) {
+                        document.querySelectorAll('div.cs')[i].setAttribute('id', 'leader');
+                  }
+                  if (kdaRankingArray.length == playerIDList.length && document.querySelectorAll('div.kda span.rank')[i].textContent == kdaWinner) {
+                        document.querySelectorAll('div.kda')[i].setAttribute('id', 'leader');
+                  }
+                  if (farmRankingArray.length == playerIDList.length && document.querySelectorAll('div.farm span.rank')[i].textContent == farmWinner) {
+                        document.querySelectorAll('div.farm')[i].setAttribute('id', 'leader');
                   }
             }
-
-      {/*check to see who is winning the cs contest */}
-            if(csRankingArray.length === playerIDList.length && !this.state.updated && (this.state.csLeader != Math.max.apply(Math, csRankingArray))) {
-                  this.setState({csLeader: Math.max.apply(Math, csRankingArray)});
-                  console.log(Math.max.apply(Math, csRankingArray));
-                  console.log("Leader: " + this.state.csLeader);
-
-
-                  if (this.state.csRank == Math.max.apply(Math, csRankingArray) && Math.max.apply(Math, csRankingArray) !== null && this.state.csWinner == "") {
-                        console.log("Name: "+this.state.playerName);
-                        this.setState({csWinner: "leader"})
-                  }
-            }
-
-      // {/*check to see who is winning the kda contest */}
-      //       if(kdaRankingArray.length === playerIDList.length && !this.state.updated && (this.state.kdaLeader != Math.max.apply(Math, kdaRankingArray))) {
-      //             this.setState({kdaLeader: Math.max.apply(Math, kdaRankingArray)});
-      //             console.log(Math.max.apply(Math, kdaRankingArray));
-      //             console.log("Leader: " + this.state.kdaLeader);
-
-
-      //             if (this.state.kdaRank == Math.max.apply(Math, kdaRankingArray) && Math.max.apply(Math, kdaRankingArray) !== null && this.state.kdaWinner == "") {
-      //                   console.log("Name: "+this.state.playerName);
-      //                   this.setState({kdaWinner: "leader"})
-      //             }
-      //       }
       }
 
 
@@ -129,15 +125,15 @@ export default class LeaderboardDetailItem extends Component {
                               <img src = {this.state.playerPic} className = "player-pic"/>
                               <div className = "name-block">
                                     <div className = "player-name">
-                                          <a href= {this.state.playerExternalURL} >{this.state.playerName}</a>
+                                          <a className = "nameLink" href= {this.state.playerExternalURL} >{this.state.playerName}</a>
                                     </div>
                                     <div className = "rank-estimate">MMRE: <span className="mmr">{this.state.playerRank}</span></div>
                               </div>
                         </div>
                         <div className = "ranks-container">
-                              <div className = "rank-box" id = {this.state.farmWinner}> {this.state.farmingRank} gpm</div>
-                              <div className = "rank-box" id = {this.state.csWinner}> {this.state.csRank} Lh</div>
-                              <div className = "rank-box" id = {this.state.kdaWinner}> {this.state.kdaRank} kda</div>
+                              <div className = "farm rank-box"><span className = "rank">{this.state.farmingRank}</span><span>&nbsp;gpm</span></div>
+                              <div className = "cs rank-box"><span className = "rank">{this.state.csRank}</span><span>&nbsp;Lh</span></div>
+                              <div className = "kda rank-box"><span className = "rank">{this.state.kdaRank}</span><span>&nbsp;kda</span></div>
                         </div>
                   </div>
             )
