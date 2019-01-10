@@ -7,4 +7,20 @@
 	margin: 50px auto;
 	display: block;
 	min-height: 200px;
+
+	.join-input-container {
+		margin: 0 auto;
+		width: 400px;
+		display: block;
+
+			.join-ID-field {
+				margin: 50px auto 20px auto;
+				display: block;
+			}
+
+			.ID-submit-button {
+				margin: 0 auto;
+				display: block;
+			}
+	}
 }
