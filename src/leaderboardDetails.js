@@ -40,6 +40,8 @@ export default class LeaderboardDetailItem extends Component {
                   recentMatchesURL: recentMatchesBaseURL + this.props.playerID + "/recentMatches?limit=" + gamesCount + "&api_key="+api_key,
                   updated: false,
             }
+
+            this.timedUpdate = this.timedUpdate.bind(this)
       };
 
       componentDidMount() {
@@ -98,22 +100,30 @@ export default class LeaderboardDetailItem extends Component {
             })
       }
 
+      // timedUpdate() {
+      //       {/*check to see who is winning the gpm/cs/kda contests */}
+      //       for (var i = 0; i< playerIDList.length; i++) {
+
+      //             if (csRankingArray.length == playerIDList.length && document.querySelectorAll('div.cs span.rank')[i].textContent == csWinner) {
+      //                   document.querySelectorAll('div.cs')[i].setAttribute('id', 'leader');
+      //             }
+      //             if (kdaRankingArray.length == playerIDList.length && document.querySelectorAll('div.kda span.rank')[i].textContent == kdaWinner) {
+      //                   document.querySelectorAll('div.kda')[i].setAttribute('id', 'leader');
+      //             }
+      //             if (farmRankingArray.length == playerIDList.length && document.querySelectorAll('div.farm span.rank')[i].textContent == farmWinner) {
+      //                   document.querySelectorAll('div.farm')[i].setAttribute('id', 'leader');
+      //             }
+      //       }
+      // }
+
+      // componentWillMount() {
+      //       setInterval(this.timedUpdate, 60000);
+      //       console.log("Updated!");
+      // }
+
       componentDidUpdate() {
       
-      
-            {/*check to see who is winning the gpm/cs/kda contests */}
-            for (var i = 0; i< playerIDList.length; i++) {
-
-                  if (csRankingArray.length == playerIDList.length && document.querySelectorAll('div.cs span.rank')[i].textContent == csWinner) {
-                        document.querySelectorAll('div.cs')[i].setAttribute('id', 'leader');
-                  }
-                  if (kdaRankingArray.length == playerIDList.length && document.querySelectorAll('div.kda span.rank')[i].textContent == kdaWinner) {
-                        document.querySelectorAll('div.kda')[i].setAttribute('id', 'leader');
-                  }
-                  if (farmRankingArray.length == playerIDList.length && document.querySelectorAll('div.farm span.rank')[i].textContent == farmWinner) {
-                        document.querySelectorAll('div.farm')[i].setAttribute('id', 'leader');
-                  }
-            }
+            this.timedUpdate()
       }
 
 
