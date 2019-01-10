@@ -168,7 +168,6 @@ export default class LatestGameComp extends Component {
                                     }
                               } else {
                                     this.setState({roleStyle: "SUPPORT"});
-                                    console.log(this.state.roleStyle)
                               }
 
                               let role = 
