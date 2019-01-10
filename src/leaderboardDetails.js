@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import farmRankingArray from './farmRankings.json'
 import csRankingArray from './csRankings.json'
 import kdaRankingArray from './kdaRankings.json'
