@@ -4,19 +4,22 @@ import csRankingArray from './csRankings.json'
 import kdaRankingArray from './kdaRankings.json'
 import playerIDList from './playerIDList.json';
 const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1";
+const lastMatchURL = "https://api.opendota.com/api/matches/";
 var lastMatchID = null;
 const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 const getPlayerURL = "https://api.opendota.com/api/players/"
 var itemConstants = Object.entries(require('./item_constants.json'));
-var gamesCount = 20;
+var gamesCount = 5;
 var farmWinner = 0;
 var csWinner = 0;
 var kdaWinner = 0;
+var wardDurationWinner = 0;
 var updateFrequency = 60000;
 var g;
 var c;
 var k;
+var w;
 
 export default class LeaderboardDetailItem extends Component {
 
@@ -43,6 +46,10 @@ export default class LeaderboardDetailItem extends Component {
                   localFarmTotal: 0,
                   localCSTotal: 0,
                   localKDATotal: 0,
+                  wardsArray: [],
+                  wardsTimingArray: [],
+                  localPlayerForMatchStats: null,
+                  wardLifespan: 0,
             }
 
             this.timedUpdate = this.timedUpdate.bind(this);
@@ -103,6 +110,39 @@ export default class LeaderboardDetailItem extends Component {
                         kdaWinner = this.state.kdaRank;
                   }
                   // this.setState({kdaRankingArray: kdaRankingArray});
+                  for(var games = 0; games < gamesCount; games++) {
+
+                        fetch(lastMatchURL + this.state.recentMatches[games].match_id)
+                        .then(response => response.json())
+                        .then( data => {
+
+                        {/* some testing for ward-duration */}
+                              this.setState({localPlayerForMatchStats: data.players.find(player => player.account_id === this.state.latestPlayerData.profile.account_id)});
+                              this.setState({wardsArray: this.state.localPlayerForMatchStats.obs_log});
+
+                              for(w = 0; w < this.state.wardsArray.length; w ++) {
+                                    if(this.state.localPlayerForMatchStats.obs_left_log[w] != null) {
+                                          this.state.wardsTimingArray.push(this.state.localPlayerForMatchStats.obs_left_log[w].time - this.state.wardsArray.find(ward => ward.ehandle === this.state.localPlayerForMatchStats.obs_left_log[w].ehandle).time);
+                                    }
+                                    if(this.state.wardsTimingArray[w] > 0) {
+                                          this.setState({wardLifespan: this.state.wardLifespan + this.state.wardsTimingArray[w]});
+                                          
+                                    };
+                              }
+
+                              
+                              if (games == gamesCount) {
+//                                    this.setState({wardLifespan: Math.floor(this.state.wardLifespan / this.state.wardsTimingArray.length / 3.6)});
+                                    console.log(this.state.wardsTimingArray.length);
+                                    console.log("Life: "+this.state.wardsArray.length);
+                              }
+
+                              if ((this.state.wardLifespan * this.state.wardsTimingArray.length) > wardDurationWinner) {
+                                    wardDurationWinner = (this.state.wardLifespan * this.state.wardsTimingArray.length);
+                              }
+                        })
+                  }
+
             })
       }
 
@@ -119,6 +159,9 @@ export default class LeaderboardDetailItem extends Component {
                   if (farmRankingArray.length == playerIDList.length && document.querySelectorAll('div.farm span.rank')[i].textContent == farmWinner) {
                         document.querySelectorAll('div.farm')[i].setAttribute('id', 'leader');
                   }
+                  // if (farmRankingArray.length == playerIDList.length && document.querySelectorAll('div.ward-life span.rank')[i].textContent == "ObD: "+ this.state.wardLifespan + "%&nbsp;/&nbsp;" + this.state.wardsTimingArray.length) {
+                  //       document.querySelectorAll('div.farm')[i].setAttribute('id', 'leader');
+                  // }
             }
       }
 
@@ -149,6 +192,7 @@ export default class LeaderboardDetailItem extends Component {
                               <div className = "farm rank-box"><span className = "rank">{this.state.farmingRank}</span><span>&nbsp;gpm</span></div>
                               <div className = "cs rank-box"><span className = "rank">{this.state.csRank}</span><span>&nbsp;Lh/10</span></div>
                               <div className = "kda rank-box"><span className = "rank">{this.state.kdaRank}</span><span>&nbsp;kda</span></div>
+                              <div className = "ward-life rank-box"><span>ObD:&nbsp;</span><span className = "rank">{this.state.wardLifespan}%&nbsp;/&nbsp;{this.state.wardsTimingArray.length}</span></div>
                         </div>
                   </div>
             )
