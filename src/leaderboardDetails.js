@@ -13,6 +13,7 @@ var gamesCount = 20;
 var farmWinner = 0;
 var csWinner = 0;
 var kdaWinner = 0;
+var updateFrequency = 60000;
 var g;
 var c;
 var k;
@@ -39,9 +40,12 @@ export default class LeaderboardDetailItem extends Component {
                   recentMatches: [],
                   recentMatchesURL: recentMatchesBaseURL + this.props.playerID + "/recentMatches?limit=" + gamesCount + "&api_key="+api_key,
                   updated: false,
+                  localFarmTotal: 0,
+                  localCSTotal: 0,
+                  localKDATotal: 0,
             }
 
-            this.timedUpdate = this.timedUpdate.bind(this)
+            this.timedUpdate = this.timedUpdate.bind(this);
       };
 
       componentDidMount() {
@@ -62,8 +66,10 @@ export default class LeaderboardDetailItem extends Component {
                   for (g = 0; g < gamesCount; g++) {
                         let localGPM = this.state.recentMatches[g].gold_per_min;
                         this.setState({localGPM: localGPM})
-                        this.setState({farmingRank: Math.floor(this.state.localGPM + (this.state.localGPM / g))})
+                        let localFarmTotal = this.state.localFarmTotal + this.state.localGPM;
+                        this.setState({localFarmTotal: localFarmTotal});
                   }
+                  this.setState({farmingRank: Math.floor(this.state.localFarmTotal / gamesCount)})
                   farmRankingArray.push(this.state.farmingRank);
 
                   if (this.state.farmingRank > farmWinner && g === gamesCount) {
@@ -100,26 +106,26 @@ export default class LeaderboardDetailItem extends Component {
             })
       }
 
-      // timedUpdate() {
-      //       {/*check to see who is winning the gpm/cs/kda contests */}
-      //       for (var i = 0; i< playerIDList.length; i++) {
+      timedUpdate() {
+            {/*check to see who is winning the gpm/cs/kda contests */}
+            for (var i = 0; i< playerIDList.length; i++) {
 
-      //             if (csRankingArray.length == playerIDList.length && document.querySelectorAll('div.cs span.rank')[i].textContent == csWinner) {
-      //                   document.querySelectorAll('div.cs')[i].setAttribute('id', 'leader');
-      //             }
-      //             if (kdaRankingArray.length == playerIDList.length && document.querySelectorAll('div.kda span.rank')[i].textContent == kdaWinner) {
-      //                   document.querySelectorAll('div.kda')[i].setAttribute('id', 'leader');
-      //             }
-      //             if (farmRankingArray.length == playerIDList.length && document.querySelectorAll('div.farm span.rank')[i].textContent == farmWinner) {
-      //                   document.querySelectorAll('div.farm')[i].setAttribute('id', 'leader');
-      //             }
-      //       }
-      // }
+                  if (csRankingArray.length == playerIDList.length && document.querySelectorAll('div.cs span.rank')[i].textContent == csWinner) {
+                        document.querySelectorAll('div.cs')[i].setAttribute('id', 'leader');
+                  }
+                  if (kdaRankingArray.length == playerIDList.length && document.querySelectorAll('div.kda span.rank')[i].textContent == kdaWinner) {
+                        document.querySelectorAll('div.kda')[i].setAttribute('id', 'leader');
+                  }
+                  if (farmRankingArray.length == playerIDList.length && document.querySelectorAll('div.farm span.rank')[i].textContent == farmWinner) {
+                        document.querySelectorAll('div.farm')[i].setAttribute('id', 'leader');
+                  }
+            }
+      }
 
-      // componentWillMount() {
-      //       setInterval(this.timedUpdate, 60000);
-      //       console.log("Updated!");
-      // }
+      componentWillMount() {
+            setInterval(this.timedUpdate, updateFrequency);
+            console.log("Updated!");
+      }
 
       componentDidUpdate() {
       
