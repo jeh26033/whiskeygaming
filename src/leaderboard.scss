@@ -1,9 +1,9 @@
 .leaderboard-container {
-	width: 1150px;
+	width: 1200px;
 	background-color: #333;
 	outline: 1px solid white;
 	outline-offset: -4px;
-	overflow: hidden;
+	//overflow: hidden;
 	margin: 50px auto;
 	display: block;
 	min-height: 200px;
@@ -70,15 +70,45 @@
 }
 
 .ranks-container {
-	width: 450px;
+	width: 800px;
 	height: 60px;
 	padding: 15px 0;
 	margin: 0 0 0 20px;
 
 	.rank-box {
-		width: 100px;
+		width: 120px;
 		padding: 5px;
 		font-size: 11pt;
+		position: relative;
+		cursor: pointer;
+
+		&:hover {
+			.rank-box-hover{ 
+				display:block;
+			}
+		};
+
+		.hover-rank-header {
+			font-weight: 800;
+			font-size: 11pt;
+			padding-bottom: 6px;
+		}
+
+		.rank-box-hover {
+			display: none;
+			font-size: 10pt;
+			position: absolute;
+			background: black;
+			border: 1px solid white;
+			left: -10px;
+			top: 20px;
+			padding: 8px;
+			word-wrap: none;
+
+			.hover-rank-text {
+				display: block;
+			}
+		}
 	}
 
 	.ward-life {

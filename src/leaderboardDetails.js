@@ -10,7 +10,7 @@ const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 const getPlayerURL = "https://api.opendota.com/api/players/"
 var itemConstants = Object.entries(require('./item_constants.json'));
-var gamesCount = 5;
+var gamesCount = 10;
 var farmWinner = 0;
 var csWinner = 0;
 var kdaWinner = 0;
@@ -23,6 +23,22 @@ var w1;
 var w2;
 var w3;
 var w4;
+//carry weighting
+var gpmWeightCarry = .25;
+var tfWeightCarry = .1;
+var csWeightCarry = .25;
+var xpmWeightCarry = .1;
+var killsWeightCarry = .15;
+var deathsWeightCarry = .2;
+var assistsWeightCarry = .05;
+//support weighting
+var stunsWeightSupport = .15;
+var tfWeightSupport = .25;
+var wardingWeightSupport = .15;
+var xpmWeightSupport = .05;
+var killsWeightSupport = .05;
+var deathsWeightSupport = .15;
+var assistsWeightSupport = .2;
 
 export default class LeaderboardDetailItem extends Component {
 
@@ -44,6 +60,11 @@ export default class LeaderboardDetailItem extends Component {
                   farmingRank: 0,
                   csRank: 0,
                   kdaRank: 0,
+                  killsRank: 0,
+                  deathsRank: 0,
+                  assistsRank: 0,
+                  stunsRank: 0,
+                  TFRank: 0,
                   recentMatches: [],
                   recentMatchesURL: recentMatchesBaseURL + this.props.playerID + "/recentMatches?limit=" + gamesCount + "&api_key="+api_key,
                   updated: false,
@@ -101,7 +122,13 @@ export default class LeaderboardDetailItem extends Component {
             {/* this calculates average kda, which is currently (kills + assists - deaths) */}
                   for (k = 0; k < gamesCount; k++) {
                         let localKDA = this.state.recentMatches[k].kills + this.state.recentMatches[k].assists - this.state.recentMatches[k].deaths;
+                        let killsRank = this.state.killsRank + (this.state.recentMatches[k].kills / gamesCount);
+                        let deathsRank = this.state.deathsRank + (this.state.recentMatches[k].deaths / gamesCount);
+                        let assistsRank = this.state.assistsRank + (this.state.recentMatches[k].assists / gamesCount);
                         this.setState({localKDA: localKDA})
+                        this.setState({killsRank: killsRank})
+                        this.setState({deathsRank: deathsRank})
+                        this.setState({assistsRank: assistsRank})
                         this.setState({kdaRank: Math.floor((this.state.kdaRank)*(k/(k+1)) + (this.state.localKDA / (k+1)))})
                   }
 
@@ -110,13 +137,17 @@ export default class LeaderboardDetailItem extends Component {
                   if (this.state.kdaRank > kdaWinner && k === gamesCount) {
                         kdaWinner = this.state.kdaRank;
                   }
-                  // this.setState({kdaRankingArray: kdaRankingArray});
-            {/* Now we have some fun calculating and rendering the ward lifespan */}
+
+            {/* Now we pull more detailed game data from each recent match */}
                   for(var games = 0; games < gamesCount; games++) {
 
                         var currentMatchResponse = await fetch(lastMatchURL + this.state.recentMatches[games].match_id)
                         var currentMatchData = await currentMatchResponse.json()
                         this.setState({localPlayerForMatchStats: currentMatchData.players.find(player => player.account_id === this.props.playerID)});
+                        let stunsRank = this.state.stunsRank + Math.round(this.state.localPlayerForMatchStats.stuns / gamesCount);
+                        let TFRank = this.state.TFRank + Math.round(this.state.localPlayerForMatchStats.teamfight_participation / gamesCount * 100);
+                        this.setState({stunsRank: stunsRank})
+                        this.setState({TFRank: TFRank})
                               
                   {/* Ward Lifespan calculation and display */}
 
@@ -146,15 +177,19 @@ export default class LeaderboardDetailItem extends Component {
                                     this.setState({wardCount: this.state.wardCount+1})
                               }
                         }
+
                   }
 
-                  // And finally, we calculate the average based on an array of % lifespans
-                  for(w4 = 0; w4 < this.state.wardsTimingArray.length; w4++) {
-                              if(0 <=this.state.wardsTimingArray[w4].duration <= 100) {
-                                    this.setState({wardLifespan: (this.state.wardLifespan + this.state.wardsTimingArray[w4].duration)})
+                        // And finally, we calculate the average based on an array of % lifespans
+                        for(w4 = 0; w4 < this.state.wardsTimingArray.length; w4++) {
+                                    if(0 <=this.state.wardsTimingArray[w4].duration <= 100) {
+                                          this.setState({wardLifespan: (this.state.wardLifespan + this.state.wardsTimingArray[w4].duration)})
+                                    }
                               }
-                        }
-
+                  this.setState({wardsRank: Math.floor(this.state.wardLifespan / gamesCount)})
+                  console.log(this.state.wardLifespan)
+                  this.carryRankCalc(this.state.farmingRank, this.state.localPlayerForMatchStats.teamfight_participation, this.state.csRank, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
+                  this.supportRankCalc(this.state.localPlayerForMatchStats.stuns, this.state.localPlayerForMatchStats.teamfight_participation, this.state.wardLifespan, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
                   this.setState({wardLifespan: Math.floor(this.state.wardLifespan / this.state.wardCount)});
 
       }
@@ -184,6 +219,18 @@ export default class LeaderboardDetailItem extends Component {
             this.timedUpdate()
       }
 
+      carryRankCalc(gpm, tf, cs, xpm, kills, deaths, assists) {
+            // Carry score: gpm * TF% * cs * (k-d)
+            let carryRank = Math.round((gpm*gpmWeightCarry)+(tf*tfWeightCarry)+(cs*csWeightCarry)+(xpm*xpmWeightCarry)+(kills*killsWeightCarry)+(deaths*deathsWeightCarry)+(assists*assistsWeightCarry))
+            this.setState({carryRank: carryRank})
+      }
+
+      supportRankCalc(stuns, tf, wards, xpm, kills, deaths, assists) {
+            // Carry score: gpm * TF% * cs * (k-d)
+            let supportRank = Math.round((stuns*stunsWeightSupport)+(tf*tfWeightSupport)+(wards*wardingWeightSupport)+(xpm*xpmWeightSupport)+(kills*killsWeightSupport)+(deaths*deathsWeightSupport)+(assists*assistsWeightSupport))
+            this.setState({supportRank: supportRank})
+      }
+
 
       render() {
             return (
@@ -202,6 +249,24 @@ export default class LeaderboardDetailItem extends Component {
                               <div className = "cs rank-box"><span className = "rank">{this.state.csRank}</span><span>&nbsp;Lh/10</span></div>
                               <div className = "kda rank-box"><span className = "rank">{this.state.kdaRank}</span><span>&nbsp;kda</span></div>
                               <div className = "ward-life rank-box"><span>ObD:&nbsp;</span><span className = "rank">{this.state.wardLifespan}%&nbsp;/&nbsp;{this.state.wardsTimingArray.length}</span></div>
+                              <div className = "carry-score rank-box">
+                                    <span className = "rank">Carry: {this.state.carryRank}</span>
+                                    <div className = "rank-box-hover">
+                                          <span className="hover-rank-text hover-rank-header">{gamesCount}-game Avg:</span>
+                                          <span className="hover-rank-text">GPM: {this.state.farmingRank}</span>
+                                          <span className="hover-rank-text">TF: {this.state.TFRank}%</span>
+                                          <span className="hover-rank-text">CS: {this.state.csRank}Lh</span>
+                                    </div>
+                              </div>
+                              <div className = "support-score rank-box">
+                                    <span className = "rank">Support: {this.state.supportRank}</span>
+                                    <div className = "rank-box-hover">
+                                          <span className="hover-rank-text hover-rank-header">{gamesCount}-game Avg:</span>
+                                          <span className="hover-rank-text">Stuns: {this.state.stunsRank}</span>
+                                          <span className="hover-rank-text">TF: {this.state.TFRank}%</span>
+                                          <span className="hover-rank-text">Vision: {this.state.wardsRank}s</span>
+                                    </div>
+                              </div>
                         </div>
                   </div>
             )
