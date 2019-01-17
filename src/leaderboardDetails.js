@@ -86,7 +86,6 @@ export default class LeaderboardDetailItem extends Component {
                         farmWinner = this.state.farmingRank;
                   }
                   // this.setState({farmRankingArray: farmRankingArray});
-
             {/* this calculates average cs, which is currently (last hits) */}
                   for (c = 0; c < gamesCount; c++) {
                         let localCS = this.state.recentMatches[c].last_hits / (this.state.recentMatches[c].duration / 600)
@@ -112,7 +111,6 @@ export default class LeaderboardDetailItem extends Component {
                         kdaWinner = this.state.kdaRank;
                   }
                   // this.setState({kdaRankingArray: kdaRankingArray});
-
             {/* Now we have some fun calculating and rendering the ward lifespan */}
                   for(var games = 0; games < gamesCount; games++) {
 
