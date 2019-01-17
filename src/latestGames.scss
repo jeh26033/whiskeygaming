@@ -1,6 +1,6 @@
 .latest-game-container {
 	width: 1220px;
-	background-color: #333;
+	background-color: #888;
 	outline: 1px solid white;
 	outline-offset: -4px;
 	overflow: hidden;
@@ -19,11 +19,11 @@
 }
 
 #won {
-	background-image: linear-gradient(to left, transparent, transparent, transparent, transparent, rgba(11,102,35, .6));
+	background-image: linear-gradient(to left, transparent, transparent, transparent, rgba(129,196,0, .6));
 }
 
 #lost {
-	background-image: linear-gradient(to left, transparent,transparent,transparent, transparent, rgba(124,10,2, .8));
+	background-image: linear-gradient(to left, transparent,transparent,transparent, rgba(124,10,2, .8));
 }
 
 .latest-game-item {
@@ -41,7 +41,7 @@
 		position: absolute;
 		left:0;
 		top:0;
-		background:linear-gradient(to right, transparent 350px, #333);
+		background:linear-gradient(to right, transparent 350px, #888);
 		pointer-events: none;
 	}
 
