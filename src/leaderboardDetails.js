@@ -10,10 +10,12 @@ const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 const getPlayerURL = "https://api.opendota.com/api/players/"
 var itemConstants = Object.entries(require('./item_constants.json'));
-var gamesCount = 10;
+var gamesCount = 5;
 var farmWinner = 0;
 var csWinner = 0;
 var kdaWinner = 0;
+var carryWinner = 0;
+var supportWinner = 0;
 var wardDurationWinner = 0;
 var updateFrequency = 60000;
 var g;
@@ -137,7 +139,6 @@ export default class LeaderboardDetailItem extends Component {
                   if (this.state.kdaRank > kdaWinner && k === gamesCount) {
                         kdaWinner = this.state.kdaRank;
                   }
-
             {/* Now we pull more detailed game data from each recent match */}
                   for(var games = 0; games < gamesCount; games++) {
 
@@ -187,7 +188,6 @@ export default class LeaderboardDetailItem extends Component {
                                     }
                               }
                   this.setState({wardsRank: Math.floor(this.state.wardLifespan / gamesCount)})
-                  console.log(this.state.wardLifespan)
                   this.carryRankCalc(this.state.farmingRank, this.state.localPlayerForMatchStats.teamfight_participation, this.state.csRank, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
                   this.supportRankCalc(this.state.localPlayerForMatchStats.stuns, this.state.localPlayerForMatchStats.teamfight_participation, this.state.wardLifespan, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
                   this.setState({wardLifespan: Math.floor(this.state.wardLifespan / this.state.wardCount)});
@@ -196,7 +196,7 @@ export default class LeaderboardDetailItem extends Component {
 
       timedUpdate() {
             {/*check to see who is winning the gpm/cs/kda contests */}
-            for (var i = 0; i< playerIDList.length; i++) {
+            for (var i = 0; i < playerIDList.length; i++) {
 
                   if (csRankingArray.length == playerIDList.length && document.querySelectorAll('div.cs span.rank')[i].textContent == csWinner) {
                         document.querySelectorAll('div.cs')[i].setAttribute('id', 'leader');
@@ -207,12 +207,22 @@ export default class LeaderboardDetailItem extends Component {
                   if (farmRankingArray.length == playerIDList.length && document.querySelectorAll('div.farm span.rank')[i].textContent == farmWinner) {
                         document.querySelectorAll('div.farm')[i].setAttribute('id', 'leader');
                   }
+                  if (document.querySelectorAll('div.support-score span.rank')[i].textContent.split(" ")[1] == supportWinner) {
+                        document.querySelectorAll('div.support-score')[i].setAttribute('id', 'leader');
+                  } else if (document.querySelectorAll('div.support-score span.rank')[i].textContent.split(" ")[1] != supportWinner) {
+                        document.querySelectorAll('div.support-score')[i].setAttribute('id', '');
+                  }
+                  if (document.querySelectorAll('div.carry-score span.rank')[i].textContent.split(" ")[1] == carryWinner) {
+                        document.querySelectorAll('div.carry-score')[i].setAttribute('id', 'leader');
+                  } else if (document.querySelectorAll('div.carry-score span.rank')[i].textContent.split(" ")[1] != carryWinner) {
+                        document.querySelectorAll('div.carry-score')[i].setAttribute('id', '');
+                  }
+                  console.log(carryWinner +":" + supportWinner)
             }
       }
 
       componentWillMount() {
             setInterval(this.timedUpdate, updateFrequency);
-            console.log("Updated!");
       }
 
       componentDidUpdate() {
@@ -223,12 +233,20 @@ export default class LeaderboardDetailItem extends Component {
             // Carry score: gpm * TF% * cs * (k-d)
             let carryRank = Math.round((gpm*gpmWeightCarry)+(tf*tfWeightCarry)+(cs*csWeightCarry)+(xpm*xpmWeightCarry)+(kills*killsWeightCarry)+(deaths*deathsWeightCarry)+(assists*assistsWeightCarry))
             this.setState({carryRank: carryRank})
+
+            if(this.state.carryRank >= carryWinner) {
+                  carryWinner = this.state.carryRank;
+            }
       }
 
       supportRankCalc(stuns, tf, wards, xpm, kills, deaths, assists) {
             // Carry score: gpm * TF% * cs * (k-d)
             let supportRank = Math.round((stuns*stunsWeightSupport)+(tf*tfWeightSupport)+(wards*wardingWeightSupport)+(xpm*xpmWeightSupport)+(kills*killsWeightSupport)+(deaths*deathsWeightSupport)+(assists*assistsWeightSupport))
             this.setState({supportRank: supportRank})
+
+            if(this.state.supportRank >= supportWinner) {
+                  supportWinner = this.state.supportRank;
+            }
       }
 
 
@@ -262,7 +280,7 @@ export default class LeaderboardDetailItem extends Component {
                                     <span className = "rank">Support: {this.state.supportRank}</span>
                                     <div className = "rank-box-hover">
                                           <span className="hover-rank-text hover-rank-header">{gamesCount}-game Avg:</span>
-                                          <span className="hover-rank-text">Stuns: {this.state.stunsRank}</span>
+                                          <span className="hover-rank-text">Stuns: {this.state.stunsRank}s</span>
                                           <span className="hover-rank-text">TF: {this.state.TFRank}%</span>
                                           <span className="hover-rank-text">Vision: {this.state.wardsRank}s</span>
                                     </div>
