@@ -5,6 +5,7 @@ import Navbar from './navbar';
 import LatestGames from './latestGames';
 import Leaderboard from './leaderboard';
 import JoinMenu from './joinMenu.js';
+import Analysis from './analysis.js';
 import './App.scss';
 
 import Create from './components/create.component';
@@ -21,6 +22,7 @@ class App extends Component {
               <Route exact path ='/' component = {LatestGames} />
               <Route path ='/leaderboard' component = {Leaderboard} />
               <Route path ='/create' component = {JoinMenu} />
+              <Route path ='/analysis' component = {Analysis} />
             </Switch>
           </div>
         </main>
