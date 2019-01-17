@@ -99,7 +99,6 @@ export default class LeaderboardDetailItem extends Component {
                         csWinner = this.state.csRank;
                   }
                   // this.setState({csRankingArray: csRankingArray});
-
             {/* this calculates average kda, which is currently (kills + assists - deaths) */}
                   for (k = 0; k < gamesCount; k++) {
                         let localKDA = this.state.recentMatches[k].kills + this.state.recentMatches[k].assists - this.state.recentMatches[k].deaths;
@@ -120,7 +119,6 @@ export default class LeaderboardDetailItem extends Component {
                         var currentMatchResponse = await fetch(lastMatchURL + this.state.recentMatches[games].match_id)
                         var currentMatchData = await currentMatchResponse.json()
                         this.setState({localPlayerForMatchStats: currentMatchData.players.find(player => player.account_id === this.props.playerID)});
-                        console.log(lastMatchURL + this.state.recentMatches[games].match_id)
                               
                   {/* Ward Lifespan calculation and display */}
 
@@ -155,12 +153,12 @@ export default class LeaderboardDetailItem extends Component {
                   // And finally, we calculate the average based on an array of % lifespans
                   for(w4 = 0; w4 < this.state.wardsTimingArray.length; w4++) {
                               if(0 <=this.state.wardsTimingArray[w4].duration <= 100) {
-                                    console.log(this.state.wardsTimingArray[w4].duration)
                                     this.setState({wardLifespan: (this.state.wardLifespan + this.state.wardsTimingArray[w4].duration)})
                               }
                         }
 
                   this.setState({wardLifespan: Math.floor(this.state.wardLifespan / this.state.wardCount)});
+
       }
 
       timedUpdate() {
