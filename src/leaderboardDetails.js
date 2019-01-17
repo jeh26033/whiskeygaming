@@ -3,14 +3,14 @@ import farmRankingArray from './farmRankings.json'
 import csRankingArray from './csRankings.json'
 import kdaRankingArray from './kdaRankings.json'
 import playerIDList from './playerIDList.json';
-const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1";
+const api_key = ""; //currently removed to save money while testing
 const lastMatchURL = "https://api.opendota.com/api/matches/";
 var lastMatchID = null;
 const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 const getPlayerURL = "https://api.opendota.com/api/players/"
 var itemConstants = Object.entries(require('./item_constants.json'));
-var gamesCount = 5;
+var gamesCount = 1;
 var farmWinner = 0;
 var csWinner = 0;
 var kdaWinner = 0;
@@ -25,6 +25,7 @@ var w1;
 var w2;
 var w3;
 var w4;
+var outCallTicker = 0;
 //carry weighting
 var gpmWeightCarry = .25;
 var tfWeightCarry = .1;
@@ -84,14 +85,16 @@ export default class LeaderboardDetailItem extends Component {
       };
 
       async componentDidMount() {
-            const playerResponse = await fetch(this.state.playerURL);
+            const playerResponse = await fetch(this.state.playerURL + "?api_key=" + api_key);
+            this.apiCallAlert();
             const playerData = await playerResponse.json();
             this.setState({latestPlayerData: playerData})
             this.setState({playerName: this.state.latestPlayerData.profile.personaname})
             this.setState({playerPic: this.state.latestPlayerData.profile.avatarmedium})
             this.setState({playerRank: this.state.latestPlayerData.mmr_estimate.estimate})
 
-            const recentMatchesResponse = await fetch(this.state.recentMatchesURL);
+            const recentMatchesResponse = await fetch(this.state.recentMatchesURL + "?api_key=" + api_key);
+            this.apiCallAlert();
             const recentMatchesData = await recentMatchesResponse.json();
             this.setState({recentMatches: recentMatchesData});
 
@@ -142,7 +145,8 @@ export default class LeaderboardDetailItem extends Component {
             {/* Now we pull more detailed game data from each recent match */}
                   for(var games = 0; games < gamesCount; games++) {
 
-                        var currentMatchResponse = await fetch(lastMatchURL + this.state.recentMatches[games].match_id)
+                        var currentMatchResponse = await fetch(lastMatchURL + this.state.recentMatches[games].match_id + "?api_key=" + api_key)
+                        this.apiCallAlert();
                         var currentMatchData = await currentMatchResponse.json()
                         this.setState({localPlayerForMatchStats: currentMatchData.players.find(player => player.account_id === this.props.playerID)});
                         let stunsRank = this.state.stunsRank + Math.round(this.state.localPlayerForMatchStats.stuns / gamesCount);
@@ -155,27 +159,29 @@ export default class LeaderboardDetailItem extends Component {
                         // first we figure out who the current player is in this match, which is roundabout but just how the API works
                         // Next, we loop through the obs_left_log array and grab all the ehandles and expiration times
                         // We do it in this order because if a ward doesn't expire by the end of the game, it's not on the obs_left_log array and we don't want to deal with it
-                        for(w1 = 0; w1 < this.state.localPlayerForMatchStats.obs_left_log.length; w1++) {
-                              this.state.wardsArray.push({ehandle: this.state.localPlayerForMatchStats.obs_left_log[w1].ehandle, time: this.state.localPlayerForMatchStats.obs_left_log[w1].time});
-                        }
-
-                        // at this point we should have an array of ehandle: X and time: Y, and now we're going to find() by ehandle and do some math on time.
-                        for(w2 = 0; w2 < this.state.wardsArray.length; w2++) {
-                              var localWard = this.state.localPlayerForMatchStats.obs_log.find(ward => ward.ehandle === this.state.wardsArray[w2].ehandle);
-                              
-                              // Because async requests are a mess, sometimes this will be undefined, so we have to spot-check for that on the fly here
-                              if (localWard != undefined) {
-                                    this.state.wardsArray[w2].time -= localWard.time;
+                        if(this.state.localPlayerForMatchStats.obs_left_log != null) {
+                              for(w1 = 0; w1 < this.state.localPlayerForMatchStats.obs_left_log.length; w1++) {
+                                    this.state.wardsArray.push({ehandle: this.state.localPlayerForMatchStats.obs_left_log[w1].ehandle, time: this.state.localPlayerForMatchStats.obs_left_log[w1].time});
                               }
-                        }
-                        // Now with an array of ehandle: % lifespan, we need to take the average
-                        for(w3 = 0; w3 < this.state.wardsArray.length; w3++) {
-                              // Now we have an edited array of ehandle: lifespan, and we need to convert that to a percent, rather than a seconds-count
-                              this.state.wardsArray[w3].time = Math.floor(this.state.wardsArray[w3].time / 3.6)
 
-                              if(this.state.wardsTimingArray.find(ward => ward.ehandle === this.state.wardsArray[w3].ehandle) == undefined) {
-                                    this.state.wardsTimingArray.push({ehandle: this.state.wardsArray[w3].ehandle, duration: this.state.wardsArray[w3].time});
-                                    this.setState({wardCount: this.state.wardCount+1})
+                              // at this point we should have an array of ehandle: X and time: Y, and now we're going to find() by ehandle and do some math on time.
+                              for(w2 = 0; w2 < this.state.wardsArray.length; w2++) {
+                                    var localWard = this.state.localPlayerForMatchStats.obs_log.find(ward => ward.ehandle === this.state.wardsArray[w2].ehandle);
+                                    
+                                    // Because async requests are a mess, sometimes this will be undefined, so we have to spot-check for that on the fly here
+                                    if (localWard != undefined) {
+                                          this.state.wardsArray[w2].time -= localWard.time;
+                                    }
+                              }
+                              // Now with an array of ehandle: % lifespan, we need to take the average
+                              for(w3 = 0; w3 < this.state.wardsArray.length; w3++) {
+                                    // Now we have an edited array of ehandle: lifespan, and we need to convert that to a percent, rather than a seconds-count
+                                    this.state.wardsArray[w3].time = Math.floor(this.state.wardsArray[w3].time / 3.6)
+
+                                    if(this.state.wardsTimingArray.find(ward => ward.ehandle === this.state.wardsArray[w3].ehandle) == undefined) {
+                                          this.state.wardsTimingArray.push({ehandle: this.state.wardsArray[w3].ehandle, duration: this.state.wardsArray[w3].time});
+                                          this.setState({wardCount: this.state.wardCount+1})
+                                    }
                               }
                         }
 
@@ -185,6 +191,12 @@ export default class LeaderboardDetailItem extends Component {
                         for(w4 = 0; w4 < this.state.wardsTimingArray.length; w4++) {
                                     if(0 <=this.state.wardsTimingArray[w4].duration <= 100) {
                                           this.setState({wardLifespan: (this.state.wardLifespan + this.state.wardsTimingArray[w4].duration)})
+
+                                    }
+
+                                    if(Math.isInteger(this.state.wardLifespan)) {
+                                          this.setState({wardLifespan: 0})
+                                          console.log("no wards")
                                     }
                               }
                   this.setState({wardsRank: Math.floor(this.state.wardLifespan / gamesCount)})
@@ -217,7 +229,6 @@ export default class LeaderboardDetailItem extends Component {
                   } else if (document.querySelectorAll('div.carry-score span.rank')[i].textContent.split(" ")[1] != carryWinner) {
                         document.querySelectorAll('div.carry-score')[i].setAttribute('id', '');
                   }
-                  console.log(carryWinner +":" + supportWinner)
             }
       }
 
@@ -247,6 +258,11 @@ export default class LeaderboardDetailItem extends Component {
             if(this.state.supportRank >= supportWinner) {
                   supportWinner = this.state.supportRank;
             }
+      }
+
+      apiCallAlert(URL) {
+            outCallTicker++;
+            console.log("Outgoing request: " + outCallTicker)
       }
 
 
