@@ -19,13 +19,17 @@ var updateFrequency = 60000;
 var g;
 var c;
 var k;
-var w;
+var w1;
+var w2;
+var w3;
+var w4;
 
 export default class LeaderboardDetailItem extends Component {
 
       constructor(playerID) {
             super(playerID);
             this.state = {
+                  data: [],
                   latestMatch: null,
                   latestPlayerData: null,
                   latestHeroID: 0,
@@ -50,24 +54,23 @@ export default class LeaderboardDetailItem extends Component {
                   wardsTimingArray: [],
                   localPlayerForMatchStats: null,
                   wardLifespan: 0,
+                  wardCount: 0,
             }
 
             this.timedUpdate = this.timedUpdate.bind(this);
       };
 
-      componentDidMount() {
-            fetch(this.state.playerURL)
-            .then(response => response.json())
-            .then(data => {
-                  this.setState({latestPlayerData: data})
-                  this.setState({playerName: this.state.latestPlayerData.profile.personaname})
-                  this.setState({playerPic: this.state.latestPlayerData.profile.avatarmedium})
-                  this.setState({playerRank: this.state.latestPlayerData.mmr_estimate.estimate})
-            });
-            fetch(this.state.recentMatchesURL)
-            .then(response => response.json())
-            .then(data => {
-                  this.setState({recentMatches: data});
+      async componentDidMount() {
+            const playerResponse = await fetch(this.state.playerURL);
+            const playerData = await playerResponse.json();
+            this.setState({latestPlayerData: playerData})
+            this.setState({playerName: this.state.latestPlayerData.profile.personaname})
+            this.setState({playerPic: this.state.latestPlayerData.profile.avatarmedium})
+            this.setState({playerRank: this.state.latestPlayerData.mmr_estimate.estimate})
+
+            const recentMatchesResponse = await fetch(this.state.recentMatchesURL);
+            const recentMatchesData = await recentMatchesResponse.json();
+            this.setState({recentMatches: recentMatchesData});
 
             {/* this calculates average gpm */}
                   for (g = 0; g < gamesCount; g++) {
@@ -110,34 +113,54 @@ export default class LeaderboardDetailItem extends Component {
                         kdaWinner = this.state.kdaRank;
                   }
                   // this.setState({kdaRankingArray: kdaRankingArray});
+
+            {/* Now we have some fun calculating and rendering the ward lifespan */}
                   for(var games = 0; games < gamesCount; games++) {
 
-                        fetch(lastMatchURL + this.state.recentMatches[games].match_id)
-                        .then(response => response.json())
-                        .then( data => {
+                        var currentMatchResponse = await fetch(lastMatchURL + this.state.recentMatches[games].match_id)
+                        var currentMatchData = await currentMatchResponse.json()
+                        this.setState({localPlayerForMatchStats: currentMatchData.players.find(player => player.account_id === this.props.playerID)});
+                        console.log(lastMatchURL + this.state.recentMatches[games].match_id)
+                              
+                  {/* Ward Lifespan calculation and display */}
 
-                        {/* Ward Lifespan calculation and display */}
-                              //first we figure out who the current player is in this match, which is roundabout but just how the API works
-                              this.setState({localPlayerForMatchStats: data.players.find(player => player.account_id === this.state.latestPlayerData.profile.account_id)});
-                              //Next, we loop through the obs_left_log array and grab all the ehandles
-                              for(w = 0; w < this.state.localPlayerForMatchStats.obs_left_log.length; w++) {
-                                    this.state.wardsTimingArray.push({ehandle: this.state.localPlayerForMatchStats.obs_left_log[w].ehandle, time: this.state.localPlayerForMatchStats.obs_left_log[w].time});
+                        // first we figure out who the current player is in this match, which is roundabout but just how the API works
+                        // Next, we loop through the obs_left_log array and grab all the ehandles and expiration times
+                        // We do it in this order because if a ward doesn't expire by the end of the game, it's not on the obs_left_log array and we don't want to deal with it
+                        for(w1 = 0; w1 < this.state.localPlayerForMatchStats.obs_left_log.length; w1++) {
+                              this.state.wardsArray.push({ehandle: this.state.localPlayerForMatchStats.obs_left_log[w1].ehandle, time: this.state.localPlayerForMatchStats.obs_left_log[w1].time});
+                        }
+
+                        // at this point we should have an array of ehandle: X and time: Y, and now we're going to find() by ehandle and do some math on time.
+                        for(w2 = 0; w2 < this.state.wardsArray.length; w2++) {
+                              var localWard = this.state.localPlayerForMatchStats.obs_log.find(ward => ward.ehandle === this.state.wardsArray[w2].ehandle);
+                              
+                              // Because async requests are a mess, sometimes this will be undefined, so we have to spot-check for that on the fly here
+                              if (localWard != undefined) {
+                                    this.state.wardsArray[w2].time -= localWard.time;
                               }
-                              console.log(this.state.wardsTimingArray);
+                        }
+                        // Now with an array of ehandle: % lifespan, we need to take the average
+                        for(w3 = 0; w3 < this.state.wardsArray.length; w3++) {
+                              // Now we have an edited array of ehandle: lifespan, and we need to convert that to a percent, rather than a seconds-count
+                              this.state.wardsArray[w3].time = Math.floor(this.state.wardsArray[w3].time / 3.6)
 
-                              // for(w = 0; w < this.state.wardsArray.length; w ++) {
-                              //       if(this.state.localPlayerForMatchStats.obs_left_log[w] != null) {
-                              //             this.state.wardsTimingArray.push(this.state.localPlayerForMatchStats.obs_left_log[w].time - this.state.wardsArray.find(ward => ward.ehandle === this.state.localPlayerForMatchStats.obs_left_log[w].ehandle).time);
-                              //       }
-                              //       if(this.state.wardsTimingArray[w] > 0) {
-                              //             this.setState({wardLifespan: this.state.wardLifespan + this.state.wardsTimingArray[w]});
-                                          
-                              //       };
-                              // }
-                        })
+                              if(this.state.wardsTimingArray.find(ward => ward.ehandle === this.state.wardsArray[w3].ehandle) == undefined) {
+                                    this.state.wardsTimingArray.push({ehandle: this.state.wardsArray[w3].ehandle, duration: this.state.wardsArray[w3].time});
+                                    this.setState({wardCount: this.state.wardCount+1})
+                              }
+                        }
                   }
 
-            })
+                  // And finally, we calculate the average based on an array of % lifespans
+                  for(w4 = 0; w4 < this.state.wardsTimingArray.length; w4++) {
+                              if(0 <=this.state.wardsTimingArray[w4].duration <= 100) {
+                                    console.log(this.state.wardsTimingArray[w4].duration)
+                                    this.setState({wardLifespan: (this.state.wardLifespan + this.state.wardsTimingArray[w4].duration)})
+                              }
+                        }
+
+                  this.setState({wardLifespan: Math.floor(this.state.wardLifespan / this.state.wardCount)});
       }
 
       timedUpdate() {
@@ -153,9 +176,6 @@ export default class LeaderboardDetailItem extends Component {
                   if (farmRankingArray.length == playerIDList.length && document.querySelectorAll('div.farm span.rank')[i].textContent == farmWinner) {
                         document.querySelectorAll('div.farm')[i].setAttribute('id', 'leader');
                   }
-                  // if (farmRankingArray.length == playerIDList.length && document.querySelectorAll('div.ward-life span.rank')[i].textContent == "ObD: "+ this.state.wardLifespan + "%&nbsp;/&nbsp;" + this.state.wardsTimingArray.length) {
-                  //       document.querySelectorAll('div.farm')[i].setAttribute('id', 'leader');
-                  // }
             }
       }
 
@@ -165,7 +185,6 @@ export default class LeaderboardDetailItem extends Component {
       }
 
       componentDidUpdate() {
-            
             this.timedUpdate()
       }
 
