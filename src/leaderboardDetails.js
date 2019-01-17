@@ -116,30 +116,24 @@ export default class LeaderboardDetailItem extends Component {
                         .then(response => response.json())
                         .then( data => {
 
-                        {/* some testing for ward-duration */}
+                        {/* Ward Lifespan calculation and display */}
+                              //first we figure out who the current player is in this match, which is roundabout but just how the API works
                               this.setState({localPlayerForMatchStats: data.players.find(player => player.account_id === this.state.latestPlayerData.profile.account_id)});
-                              this.setState({wardsArray: this.state.localPlayerForMatchStats.obs_log});
+                              //Next, we loop through the obs_left_log array and grab all the ehandles
+                              for(w = 0; w < this.state.localPlayerForMatchStats.obs_left_log.length; w++) {
+                                    this.state.wardsTimingArray.push({ehandle: this.state.localPlayerForMatchStats.obs_left_log[w].ehandle, time: this.state.localPlayerForMatchStats.obs_left_log[w].time});
+                              }
+                              console.log(this.state.wardsTimingArray);
 
-                              for(w = 0; w < this.state.wardsArray.length; w ++) {
-                                    if(this.state.localPlayerForMatchStats.obs_left_log[w] != null) {
-                                          this.state.wardsTimingArray.push(this.state.localPlayerForMatchStats.obs_left_log[w].time - this.state.wardsArray.find(ward => ward.ehandle === this.state.localPlayerForMatchStats.obs_left_log[w].ehandle).time);
-                                    }
-                                    if(this.state.wardsTimingArray[w] > 0) {
-                                          this.setState({wardLifespan: this.state.wardLifespan + this.state.wardsTimingArray[w]});
+                              // for(w = 0; w < this.state.wardsArray.length; w ++) {
+                              //       if(this.state.localPlayerForMatchStats.obs_left_log[w] != null) {
+                              //             this.state.wardsTimingArray.push(this.state.localPlayerForMatchStats.obs_left_log[w].time - this.state.wardsArray.find(ward => ward.ehandle === this.state.localPlayerForMatchStats.obs_left_log[w].ehandle).time);
+                              //       }
+                              //       if(this.state.wardsTimingArray[w] > 0) {
+                              //             this.setState({wardLifespan: this.state.wardLifespan + this.state.wardsTimingArray[w]});
                                           
-                                    };
-                              }
-
-                              
-                              if (games == gamesCount) {
-//                                    this.setState({wardLifespan: Math.floor(this.state.wardLifespan / this.state.wardsTimingArray.length / 3.6)});
-                                    console.log(this.state.wardsTimingArray.length);
-                                    console.log("Life: "+this.state.wardsArray.length);
-                              }
-
-                              if ((this.state.wardLifespan * this.state.wardsTimingArray.length) > wardDurationWinner) {
-                                    wardDurationWinner = (this.state.wardLifespan * this.state.wardsTimingArray.length);
-                              }
+                              //       };
+                              // }
                         })
                   }
 
@@ -171,7 +165,7 @@ export default class LeaderboardDetailItem extends Component {
       }
 
       componentDidUpdate() {
-      
+            
             this.timedUpdate()
       }
 
