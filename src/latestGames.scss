@@ -1,6 +1,8 @@
+$containerColor: #02416F;
+
 .latest-game-container {
 	width: 1220px;
-	background-color: #888;
+	background-color: $containerColor;
 	outline: 1px solid white;
 	outline-offset: -4px;
 	overflow: hidden;
@@ -41,7 +43,7 @@
 		position: absolute;
 		left:0;
 		top:0;
-		background:linear-gradient(to right, transparent 350px, #888);
+		background:linear-gradient(to right, transparent 350px, $containerColor);
 		pointer-events: none;
 	}
 
