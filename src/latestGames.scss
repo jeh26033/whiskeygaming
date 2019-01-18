@@ -1,14 +1,46 @@
-$containerColor: #02416F;
+$containerColor: #40400D;
+$textColor: #40400D;
+$bgColor: #FBFBF0;
+$highlightColor: #1676BB;
 
 .latest-game-container {
-	width: 1220px;
+	width: 1150px;
 	background-color: $containerColor;
-	outline: 1px solid white;
-	outline-offset: -4px;
 	overflow: hidden;
 	margin: 50px auto;
 	display: block;
 	min-height: 200px;
+}
+
+.latest-games-header {
+	background: $bgColor;
+	width: 110%;
+	border-top: 1px solid $bgColor;
+	border-bottom: 1px solid darken($textColor, 20%);
+	font-family: Amatic SC;
+	font-size: 22pt;
+
+	div {
+		font-weight: 900;
+		padding-left: 50px;
+		text-align: baseline;
+	}
+
+	#gpm-xpm {
+		padding-left: 30px;
+	}
+
+	#net-worth {
+		padding-left: 20px;
+		font-size: 18pt;
+		line-height: 16pt;
+		padding-bottom: 10px;
+		text-align: center;
+	}
+
+	#first-header-item {
+		margin-left: 355px;
+	}
 }
 
 .duration {
@@ -25,27 +57,17 @@ $containerColor: #02416F;
 }
 
 #lost {
-	background-image: linear-gradient(to left, transparent,transparent,transparent, rgba(124,10,2, .8));
+	background-image: linear-gradient(to left, transparent,transparent,transparent, rgba(124,17,15, .8));
 }
 
 .latest-game-item {
 	color: white;
-	height: 90px;
-	margin: 5px 5px 5px 5px;
+	height: 100px;
+	margin: 0px 5px 0px 0px;
 	padding: 10px;
-	font-family: righteous;
+	font-family: Oswald;
 	position: relative;
-
-	&:before {
-		content:'';
-		width:400px;
-		height:90px;
-		position: absolute;
-		left:0;
-		top:0;
-		background:linear-gradient(to right, transparent 350px, $containerColor);
-		pointer-events: none;
-	}
+	border-bottom: 1px solid darken($textColor, 20%);
 
 	div {
 		padding: 0 10px 0 10px;
@@ -57,12 +79,13 @@ $containerColor: #02416F;
 	}
 
 	.player-info {
-		height: 60px;
-		width: 400px;
+		height: 80px;
+		width: 350px;
 
 		.hero-icon {
 			height: 60px;
 			width: 107px;
+			outline: 2px solid $textColor;
 
 			&:hover {
 				outline: 2px solid white;
@@ -71,20 +94,22 @@ $containerColor: #02416F;
 
 		.name-block {
 			padding: 1px 0;
-			width: 272px;
+			width: 222px;
 
 			.player-name {
-				font-size: 18pt;
+				font-size: 20pt;
 				vertical-align: top;
 				display: block;
 				overflow: hidden;
 				white-space: nowrap;
 
 				a {
-					color: #00A7BB;
+					color: white;
+					font-weight: 700px;
 
 					&:hover {
-						color: lighten(#00A7BB, 40%);
+						color: $highlightColor;
+						text-shadow: none;
 					};
 				}
 			}
@@ -99,6 +124,7 @@ $containerColor: #02416F;
 
 	.role-container {
 		width: 120px;
+		font-family: Amatic SC;
 	}
 
 	.hero-role {
@@ -107,19 +133,20 @@ $containerColor: #02416F;
 		text-align: center;
 		width: 100%;
 		font-weight: 700;
+		line-height: 0px;
 
 		.lane {
 			text-align: center;
 			width: 100%;
 			font-weight: 700;
-			font-size: 8pt;
+			font-size: 12pt;
 			color: lighten(gray, 20%);
 			text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 		}
 
 		.role-in-lane {
 			text-align: center;
-			font-size: 13pt;
+			font-size: 20pt;
 			width: 100%;
 			font-weight: 700;
 			text-shadow: 1px 0 black;
@@ -173,7 +200,6 @@ $containerColor: #02416F;
 
 	.hero-items-list {
 		width: 121.5px;
-		height: 100%;
 		padding: 0;
 
 		.statline-item {

@@ -1,4 +1,4 @@
-$bgColor: #F5F5DC;
+$bgColor: #FBFBF0;
 
 a {
   color: white;
@@ -9,7 +9,7 @@ a {
 }
 
 .container {
-  background: lighten($bgColor,5%);
+  background: $bgColor;
   width: 100vw;
   height: 100vh;
   padding-top: 50px;

@@ -15,14 +15,6 @@ $containerColor: #02416F;
 	font-weight: 700;
 }
 
-#hamburger-icon {
-	height: 60px;
-	float: right;
-	font-size:30pt;
-	border: none;
-	padding: 0;
-}
-
 #join-link {
 	float: right;
 	border: 1px solid white;
@@ -33,9 +25,9 @@ $containerColor: #02416F;
 	display: inline-block;
 	color: $navColor;
 	margin: 15px;
-	font-size: 30pt;
+	font-size: 40pt;
 	font-weight: 800;
-	font-family: RIGHTEOUS;
+	font-family: amatic SC;
 	cursor: pointer;
 
 	&:hover {
