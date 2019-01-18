@@ -1,20 +1,59 @@
+$containerColor: #333;
+$textColor: #40400D;
+$bgBeige: #FBFBF0;
+$highlightColor: #1676BB;
+$bgColor: #222;
+$borderColor: #111;
+$winningGreen: rgba(129,196,0, .6);
+$containerWidth: 1200px;
+
 .leaderboard-container {
-	width: 1150px;
-	background-color: #333;
-	outline: 1px solid white;
-	outline-offset: -4px;
-	overflow: hidden;
+	width: $containerWidth;
+	background-color: $containerColor;
 	margin: 50px auto;
 	display: block;
 	min-height: 200px;
+}
+.leaderboard-header {
+	background: $bgColor;
+	width: $containerWidth;
+	border-bottom: 1px solid white;
+	font-family: Amatic SC;
+	font-size: 22pt;
+	height: 48px;
+
+	div {
+		font-weight: 900;
+		padding-left: 90px;
+		text-align: baseline;
+		color: white;
+	}
+
+	#extra-padding-header{
+		padding-left: 30px;
+	}
+
+	#two-lines-header {
+		font-size: 18pt;
+		line-height: 16pt;
+		padding-bottom: 10px;
+		text-align: center;
+	}
+
+	.first-header-item-leaderboard {
+		margin-left: 270px;
+	}
 }
 
 .leaderboard-detail-item {
 	color: white;
 	height: 90px;
-	margin: 5px 20px 5px 5px;
+	margin: 5px 20px 0px 0px;
 	padding: 10px;
 	width: 100%;
+	font-family: Oswald;
+	position: relative;
+	border-bottom: 1px solid $borderColor;
 }
 
 .player-info {
@@ -25,11 +64,13 @@
 		height: 70px;
 		width: 70px;
 		margin-right: 10px;
+		outline: 2px solid $borderColor;
 	}
 
 	.name-block {
 		padding: 1px 0;
-		width: 220px;
+		max-width: 220px;
+		cursor: pointer;
 
 		.player-name {
 			font-size: 18pt;
@@ -39,13 +80,19 @@
 			white-space: nowrap;
 
 			a {
-				color: #00A7BB;
+				color: white;
 
-				&:hover {
-					color: lighten(#00A7BB, 40%);
-				};
+				&:hover{	
+					color: $highlightColor;
+				}
 			}
 		}
+
+		&:hover{
+			a {
+				color: $highlightColor;
+			}
+		};
 
 		.rank-estimate{
 			vertical-align: text-bottom;
@@ -56,7 +103,7 @@
 			.mmr {
 				line-height: 18pt;
 				font-size: 12pt;
-				font-weight: 700;
+				font-weight: 500;
 				color: white;
 			}
 		}
@@ -70,15 +117,49 @@
 }
 
 .ranks-container {
-	width: 450px;
+	width: 800px;
 	height: 60px;
 	padding: 15px 0;
 	margin: 0 0 0 20px;
 
 	.rank-box {
-		width: 100px;
+		width: 120px;
 		padding: 5px;
 		font-size: 11pt;
+		position: relative;
+		cursor: pointer;
+
+		&:hover {
+			.rank-box-hover{ 
+				display:block;
+			}
+
+			color: $highlightColor;
+		};
+
+		.hover-rank-header {
+			font-weight: 600;
+			font-size: 11pt;
+			padding-bottom: 6px;
+		}
+
+		.rank-box-hover {
+			color: white;
+			display: none;
+			font-size: 10pt;
+			position: absolute;
+			background: $bgColor;
+			left: -15px;
+			top: 30px;
+			padding: 8px;
+			word-wrap: none;
+			z-index: 100;
+			box-shadow: 0 0 5px 1px $borderColor;
+
+			.hover-rank-text {
+				display: block;
+			}
+		}
 	}
 
 	.ward-life {
@@ -87,6 +168,6 @@
 
 	#leader {
 		font-weight: 700;
-		background-image: linear-gradient(to left, transparent, green); 
+		background-image: linear-gradient(to left, transparent, $winningGreen); 
 	}
 }
