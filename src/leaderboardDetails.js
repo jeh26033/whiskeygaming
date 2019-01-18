@@ -321,7 +321,7 @@ export default class LeaderboardDetailItem extends Component {
                               <div className = "cs rank-box"><span className = "rank">{this.state.csRank}</span><span>&nbsp;Lh/10</span></div>
                               <div className = "kda rank-box"><span className = "rank">{this.state.kdaRank}</span><span>&nbsp;kda</span></div>
                               {/* <div className = "ward-life rank-box"><span>ObD:&nbsp;</span><span className = "rank">{this.state.wardLifespan}%&nbsp;/&nbsp;{this.state.wardsTimingArray.length}</span></div> */}
-                              <div className = "carry-score rank-box">
+                              <div className = "carry-score rank-box has-hover">
                                     <span className = "rank">Carry: {this.state.carryRank}</span>
                                     <div className = "rank-box-hover">
                                           <span className="hover-rank-text hover-rank-header">{gamesCount}-game Avg:</span>
@@ -330,7 +330,7 @@ export default class LeaderboardDetailItem extends Component {
                                           <span className="hover-rank-text">CS: {this.state.csRank}Lh<span className = "hover-sub-score">({(csWeightCarry * this.state.csRank).toFixed(2)})</span></span>
                                     </div>
                               </div>
-                              <div className = "support-score rank-box">
+                              <div className = "support-score rank-box has-hover">
                                     <span className = "rank">Support: {this.state.supportRank}</span>
                                     <div className = "rank-box-hover">
                                           <span className="hover-rank-text hover-rank-header">{gamesCount}-game Avg:</span>

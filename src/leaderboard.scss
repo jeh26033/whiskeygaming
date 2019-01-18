@@ -130,15 +130,6 @@ $containerWidth: 1200px;
 		padding: 5px;
 		font-size: 11pt;
 		position: relative;
-		cursor: pointer;
-
-		&:hover {
-			.rank-box-hover{ 
-				display:block;
-			}
-
-			color: $highlightColor;
-		};
 
 		.hover-rank-header {
 			font-weight: 600;
@@ -171,6 +162,17 @@ $containerWidth: 1200px;
 				}
 			}
 		}
+	}
+
+	.has-hover:hover {
+		
+		cursor: pointer;
+		
+		.rank-box-hover { 
+			display:block;
+		}
+
+		color: $highlightColor;
 	}
 
 	.ward-life {
