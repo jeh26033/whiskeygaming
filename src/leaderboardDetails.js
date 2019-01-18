@@ -3,14 +3,15 @@ import farmRankingArray from './farmRankings.json'
 import csRankingArray from './csRankings.json'
 import kdaRankingArray from './kdaRankings.json'
 import playerIDList from './playerIDList.json';
-const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1"; //currently removed to save money while testing
+import apiKey from './api-key.json'
+const api_key = apiKey[0];
 const lastMatchURL = "https://api.opendota.com/api/matches/";
 var lastMatchID = null;
 const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 const getPlayerURL = "https://api.opendota.com/api/players/"
 var itemConstants = Object.entries(require('./item_constants.json'));
-var gamesCount = 20;
+var gamesCount = 5;
 var farmWinner = 0;
 var csWinner = 0;
 var kdaWinner = 0;
@@ -89,6 +90,7 @@ export default class LeaderboardDetailItem extends Component {
       };
 
       async componentDidMount() {
+            console.log(api_key);
             const playerResponse = await fetch(this.state.playerURL + "?api_key=" + api_key);
             this.apiCallAlert();
             const playerData = await playerResponse.json();
@@ -340,15 +342,9 @@ export default class LeaderboardDetailItem extends Component {
                               </div>
                               <div className = "winrate-and-mid-net rank-box">
                                     <span className = "rank">{this.state.midNWDiff} / {this.state.winRate}%</span>
-                                    <div className = "rank-box-hover">
-                                          <span className="hover-rank-text hover-rank-header">Last {gamesCount} Games</span>
-                                    </div>
                               </div>
                               <div className = "xp-and-mid-net rank-box">
                                     <span className = "rank">{this.state.midXPDiff} / {this.state.winRate}%</span>
-                                    <div className = "rank-box-hover">
-                                          <span className="hover-rank-text hover-rank-header">Last {gamesCount} Games</span>
-                                    </div>
                               </div>
                         </div>
                   </div>
