@@ -65,20 +65,20 @@ export default class LatestGameComp extends Component {
                   {/* Now we pull and rendering a bunch of stats */}
                         let kda =
                               <div className = "hero-kda">
-                                    <span className="hero-kills">{this.state.latestPlayerData.kills} </span>&nbsp;/&nbsp;
-                                    <span className = "hero-deaths">{this.state.latestPlayerData.deaths}</span>&nbsp;/&nbsp;
+                                    <span className="hero-kills">{this.state.latestPlayerData.kills}</span><span>&nbsp;/&nbsp;</span>
+                                    <span className = "hero-deaths">{this.state.latestPlayerData.deaths}</span><span>&nbsp;/&nbsp;</span>
                                     <span className = "hero-assists">{this.state.latestPlayerData.assists}</span>
                               </div>
                         this.setState({kda: kda});
                         let perMinute = 
                               <div className = "per-minute">
-                                    <span className="hero-gpm">{this.state.latestPlayerData.gold_per_min}</span>&nbsp;/&nbsp; 
+                                    <span className="hero-gpm">{this.state.latestPlayerData.gold_per_min}</span><span>&nbsp;/&nbsp;</span>
                                     <span className = "hero-xpm">{this.state.latestPlayerData.xp_per_min}</span>
                               </div>
                         this.setState({perMinute: perMinute});
                         let cs = 
                               <div className = "hero-cs">
-                                    <span className = "hero-lh">{this.state.latestPlayerData.last_hits}</span>&nbsp;/&nbsp;
+                                    <span className = "hero-lh">{this.state.latestPlayerData.last_hits}</span><span>&nbsp;/&nbsp;</span>
                                     <span className = "hero-denies">{this.state.latestPlayerData.denies}</span>
                               </div>
                         this.setState({cs: cs});
