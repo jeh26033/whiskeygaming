@@ -1,6 +1,6 @@
-$containerColor: #40400D;
+$containerColor: #333;
 $textColor: #40400D;
-$bgColor: #FBFBF0;
+$bgBeige: #FBFBF0;
 $highlightColor: #1676BB;
 
 .latest-game-container {
@@ -13,10 +13,9 @@ $highlightColor: #1676BB;
 }
 
 .latest-games-header {
-	background: $bgColor;
+	background: black;
 	width: 110%;
-	border-top: 1px solid $bgColor;
-	border-bottom: 1px solid darken($textColor, 20%);
+	border-bottom: 1px solid white;
 	font-family: Amatic SC;
 	font-size: 22pt;
 
@@ -24,6 +23,7 @@ $highlightColor: #1676BB;
 		font-weight: 900;
 		padding-left: 50px;
 		text-align: baseline;
+		color: white;
 	}
 
 	#gpm-xpm {
@@ -67,7 +67,7 @@ $highlightColor: #1676BB;
 	padding: 10px;
 	font-family: Oswald;
 	position: relative;
-	border-bottom: 1px solid darken($textColor, 20%);
+	border-bottom: 1px solid white;
 
 	div {
 		padding: 0 10px 0 10px;
