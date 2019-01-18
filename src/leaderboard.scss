@@ -133,6 +133,8 @@ $containerWidth: 1200px;
 			.rank-box-hover{ 
 				display:block;
 			}
+
+			color: $highlightColor;
 		};
 
 		.hover-rank-header {
@@ -142,6 +144,7 @@ $containerWidth: 1200px;
 		}
 
 		.rank-box-hover {
+			color: white;
 			display: none;
 			font-size: 10pt;
 			position: absolute;
