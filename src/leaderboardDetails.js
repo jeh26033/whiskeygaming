@@ -3,14 +3,14 @@ import farmRankingArray from './farmRankings.json'
 import csRankingArray from './csRankings.json'
 import kdaRankingArray from './kdaRankings.json'
 import playerIDList from './playerIDList.json';
-const api_key = ""; //currently removed to save money while testing
+const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1"; //currently removed to save money while testing
 const lastMatchURL = "https://api.opendota.com/api/matches/";
 var lastMatchID = null;
 const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 const getPlayerURL = "https://api.opendota.com/api/players/"
 var itemConstants = Object.entries(require('./item_constants.json'));
-var gamesCount = 5;
+var gamesCount = 20;
 var farmWinner = 0;
 var csWinner = 0;
 var kdaWinner = 0;
@@ -75,10 +75,14 @@ export default class LeaderboardDetailItem extends Component {
                   localCSTotal: 0,
                   localKDATotal: 0,
                   wardsArray: [],
+                  midNWDiff: 0,
+                  midXPDiff: 0,
+                  midDiffArray: [],
                   wardsTimingArray: [],
                   localPlayerForMatchStats: null,
                   wardLifespan: 0,
                   wardCount: 0,
+                  winRate: 0,
             }
 
             this.timedUpdate = this.timedUpdate.bind(this);
@@ -98,6 +102,7 @@ export default class LeaderboardDetailItem extends Component {
             const recentMatchesData = await recentMatchesResponse.json();
             this.setState({recentMatches: recentMatchesData});
 
+            if(this.state.recentMatches != undefined) {
             {/* this calculates average gpm */}
                   for (g = 0; g < gamesCount; g++) {
                         let localGPM = this.state.recentMatches[g].gold_per_min;
@@ -151,8 +156,19 @@ export default class LeaderboardDetailItem extends Component {
                         this.setState({localPlayerForMatchStats: currentMatchData.players.find(player => player.account_id === this.props.playerID)});
                         let stunsRank = this.state.stunsRank + Math.round(this.state.localPlayerForMatchStats.stuns / gamesCount);
                         let TFRank = this.state.TFRank + Math.round(this.state.localPlayerForMatchStats.teamfight_participation / gamesCount * 100);
+                        let winRate = this.state.winRate + (this.state.localPlayerForMatchStats.win / gamesCount * 100);
+                        let midPlayersGold = currentMatchData.players.filter(player => player.lane_role === 2)
+                        let midPlayersXP = currentMatchData.players.filter(player => player.lane_role === 2)
+                        this.setState({midPlayersGold: midPlayersGold})
+                        this.setState({midPlayersXP: midPlayersXP})
+                        if(midPlayersGold[0] != undefined) {midPlayersGold = this.state.midPlayersGold[0].gold_t[9] - this.state.midPlayersGold[1].gold_t[9]};
+                        if(midPlayersXP[0] != undefined) {midPlayersXP = this.state.midPlayersXP[0].xp_t[9] - this.state.midPlayersXP[1].xp_t[9]};
+                        this.setState({midPlayersGold: midPlayersGold})
+                        this.setState({midPlayersXP: midPlayersXP})
+                        this.state.midDiffArray.push({gold: this.state.midPlayersGold, xp: this.state.midPlayersXP, won: Boolean(this.state.localPlayerForMatchStats.win)});
                         this.setState({stunsRank: stunsRank})
                         this.setState({TFRank: TFRank})
+                        this.setState({winRate: winRate})
                               
                   {/* Ward Lifespan calculation and display */}
 
@@ -186,8 +202,8 @@ export default class LeaderboardDetailItem extends Component {
                         }
 
                   }
-
-                        // And finally, we calculate the average based on an array of % lifespans
+                  {/* Follow up warding math, and role rank calculations */}
+                        // And finally, we calculate the average ward lifespan based on an array of % lifespans
                         for(w4 = 0; w4 < this.state.wardsTimingArray.length; w4++) {
                                     if(0 <=this.state.wardsTimingArray[w4].duration <= 100) {
                                           this.setState({wardLifespan: (this.state.wardLifespan + this.state.wardsTimingArray[w4].duration)})
@@ -199,10 +215,31 @@ export default class LeaderboardDetailItem extends Component {
                                           console.log("no wards")
                                     }
                               }
-                  this.setState({wardsRank: Math.floor(this.state.wardLifespan / gamesCount)})
-                  this.carryRankCalc(this.state.farmingRank, this.state.localPlayerForMatchStats.teamfight_participation, this.state.csRank, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
-                  this.supportRankCalc(this.state.localPlayerForMatchStats.stuns, this.state.localPlayerForMatchStats.teamfight_participation, this.state.wardLifespan, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
-                  this.setState({wardLifespan: Math.floor(this.state.wardLifespan / this.state.wardCount)});
+                  {/* Role rank calculations */}
+                        this.setState({wardsRank: Math.floor(this.state.wardLifespan / gamesCount)})
+                        this.carryRankCalc(this.state.farmingRank, this.state.localPlayerForMatchStats.teamfight_participation, this.state.csRank, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
+                        this.supportRankCalc(this.state.localPlayerForMatchStats.stuns, this.state.localPlayerForMatchStats.teamfight_participation, this.state.wardLifespan, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
+                        this.setState({wardLifespan: Math.floor(this.state.wardLifespan / this.state.wardCount)});
+
+                  {/* Do some calculations to add the mid XP and net worth differences to the average */}
+                  for(var i = 0; i < gamesCount; i++) {
+                        if(this.state.localPlayerForMatchStats.isRadiant) {
+                              let midNWDiff = this.state.midNWDiff + (this.state.midDiffArray[i].gold / gamesCount);
+                              let midXPDiff = this.state.midXPDiff + (this.state.midDiffArray[i].xp / gamesCount);
+                              this.setState({midXPDiff: midXPDiff})
+                              this.setState({midNWDiff: midNWDiff})
+                        } else {
+                              let midNWDiff = this.state.midNWDiff - (this.state.midDiffArray[i].gold / gamesCount);
+                              let midXPDiff = this.state.midXPDiff - (this.state.midDiffArray[i].xp / gamesCount);
+                              this.setState({midXPDiff: midXPDiff})
+                              this.setState({midNWDiff: midNWDiff})
+                        }
+                  }
+
+
+                  this.setState({midNWDiff: (this.state.midNWDiff).toFixed(1)})
+                  this.setState({midXPDiff: (this.state.midXPDiff).toFixed(1)})
+            }
 
       }
 
@@ -282,7 +319,7 @@ export default class LeaderboardDetailItem extends Component {
                               <div className = "farm rank-box"><span className = "rank">{this.state.farmingRank}</span><span>&nbsp;gpm</span></div>
                               <div className = "cs rank-box"><span className = "rank">{this.state.csRank}</span><span>&nbsp;Lh/10</span></div>
                               <div className = "kda rank-box"><span className = "rank">{this.state.kdaRank}</span><span>&nbsp;kda</span></div>
-                              <div className = "ward-life rank-box"><span>ObD:&nbsp;</span><span className = "rank">{this.state.wardLifespan}%&nbsp;/&nbsp;{this.state.wardsTimingArray.length}</span></div>
+                              {/* <div className = "ward-life rank-box"><span>ObD:&nbsp;</span><span className = "rank">{this.state.wardLifespan}%&nbsp;/&nbsp;{this.state.wardsTimingArray.length}</span></div> */}
                               <div className = "carry-score rank-box">
                                     <span className = "rank">Carry: {this.state.carryRank}</span>
                                     <div className = "rank-box-hover">
@@ -299,6 +336,18 @@ export default class LeaderboardDetailItem extends Component {
                                           <span className="hover-rank-text">Stuns: {this.state.stunsRank}s</span>
                                           <span className="hover-rank-text">TF: {this.state.TFRank}%</span>
                                           <span className="hover-rank-text">Vision: {this.state.wardsRank}s</span>
+                                    </div>
+                              </div>
+                              <div className = "winrate-and-mid-net rank-box">
+                                    <span className = "rank">{this.state.midNWDiff} / {this.state.winRate}%</span>
+                                    <div className = "rank-box-hover">
+                                          <span className="hover-rank-text hover-rank-header">Last {gamesCount} Games</span>
+                                    </div>
+                              </div>
+                              <div className = "xp-and-mid-net rank-box">
+                                    <span className = "rank">{this.state.midXPDiff} / {this.state.winRate}%</span>
+                                    <div className = "rank-box-hover">
+                                          <span className="hover-rank-text hover-rank-header">Last {gamesCount} Games</span>
                                     </div>
                               </div>
                         </div>

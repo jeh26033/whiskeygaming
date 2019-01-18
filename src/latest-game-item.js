@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-const api_key = "f4903c56-7589-4d13-9a36-6a8fac44f2d1";
+const api_key = ""; //removed to save money for now
 const lastMatchURL = "https://api.opendota.com/api/matches/"
 var getHeroURL = "https://api.opendota.com/api/herostats?api_key=" + api_key;
 var itemConstants = Object.entries(require('./item_constants.json'));
