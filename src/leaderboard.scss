@@ -1,20 +1,58 @@
+$containerColor: #333;
+$textColor: #40400D;
+$bgBeige: #FBFBF0;
+$highlightColor: #1676BB;
+$bgColor: #222;
+$borderColor: #111;
+
 .leaderboard-container {
-	width: 1150px;
-	background-color: #333;
-	outline: 1px solid white;
-	outline-offset: -4px;
+	width: 1100px;
+	background-color: $containerColor;
 	overflow: hidden;
 	margin: 50px auto;
 	display: block;
 	min-height: 200px;
 }
+.leaderboard-header {
+	background: $bgColor;
+	width: 110%;
+	border-bottom: 1px solid white;
+	font-family: Amatic SC;
+	font-size: 22pt;
+	height: 48px;
+
+	div {
+		font-weight: 900;
+		padding-left: 80px;
+		text-align: baseline;
+		color: white;
+	}
+
+	#extra-padding-header{
+		padding-left: 30px;
+	}
+
+	#two-lines-header {
+		font-size: 18pt;
+		line-height: 16pt;
+		padding-bottom: 10px;
+		text-align: center;
+	}
+
+	.first-header-item-leaderboard {
+		margin-left: 270px;
+	}
+}
 
 .leaderboard-detail-item {
 	color: white;
 	height: 90px;
-	margin: 5px 20px 5px 5px;
+	margin: 5px 20px 0px 0px;
 	padding: 10px;
 	width: 100%;
+	font-family: Oswald;
+	position: relative;
+	border-bottom: 1px solid $borderColor;
 }
 
 .player-info {
@@ -56,7 +94,7 @@
 			.mmr {
 				line-height: 18pt;
 				font-size: 12pt;
-				font-weight: 700;
+				font-weight: 500;
 				color: white;
 			}
 		}
