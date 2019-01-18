@@ -2,6 +2,7 @@ $containerColor: #333;
 $textColor: #40400D;
 $bgBeige: #FBFBF0;
 $highlightColor: #1676BB;
+$bgColor: #222;
 
 .latest-game-container {
 	width: 1150px;
@@ -13,7 +14,7 @@ $highlightColor: #1676BB;
 }
 
 .latest-games-header {
-	background: black;
+	background: $bgColor;
 	width: 110%;
 	border-bottom: 1px solid white;
 	font-family: Amatic SC;
