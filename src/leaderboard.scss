@@ -136,7 +136,7 @@ $containerWidth: 1200px;
 		};
 
 		.hover-rank-header {
-			font-weight: 800;
+			font-weight: 600;
 			font-size: 11pt;
 			padding-bottom: 6px;
 		}
@@ -145,13 +145,13 @@ $containerWidth: 1200px;
 			display: none;
 			font-size: 10pt;
 			position: absolute;
-			background: black;
-			border: 1px solid white;
-			left: -10px;
-			top: 20px;
+			background: $bgColor;
+			left: -15px;
+			top: 30px;
 			padding: 8px;
 			word-wrap: none;
 			z-index: 100;
+			box-shadow: 0 0 5px 1px $borderColor;
 
 			.hover-rank-text {
 				display: block;
