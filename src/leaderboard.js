@@ -16,6 +16,8 @@ export default class Leaderboard extends Component {
                               <div className = "leaderboard-header-item" id = "two-lines-header">Last<br/>Hits</div>
                               <div className = "leaderboard-header-item">KDA</div>
                               <div className = "leaderboard-header-item">Vision</div>
+                              <div className = "leaderboard-header-item" id = "two-lines-header">Carry<br/>Score</div>
+                              <div className = "leaderboard-header-item" id = "two-lines-header">Support<br/>Score</div>
                         </div>
                   ],
                   localFarmRankings: [],
