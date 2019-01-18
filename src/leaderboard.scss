@@ -4,6 +4,7 @@ $bgBeige: #FBFBF0;
 $highlightColor: #1676BB;
 $bgColor: #222;
 $borderColor: #111;
+$winningGreen: rgba(129,196,0, .6);
 
 .leaderboard-container {
 	width: 1100px;
@@ -65,11 +66,13 @@ $borderColor: #111;
 		height: 70px;
 		width: 70px;
 		margin-right: 10px;
+		outline: 2px solid $borderColor;
 	}
 
 	.name-block {
 		padding: 1px 0;
-		width: 220px;
+		max-width: 220px;
+		cursor: pointer;
 
 		.player-name {
 			font-size: 18pt;
@@ -79,13 +82,15 @@ $borderColor: #111;
 			white-space: nowrap;
 
 			a {
-				color: #00A7BB;
-
-				&:hover {
-					color: lighten(#00A7BB, 40%);
-				};
+				color: white;
 			}
 		}
+
+		&:hover{
+			a {
+				color: $highlightColor;
+			}
+		};
 
 		.rank-estimate{
 			vertical-align: text-bottom;
@@ -158,6 +163,6 @@ $borderColor: #111;
 
 	#leader {
 		font-weight: 700;
-		background-image: linear-gradient(to left, transparent, green); 
+		background-image: linear-gradient(to left, transparent, $winningGreen); 
 	}
 }
