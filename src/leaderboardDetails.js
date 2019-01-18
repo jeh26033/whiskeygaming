@@ -194,7 +194,7 @@ export default class LeaderboardDetailItem extends Component {
 
                                     }
 
-                                    if(Number.isInteger(this.state.wardLifespan)) {
+                                    if(!Number.isInteger(this.state.wardLifespan)) {
                                           this.setState({wardLifespan: 0})
                                           console.log("no wards")
                                     }
