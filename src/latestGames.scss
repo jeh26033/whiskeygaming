@@ -3,6 +3,7 @@ $textColor: #40400D;
 $bgBeige: #FBFBF0;
 $highlightColor: #1676BB;
 $bgColor: #222;
+$borderColor: #111;
 
 .latest-game-container {
 	width: 1150px;
@@ -19,6 +20,7 @@ $bgColor: #222;
 	border-bottom: 1px solid white;
 	font-family: Amatic SC;
 	font-size: 22pt;
+	height: 48px;
 
 	div {
 		font-weight: 900;
@@ -68,7 +70,8 @@ $bgColor: #222;
 	padding: 10px;
 	font-family: Oswald;
 	position: relative;
-	border-bottom: 1px solid white;
+	border-bottom: 1px solid $borderColor;
+	width: 100%;
 
 	div {
 		padding: 0 10px 0 10px;
@@ -86,7 +89,7 @@ $bgColor: #222;
 		.hero-icon {
 			height: 60px;
 			width: 107px;
-			outline: 2px solid $textColor;
+			outline: 2px solid $borderColor;
 
 			&:hover {
 				outline: 2px solid white;
@@ -134,8 +137,7 @@ $bgColor: #222;
 		text-align: center;
 		width: 100%;
 		font-weight: 700;
-		line-height: 0px;
-
+		
 		.lane {
 			text-align: center;
 			width: 100%;
