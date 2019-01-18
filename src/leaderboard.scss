@@ -161,6 +161,14 @@ $containerWidth: 1200px;
 
 			.hover-rank-text {
 				display: block;
+
+				.hover-sub-score {
+					float: right;
+					padding-left: 8px;
+					font-size: 8pt;
+					line-height: 15pt;
+					color: lighten($textColor, 40%);
+				}
 			}
 		}
 	}

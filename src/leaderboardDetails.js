@@ -11,7 +11,7 @@ const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 const getPlayerURL = "https://api.opendota.com/api/players/"
 var itemConstants = Object.entries(require('./item_constants.json'));
-var gamesCount = 20; // this can go up to 20
+var gamesCount = 2; // this can go up to 20
 var farmWinner = 0;
 var csWinner = 0;
 var kdaWinner = 0;
@@ -325,18 +325,18 @@ export default class LeaderboardDetailItem extends Component {
                                     <span className = "rank">Carry: {this.state.carryRank}</span>
                                     <div className = "rank-box-hover">
                                           <span className="hover-rank-text hover-rank-header">{gamesCount}-game Avg:</span>
-                                          <span className="hover-rank-text">GPM: {this.state.farmingRank}</span>
-                                          <span className="hover-rank-text">TF: {this.state.TFRank}%</span>
-                                          <span className="hover-rank-text">CS: {this.state.csRank}Lh</span>
+                                          <span className="hover-rank-text">GPM: {this.state.farmingRank}<span className = "hover-sub-score">({(gpmWeightCarry * this.state.farmingRank).toFixed(2)})</span></span>
+                                          <span className="hover-rank-text">TF: {this.state.TFRank}%<span className = "hover-sub-score">({(tfWeightCarry * this.state.TFRank).toFixed(2)})</span></span>
+                                          <span className="hover-rank-text">CS: {this.state.csRank}Lh<span className = "hover-sub-score">({(csWeightCarry * this.state.csRank).toFixed(2)})</span></span>
                                     </div>
                               </div>
                               <div className = "support-score rank-box">
                                     <span className = "rank">Support: {this.state.supportRank}</span>
                                     <div className = "rank-box-hover">
                                           <span className="hover-rank-text hover-rank-header">{gamesCount}-game Avg:</span>
-                                          <span className="hover-rank-text">Stuns: {this.state.stunsRank}s</span>
-                                          <span className="hover-rank-text">TF: {this.state.TFRank}%</span>
-                                          <span className="hover-rank-text">Vision: {this.state.wardsRank}s</span>
+                                          <span className="hover-rank-text">Stuns: {this.state.stunsRank}s <span className = "hover-sub-score">({(stunsWeightSupport * this.state.stunsRank).toFixed(2)})</span></span>
+                                          <span className="hover-rank-text">TF: {this.state.TFRank}% <span className = "hover-sub-score">({(tfWeightSupport * this.state.TFRank).toFixed(2)})</span></span>
+                                          <span className="hover-rank-text">Vision: {this.state.wardsRank}s <span className = "hover-sub-score">({(wardingWeightSupport * this.state.wardsRank).toFixed(2)})</span></span>
                                     </div>
                               </div>
                               <div className = "winrate-and-mid-net rank-box">
