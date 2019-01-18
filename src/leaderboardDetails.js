@@ -11,7 +11,7 @@ const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
 var getHeroURL = "https://api.opendota.com/api/herostats/"
 const getPlayerURL = "https://api.opendota.com/api/players/"
 var itemConstants = Object.entries(require('./item_constants.json'));
-var gamesCount = 5;
+var gamesCount = 20; // this can go up to 20
 var farmWinner = 0;
 var csWinner = 0;
 var kdaWinner = 0;
@@ -272,7 +272,6 @@ export default class LeaderboardDetailItem extends Component {
       }
 
       componentWillMount() {
-            setInterval(this.timedUpdate, updateFrequency);
       }
 
       componentDidUpdate() {
