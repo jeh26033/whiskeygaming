@@ -183,10 +183,10 @@ export default class LatestGameComp extends Component {
 
                               let playerInfo = 
                                     <div className = "player-info">
-                                          <a className = "matchLink" href={this.state.latestMatchURL} ><img src = {this.state.heroIcon} className = "hero-icon"/></a>
+                                          <a className = "matchLink" href={this.state.latestMatchURL}  target = "_blank"><img src = {this.state.heroIcon} className = "hero-icon"/></a>
                                           <div className = "name-block">
                                                 <div className = "player-name">
-                                                      <a href= {this.state.playerURL} >{this.state.latestPlayerData.personaname}</a>
+                                                      <a href= {this.state.playerURL} target = "_blank">{this.state.latestPlayerData.personaname}</a>
                                                 </div>
                                                 <div className = "hero-name">{this.state.latestHeroData.localized_name}</div>
                                           </div>

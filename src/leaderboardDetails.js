@@ -311,7 +311,7 @@ export default class LeaderboardDetailItem extends Component {
                               <img src = {this.state.playerPic} className = "player-pic"/>
                               <div className = "name-block">
                                     <div className = "player-name">
-                                          <a className = "nameLink" href= {this.state.playerExternalURL} >{this.state.playerName}</a>
+                                          <a className = "nameLink" href= {this.state.playerExternalURL}  target = "_blank">{this.state.playerName}</a>
                                     </div>
                                     <div className = "rank-estimate">MMRE: <span className="mmr">{this.state.playerRank}</span></div>
                               </div>

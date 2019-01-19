@@ -10,7 +10,7 @@ $containerWidth: 1200px;
 .leaderboard-container {
 	width: $containerWidth;
 	background-color: $containerColor;
-	margin: 50px auto;
+	margin: 70px auto;
 	display: block;
 	min-height: 200px;
 }
@@ -24,13 +24,14 @@ $containerWidth: 1200px;
 
 	div {
 		font-weight: 900;
-		padding-left: 90px;
 		text-align: baseline;
 		color: white;
+		width: 120px;
+		text-align: center;
 	}
 
 	.extra-padding-header{
-		padding-left: 120px;
+		padding-left: 90px;
 	}
 
 	.less-padding-header {
@@ -38,21 +39,19 @@ $containerWidth: 1200px;
 	}
 
 	#two-lines-header {
-		font-size: 18pt;
+		font-size: 14pt;
 		line-height: 16pt;
 		padding-bottom: 10px;
-		text-align: center;
 	}
 
 	.first-header-item-leaderboard {
-		margin-left: 270px;
+		margin-left: 330px;
 	}
 }
 
 .leaderboard-detail-item {
 	color: white;
 	height: 90px;
-	margin: 5px 20px 0px 0px;
 	padding: 10px;
 	width: 100%;
 	font-family: Oswald;
@@ -61,7 +60,6 @@ $containerWidth: 1200px;
 }
 
 .player-info {
-	height: 60px;
 	width: 320px;
 
 	.player-pic {
@@ -121,15 +119,16 @@ $containerWidth: 1200px;
 }
 
 .ranks-container {
-	height: 60px;
-	padding: 15px 0;
-	margin: 0 0 0 20px;
+	padding: 5px 0;
+	margin: 0px;
 
 	.rank-box {
-		width: 120px;
-		padding: 5px;
-		font-size: 11pt;
+		width: 110px;
+		margin: 0px 5px;
+		font-size: 13pt;
 		position: relative;
+		text-align: center;
+		height: 35px;
 
 		.hover-rank-header {
 			font-weight: 600;
@@ -181,6 +180,8 @@ $containerWidth: 1200px;
 
 	#leader {
 		font-weight: 700;
-		background-image: linear-gradient(to left, transparent, $winningGreen); 
+		text-shadow: 1px 1px 4px black;
+		outline: 1px solid transparentize($winningGreen, 0.25);
+		background: $textColor;
 	}
 }
