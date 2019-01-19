@@ -181,7 +181,7 @@ $containerWidth: 1200px;
 	#leader {
 		font-weight: 700;
 		text-shadow: 1px 1px 4px black;
-		outline: 1px solid transparentize($winningGreen, 0.25);
-		background: $textColor;
+		outline: 1px solid $borderColor;
+		background: transparentize($winningGreen, .2);
 	}
 }
