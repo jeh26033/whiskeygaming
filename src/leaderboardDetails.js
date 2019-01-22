@@ -3,7 +3,7 @@ import farmRankingArray from './farmRankings.json'
 import csRankingArray from './csRankings.json'
 import kdaRankingArray from './kdaRankings.json'
 import playerIDList from './playerIDList.json';
-//import apiKey from './api-key.json'
+import apiKey from './api-key.json'
 //const api_key = apiKey[0];
 const api_key = process.env.api_key
 const lastMatchURL = "https://api.opendota.com/api/matches/";
@@ -92,8 +92,9 @@ export default class LeaderboardDetailItem extends Component {
 
       async componentDidMount() {
             console.log(api_key);
-            const playerResponse = await fetch(this.state.playerURL + "?api_key=" + api_key);
+            const playerResponse = await fetch(this.state.playerURL + "?api_key=" + api_key)
             this.apiCallAlert();
+
             const playerData = await playerResponse.json();
             this.setState({latestPlayerData: playerData})
             this.setState({playerName: this.state.latestPlayerData.profile.personaname})
@@ -103,147 +104,152 @@ export default class LeaderboardDetailItem extends Component {
             const recentMatchesResponse = await fetch(this.state.recentMatchesURL + "?api_key=" + api_key);
             this.apiCallAlert();
             const recentMatchesData = await recentMatchesResponse.json();
-            this.setState({recentMatches: recentMatchesData});
+            if(recentMatchesResponse.status === 200) {
+                  this.setState({recentMatches: recentMatchesData});
 
-            if(this.state.recentMatches != undefined) {
-            {/* this calculates average gpm */}
-                  for (g = 0; g < gamesCount; g++) {
-                        let localGPM = this.state.recentMatches[g].gold_per_min;
-                        this.setState({localGPM: localGPM})
-                        let localFarmTotal = this.state.localFarmTotal + this.state.localGPM;
-                        this.setState({localFarmTotal: localFarmTotal});
-                  }
-                  this.setState({farmingRank: Math.floor(this.state.localFarmTotal / gamesCount)})
-                  farmRankingArray.push(this.state.farmingRank);
+                  if(this.state.recentMatches != undefined) {
+                  {/* this calculates average gpm */}
+                        for (g = 0; g < gamesCount; g++) {
+                              let localGPM = this.state.recentMatches[g].gold_per_min;
+                              this.setState({localGPM: localGPM})
+                              let localFarmTotal = this.state.localFarmTotal + this.state.localGPM;
+                              this.setState({localFarmTotal: localFarmTotal});
+                        }
+                        this.setState({farmingRank: Math.floor(this.state.localFarmTotal / gamesCount)})
+                        farmRankingArray.push(this.state.farmingRank);
 
-                  if (this.state.farmingRank > farmWinner && g === gamesCount) {
-                        farmWinner = this.state.farmingRank;
-                  }
-                  // this.setState({farmRankingArray: farmRankingArray});
-            {/* this calculates average cs, which is currently (last hits) */}
-                  for (c = 0; c < gamesCount; c++) {
-                        let localCS = this.state.recentMatches[c].last_hits / (this.state.recentMatches[c].duration / 600)
-                        this.setState({localCS: localCS})
-                        this.setState({csRank: Math.floor((this.state.csRank)*(c/(c+1)) + (this.state.localCS / (c+1)))})
-                  }
-                  csRankingArray.push(this.state.csRank);
+                        if (this.state.farmingRank > farmWinner && g === gamesCount) {
+                              farmWinner = this.state.farmingRank;
+                        }
+                        // this.setState({farmRankingArray: farmRankingArray});
+                  {/* this calculates average cs, which is currently (last hits) */}
+                        for (c = 0; c < gamesCount; c++) {
+                              let localCS = this.state.recentMatches[c].last_hits / (this.state.recentMatches[c].duration / 600)
+                              this.setState({localCS: localCS})
+                              this.setState({csRank: Math.floor((this.state.csRank)*(c/(c+1)) + (this.state.localCS / (c+1)))})
+                        }
+                        csRankingArray.push(this.state.csRank);
 
-                  if (this.state.csRank > csWinner && c === gamesCount) {
-                        csWinner = this.state.csRank;
-                  }
-                  // this.setState({csRankingArray: csRankingArray});
-            {/* this calculates average kda, which is currently (kills + assists - deaths) */}
-                  for (k = 0; k < gamesCount; k++) {
-                        let localKDA = this.state.recentMatches[k].kills + this.state.recentMatches[k].assists - this.state.recentMatches[k].deaths;
-                        let killsRank = this.state.killsRank + (this.state.recentMatches[k].kills / gamesCount);
-                        let deathsRank = this.state.deathsRank + (this.state.recentMatches[k].deaths / gamesCount);
-                        let assistsRank = this.state.assistsRank + (this.state.recentMatches[k].assists / gamesCount);
-                        this.setState({localKDA: localKDA})
-                        this.setState({killsRank: killsRank})
-                        this.setState({deathsRank: deathsRank})
-                        this.setState({assistsRank: assistsRank})
-                        this.setState({kdaRank: Math.floor((this.state.kdaRank)*(k/(k+1)) + (this.state.localKDA / (k+1)))})
-                  }
+                        if (this.state.csRank > csWinner && c === gamesCount) {
+                              csWinner = this.state.csRank;
+                        }
+                        // this.setState({csRankingArray: csRankingArray});
+                  {/* this calculates average kda, which is currently (kills + assists - deaths) */}
+                        for (k = 0; k < gamesCount; k++) {
+                              let localKDA = this.state.recentMatches[k].kills + this.state.recentMatches[k].assists - this.state.recentMatches[k].deaths;
+                              let killsRank = this.state.killsRank + (this.state.recentMatches[k].kills / gamesCount);
+                              let deathsRank = this.state.deathsRank + (this.state.recentMatches[k].deaths / gamesCount);
+                              let assistsRank = this.state.assistsRank + (this.state.recentMatches[k].assists / gamesCount);
+                              this.setState({localKDA: localKDA})
+                              this.setState({killsRank: killsRank})
+                              this.setState({deathsRank: deathsRank})
+                              this.setState({assistsRank: assistsRank})
+                              this.setState({kdaRank: Math.floor((this.state.kdaRank)*(k/(k+1)) + (this.state.localKDA / (k+1)))})
+                        }
 
-                  kdaRankingArray.push({"name": this.state.playerName, "rank": this.state.kdaRank});
+                        kdaRankingArray.push({"name": this.state.playerName, "rank": this.state.kdaRank});
 
-                  if (this.state.kdaRank > kdaWinner && k === gamesCount) {
-                        kdaWinner = this.state.kdaRank;
-                  }
-            {/* Now we pull more detailed game data from each recent match */}
-                  for(var games = 0; games < gamesCount; games++) {
+                        if (this.state.kdaRank > kdaWinner && k === gamesCount) {
+                              kdaWinner = this.state.kdaRank;
+                        }
+                  {/* Now we pull more detailed game data from each recent match */}
+                        for(var games = 0; games < gamesCount; games++) {
 
-                        var currentMatchResponse = await fetch(lastMatchURL + this.state.recentMatches[games].match_id + "?api_key=" + api_key)
-                        this.apiCallAlert();
-                        var currentMatchData = await currentMatchResponse.json()
-                        this.setState({localPlayerForMatchStats: currentMatchData.players.find(player => player.account_id === this.props.playerID)});
-                        let stunsRank = this.state.stunsRank + Math.round(this.state.localPlayerForMatchStats.stuns / gamesCount);
-                        let TFRank = this.state.TFRank + Math.round(this.state.localPlayerForMatchStats.teamfight_participation / gamesCount * 100);
-                        let winRate = this.state.winRate + (this.state.localPlayerForMatchStats.win / gamesCount * 100);
-                        let midPlayersGold = currentMatchData.players.filter(player => player.lane_role === 2)
-                        let midPlayersXP = currentMatchData.players.filter(player => player.lane_role === 2)
-                        this.setState({midPlayersGold: midPlayersGold})
-                        this.setState({midPlayersXP: midPlayersXP})
-                        if(midPlayersGold[0] != undefined) {midPlayersGold = this.state.midPlayersGold[0].gold_t[9] - this.state.midPlayersGold[1].gold_t[9]};
-                        if(midPlayersXP[0] != undefined) {midPlayersXP = this.state.midPlayersXP[0].xp_t[9] - this.state.midPlayersXP[1].xp_t[9]};
-                        this.setState({midPlayersGold: midPlayersGold})
-                        this.setState({midPlayersXP: midPlayersXP})
-                        this.state.midDiffArray.push({gold: this.state.midPlayersGold, xp: this.state.midPlayersXP, won: Boolean(this.state.localPlayerForMatchStats.win)});
-                        this.setState({stunsRank: stunsRank})
-                        this.setState({TFRank: TFRank})
-                        this.setState({winRate: winRate})
-                              
-                  {/* Ward Lifespan calculation and display */}
-
-                        // first we figure out who the current player is in this match, which is roundabout but just how the API works
-                        // Next, we loop through the obs_left_log array and grab all the ehandles and expiration times
-                        // We do it in this order because if a ward doesn't expire by the end of the game, it's not on the obs_left_log array and we don't want to deal with it
-                        if(this.state.localPlayerForMatchStats.obs_left_log != null) {
-                              for(w1 = 0; w1 < this.state.localPlayerForMatchStats.obs_left_log.length; w1++) {
-                                    this.state.wardsArray.push({ehandle: this.state.localPlayerForMatchStats.obs_left_log[w1].ehandle, time: this.state.localPlayerForMatchStats.obs_left_log[w1].time});
-                              }
-
-                              // at this point we should have an array of ehandle: X and time: Y, and now we're going to find() by ehandle and do some math on time.
-                              for(w2 = 0; w2 < this.state.wardsArray.length; w2++) {
-                                    var localWard = this.state.localPlayerForMatchStats.obs_log.find(ward => ward.ehandle === this.state.wardsArray[w2].ehandle);
+                              var currentMatchResponse = await fetch(lastMatchURL + this.state.recentMatches[games].match_id + "?api_key=" + api_key)
+                              this.apiCallAlert();
+                              var currentMatchData = await currentMatchResponse.json()
+                              this.setState({localPlayerForMatchStats: currentMatchData.players.find(player => player.account_id === this.props.playerID)});
+                              let stunsRank = this.state.stunsRank + Math.round(this.state.localPlayerForMatchStats.stuns / gamesCount);
+                              let TFRank = this.state.TFRank + Math.round(this.state.localPlayerForMatchStats.teamfight_participation / gamesCount * 100);
+                              let winRate = this.state.winRate + (this.state.localPlayerForMatchStats.win / gamesCount * 100);
+                              let midPlayersGold = currentMatchData.players.filter(player => player.lane_role === 2)
+                              let midPlayersXP = currentMatchData.players.filter(player => player.lane_role === 2)
+                              this.setState({midPlayersGold: midPlayersGold})
+                              this.setState({midPlayersXP: midPlayersXP})
+                              if(midPlayersGold[0].gold_t != "undefined") {midPlayersGold = this.state.midPlayersGold[0].gold_t[9] - this.state.midPlayersGold[1].gold_t[9]};
+                              if(midPlayersXP[0] != undefined) {midPlayersXP = this.state.midPlayersXP[0].xp_t[9] - this.state.midPlayersXP[1].xp_t[9]};
+                              this.setState({midPlayersGold: midPlayersGold})
+                              this.setState({midPlayersXP: midPlayersXP})
+                              this.state.midDiffArray.push({gold: this.state.midPlayersGold, xp: this.state.midPlayersXP, won: Boolean(this.state.localPlayerForMatchStats.win)});
+                              this.setState({stunsRank: stunsRank})
+                              this.setState({TFRank: TFRank})
+                              this.setState({winRate: winRate})
                                     
-                                    // Because async requests are a mess, sometimes this will be undefined, so we have to spot-check for that on the fly here
-                                    if (localWard != undefined) {
-                                          this.state.wardsArray[w2].time -= localWard.time;
+                        {/* Ward Lifespan calculation and display */}
+
+                              // first we figure out who the current player is in this match, which is roundabout but just how the API works
+                              // Next, we loop through the obs_left_log array and grab all the ehandles and expiration times
+                              // We do it in this order because if a ward doesn't expire by the end of the game, it's not on the obs_left_log array and we don't want to deal with it
+                              if(this.state.localPlayerForMatchStats.obs_left_log != null) {
+                                    for(w1 = 0; w1 < this.state.localPlayerForMatchStats.obs_left_log.length; w1++) {
+                                          this.state.wardsArray.push({ehandle: this.state.localPlayerForMatchStats.obs_left_log[w1].ehandle, time: this.state.localPlayerForMatchStats.obs_left_log[w1].time});
+                                    }
+
+                                    // at this point we should have an array of ehandle: X and time: Y, and now we're going to find() by ehandle and do some math on time.
+                                    for(w2 = 0; w2 < this.state.wardsArray.length; w2++) {
+                                          var localWard = this.state.localPlayerForMatchStats.obs_log.find(ward => ward.ehandle === this.state.wardsArray[w2].ehandle);
+                                          
+                                          // Because async requests are a mess, sometimes this will be undefined, so we have to spot-check for that on the fly here
+                                          if (localWard != undefined) {
+                                                this.state.wardsArray[w2].time -= localWard.time;
+                                          }
+                                    }
+                                    // Now with an array of ehandle: % lifespan, we need to take the average
+                                    for(w3 = 0; w3 < this.state.wardsArray.length; w3++) {
+                                          // Now we have an edited array of ehandle: lifespan, and we need to convert that to a percent, rather than a seconds-count
+                                          this.state.wardsArray[w3].time = Math.floor(this.state.wardsArray[w3].time / 3.6)
+
+                                          if(this.state.wardsTimingArray.find(ward => ward.ehandle === this.state.wardsArray[w3].ehandle) == undefined) {
+                                                this.state.wardsTimingArray.push({ehandle: this.state.wardsArray[w3].ehandle, duration: this.state.wardsArray[w3].time});
+                                                this.setState({wardCount: this.state.wardCount+1})
+                                          }
                                     }
                               }
-                              // Now with an array of ehandle: % lifespan, we need to take the average
-                              for(w3 = 0; w3 < this.state.wardsArray.length; w3++) {
-                                    // Now we have an edited array of ehandle: lifespan, and we need to convert that to a percent, rather than a seconds-count
-                                    this.state.wardsArray[w3].time = Math.floor(this.state.wardsArray[w3].time / 3.6)
 
-                                    if(this.state.wardsTimingArray.find(ward => ward.ehandle === this.state.wardsArray[w3].ehandle) == undefined) {
-                                          this.state.wardsTimingArray.push({ehandle: this.state.wardsArray[w3].ehandle, duration: this.state.wardsArray[w3].time});
-                                          this.setState({wardCount: this.state.wardCount+1})
+                        }
+                        {/* Follow up warding math, and role rank calculations */}
+                              // And finally, we calculate the average ward lifespan based on an array of % lifespans
+                              for(w4 = 0; w4 < this.state.wardsTimingArray.length; w4++) {
+                                          if(0 <=this.state.wardsTimingArray[w4].duration <= 100) {
+                                                this.setState({wardLifespan: (this.state.wardLifespan + this.state.wardsTimingArray[w4].duration)})
+
+                                          }
+
+                                          if(!Number.isInteger(this.state.wardLifespan)) {
+                                                this.setState({wardLifespan: 0})
+                                                console.log("no wards")
+                                          }
                                     }
+                        {/* Role rank calculations */}
+                              this.setState({wardsRank: Math.floor(this.state.wardLifespan / gamesCount)})
+                              this.carryRankCalc(this.state.farmingRank, this.state.localPlayerForMatchStats.teamfight_participation, this.state.csRank, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
+                              this.supportRankCalc(this.state.localPlayerForMatchStats.stuns, this.state.localPlayerForMatchStats.teamfight_participation, this.state.wardLifespan, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
+                              this.setState({wardLifespan: Math.floor(this.state.wardLifespan / this.state.wardCount)});
+
+                        {/* Do some calculations to add the mid XP and net worth differences to the average */}
+                        for(var i = 0; i < gamesCount; i++) {
+                              if(this.state.localPlayerForMatchStats.isRadiant) {
+                                    let midNWDiff = this.state.midNWDiff + (this.state.midDiffArray[i].gold / gamesCount);
+                                    let midXPDiff = this.state.midXPDiff + (this.state.midDiffArray[i].xp / gamesCount);
+                                    this.setState({midXPDiff: midXPDiff})
+                                    this.setState({midNWDiff: midNWDiff})
+                              } else {
+                                    let midNWDiff = this.state.midNWDiff - (this.state.midDiffArray[i].gold / gamesCount);
+                                    let midXPDiff = this.state.midXPDiff - (this.state.midDiffArray[i].xp / gamesCount);
+                                    this.setState({midXPDiff: midXPDiff})
+                                    this.setState({midNWDiff: midNWDiff})
                               }
                         }
 
-                  }
-                  {/* Follow up warding math, and role rank calculations */}
-                        // And finally, we calculate the average ward lifespan based on an array of % lifespans
-                        for(w4 = 0; w4 < this.state.wardsTimingArray.length; w4++) {
-                                    if(0 <=this.state.wardsTimingArray[w4].duration <= 100) {
-                                          this.setState({wardLifespan: (this.state.wardLifespan + this.state.wardsTimingArray[w4].duration)})
 
-                                    }
-
-                                    if(!Number.isInteger(this.state.wardLifespan)) {
-                                          this.setState({wardLifespan: 0})
-                                          console.log("no wards")
-                                    }
-                              }
-                  {/* Role rank calculations */}
-                        this.setState({wardsRank: Math.floor(this.state.wardLifespan / gamesCount)})
-                        this.carryRankCalc(this.state.farmingRank, this.state.localPlayerForMatchStats.teamfight_participation, this.state.csRank, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
-                        this.supportRankCalc(this.state.localPlayerForMatchStats.stuns, this.state.localPlayerForMatchStats.teamfight_participation, this.state.wardLifespan, this.state.localPlayerForMatchStats.xp_per_min, this.state.localKDA, 5, 10)
-                        this.setState({wardLifespan: Math.floor(this.state.wardLifespan / this.state.wardCount)});
-
-                  {/* Do some calculations to add the mid XP and net worth differences to the average */}
-                  for(var i = 0; i < gamesCount; i++) {
-                        if(this.state.localPlayerForMatchStats.isRadiant) {
-                              let midNWDiff = this.state.midNWDiff + (this.state.midDiffArray[i].gold / gamesCount);
-                              let midXPDiff = this.state.midXPDiff + (this.state.midDiffArray[i].xp / gamesCount);
-                              this.setState({midXPDiff: midXPDiff})
-                              this.setState({midNWDiff: midNWDiff})
-                        } else {
-                              let midNWDiff = this.state.midNWDiff - (this.state.midDiffArray[i].gold / gamesCount);
-                              let midXPDiff = this.state.midXPDiff - (this.state.midDiffArray[i].xp / gamesCount);
-                              this.setState({midXPDiff: midXPDiff})
-                              this.setState({midNWDiff: midNWDiff})
-                        }
+                        this.setState({midNWDiff: (this.state.midNWDiff).toFixed(1)})
+                        this.setState({midXPDiff: (this.state.midXPDiff).toFixed(1)})
                   }
 
-
-                  this.setState({midNWDiff: (this.state.midNWDiff).toFixed(1)})
-                  this.setState({midXPDiff: (this.state.midXPDiff).toFixed(1)})
+            } else {
+                  console.log("Error code:", recentMatchesResponse.status)
+                  alert("Uh oh, something went wrong with the latest match data.")
             }
-
       }
 
       timedUpdate() {
