@@ -11,7 +11,7 @@ export default class Navbar extends Component {
                   <Link to='/' className = "nav-link">LATEST</Link>
                   <Link to='/leaderboard' className = "nav-link">LEADERBOARD</Link>
                   <Link to={'/create'} className = "nav-link">JOIN</Link>
-                  <img src = "/images/wskg_notext.png" className = "wskb-logo"/>
+                  <img src = {"wskg_notext.png"} className = "wskb-logo"/>
       	</div>
 	)
   }
