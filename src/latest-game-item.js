@@ -130,7 +130,7 @@ export default class LatestGameComp extends Component {
 
                         for (i = 0; i < 6; i++) {
                               if(this.state.itemsArray[i] !== undefined) {
-                                    this.state.itemsArray.push(<img src = {"/images/items/" + this.state.itemsArray[i][1].img.split("/")[5]} className = "statline-item" />);
+                                    this.state.itemsArray.push(<img src = {"/images/items/" + this.state.itemsArray[i][1].img.split("/")[5]} className = "statline-item" alt = {this.state.itemsArray[i][1].img.split("/")[5]}/>);
                               }
                         }
 
