@@ -3,8 +3,9 @@ import farmRankingArray from './farmRankings.json'
 import csRankingArray from './csRankings.json'
 import kdaRankingArray from './kdaRankings.json'
 import playerIDList from './playerIDList.json';
-import apiKey from './api-key.json'
-const api_key = apiKey[0];
+//import apiKey from './api-key.json'
+//const api_key = apiKey[0];
+const api_key = process.env.api_key
 const lastMatchURL = "https://api.opendota.com/api/matches/";
 var lastMatchID = null;
 const recentMatchesBaseURL = "https://api.opendota.com/api/players/"
