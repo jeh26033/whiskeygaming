@@ -1,13 +1,23 @@
+$containerColor: #333;
+$textColor: #40400D;
+$bgBeige: #FBFBF0;
+$highlightColor: #1676BB;
+$bgColor: #222;
+$borderColor: #111;
+$winningGreen: rgba(129,196,0, .6);
+$containerWidth: 1200px;
+$scriptFont: "Amatic SC";
+$normalFont: "Oswald";
+
 .join-menu-container {
 	width: 600px;
 	background-color: #333;
-	outline: 1px solid white;
-	outline-offset: -4px;
+	border-top: 1px solid white;
 	overflow: hidden;
 	margin: 50px auto;
 	display: block;
 	min-height: 200px;
-	font-family: VT323;
+	font-family: $scriptFont;
 
 	.join-input-container {
 		margin: 0 auto;
@@ -17,15 +27,15 @@
 		.join-ID-field {
 			margin: 50px auto 20px auto;
 			display: block;
-		    font-size: 14pt;
+		    font-size: 16pt;
 		    line-height: 12pt;
 		    padding: 4px;
 		    width: 300px;
 		    text-align: center;
 		    background-color: darken(white, 30%);
 		    color: white;
-		    font-weight: 500;
-			font-family: VT323;
+		    font-weight: 800;
+			font-family: $scriptFont;
 		}
 
 		.ID-submit-button {
@@ -34,7 +44,7 @@
 			width: 150px;
 			height: 40px;
 			font-size: 14pt;
-			font-family: righteous;
+			font-family: $normalFont;
 		}
 	}
 
@@ -53,14 +63,14 @@
 
 			.confirm-name {
 				font-size: 16pt;
-				font-family: righteous;
+				font-family: $normalFont;
 				padding: 10px;
 
 				a {
-					color: darken(lightblue, 20%);
+					color: white;
 
 					&:hover{
-						color: lighten(lightblue, 10%);
+						color: $highlightColor;
 					}
 				}
 			}
@@ -81,8 +91,10 @@
 		width: 100%;
 		margin: 0 auto;
 		text-align: center;
-		padding: 10px 0px 30px 0px;
-		font-size: 16pt;
+		padding: 30px 0px 10px 0px;
+		font-size: 20pt;
+		font-weight: 800;
+
 	}
 	.hidden {
 		display: none;

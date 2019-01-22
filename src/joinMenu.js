@@ -33,11 +33,16 @@ export default class JoinMenu extends Component {
                   fetch((getPlayerURL + content + "?api_key=" + api_key))
                   .then(response => response.json())
                   .then(data => {
-                        this.setState({latestPlayerData: data})
-                        this.setState({playerName: this.state.latestPlayerData.profile.personaname})
-                        this.setState({playerPic: this.state.latestPlayerData.profile.avatarmedium})
-                        this.setState({playerPageURL: ("https://wwww.dotabuff.com/players/"+this.state.latestPlayerData.profile.account_id)})
-                        document.querySelectorAll('.confirm-input-container')[0].classList.remove("hidden");
+                        console.log(data);
+                        if(data.profile != null) {
+                              this.setState({latestPlayerData: data})
+                              this.setState({playerName: this.state.latestPlayerData.profile.personaname})
+                              this.setState({playerPic: this.state.latestPlayerData.profile.avatarmedium})
+                              this.setState({playerPageURL: ("https://wwww.dotabuff.com/players/"+this.state.latestPlayerData.profile.account_id)})
+                              document.querySelectorAll('.confirm-input-container')[0].classList.remove("hidden");
+                        } else {
+                              alert("That doesn't look like a player ID");
+                        }
                   });
             } else {
                   alert("That doesn't look like a player ID");
@@ -58,7 +63,7 @@ export default class JoinMenu extends Component {
             return (
                   <div className = "join-menu-container">
                         <div className = "join-input-container">
-                                    <input className = "join-ID-field" placeholder="Paste your Dotabuff or Opendota ID here"></input>
+                                    <input className = "join-ID-field" placeholder="Paste your Dota Player ID here"></input>
                                     <button className = "ID-submit-button" onClick = {this.handleConfirm} >Submit</button>
                               
                         </div>

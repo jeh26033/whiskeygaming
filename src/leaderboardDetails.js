@@ -91,7 +91,7 @@ export default class LeaderboardDetailItem extends Component {
       };
 
       async componentDidMount() {
-            console.log(api_key);
+            console.log("Key: " + api_key);
             const playerResponse = await fetch(this.state.playerURL + "?api_key=" + api_key)
             this.apiCallAlert();
 
@@ -346,12 +346,14 @@ export default class LeaderboardDetailItem extends Component {
                                           <span className="hover-rank-text">Vision: {this.state.wardsRank}s <span className = "hover-sub-score">({(wardingWeightSupport * this.state.wardsRank).toFixed(2)})</span></span>
                                     </div>
                               </div>
+                        {/* REMOVED FOR NOW
                               <div className = "winrate-and-mid-net rank-box">
                                     <span className = "rank">{this.state.midNWDiff} / {this.state.winRate}%</span>
                               </div>
                               <div className = "xp-and-mid-net rank-box">
                                     <span className = "rank">{this.state.midXPDiff} / {this.state.winRate}%</span>
                               </div>
+                        */}
                         </div>
                   </div>
             )
