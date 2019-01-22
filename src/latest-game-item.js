@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import apiKey from './api-key.json'
-const api_key = apiKey[0];
+//import apiKey from './api-key.json'
+//const api_key = apiKey[0];
+const api_key = process.env.api_key
 const lastMatchURL = "https://api.opendota.com/api/matches/"
 var getHeroURL = "https://api.opendota.com/api/herostats?api_key=" + api_key;
 var itemConstants = Object.entries(require('./item_constants.json'));
