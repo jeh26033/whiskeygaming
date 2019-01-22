@@ -17,11 +17,12 @@ export default class LatestGames extends Component {
             for (var i = 0; i < playerIDList.length; i++) {
                   this.state.latestGames.push(< LatestGameComp playerID = { playerIDList[i] } />)
             };
-
+            
             let latestGamesHTML = this.state.latestGames;
 
             this.setState({latestGamesHTML: latestGamesHTML})
       }    
+
 
 
       render() {

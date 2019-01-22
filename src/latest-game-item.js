@@ -102,9 +102,6 @@ export default class LatestGameComp extends Component {
                               this.setState({text_role: "SAFELANE"});
                         }
 
-                        let role = 
-                              <div className="role-container"><div className = "hero-role"><span className="lane" id={this.state.roleStyle}>{(this.state.text_role)}</span><br /><span className = "role-in-lane">{this.state.roleStyle}</span></div></div>
-                        this.setState({role: role});
 
                   {/* Now we pull the items into an array */}
 
@@ -172,9 +169,19 @@ export default class LatestGameComp extends Component {
                                     this.setState({roleStyle: "SUPPORT"});
                               }
 
-                              let role = 
-                              <div className="role-container"><div className = "hero-role"><span className="lane" id={this.state.roleStyle}>{(this.state.text_role)}</span><br /><span className = "role-in-lane">{this.state.roleStyle}</span></div></div>
-                        this.setState({role: role});
+                              console.log(this.state.text_role);
+
+                              if(this.state.text_role !== "") {
+                                    let role = 
+                                          <div className="role-container"><div className = "hero-role"><span className="lane" id={this.state.roleStyle}>{(this.state.text_role)}</span><br /><span className = "role-in-lane">{this.state.roleStyle}</span></div></div>
+                                    this.setState({role: role});
+                              } else {
+                                    let role = 
+                                          <div className="role-container"><div className = "hero-role"><span className = "role-in-lane">{this.state.roleStyle}</span></div></div>
+                                    this.setState({role: role});
+                              }
+
+                              
 
                         {/* some quick math to trim the hero icon filepath to something usable */}
                               this.setState({trimLength: this.state.latestHeroData.icon.length - 26});
