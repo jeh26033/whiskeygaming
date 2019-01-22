@@ -312,18 +312,18 @@ export default class LeaderboardDetailItem extends Component {
                               <img src = {this.state.playerPic} className = "player-pic"/>
                               <div className = "name-block">
                                     <div className = "player-name">
-                                          <a className = "nameLink" href= {this.state.playerExternalURL} >{this.state.playerName}</a>
+                                          <a className = "nameLink" href= {this.state.playerExternalURL}  target = "_blank">{this.state.playerName}</a>
                                     </div>
                                     <div className = "rank-estimate">MMRE: <span className="mmr">{this.state.playerRank}</span></div>
                               </div>
                         </div>
                         <div className = "ranks-container">
-                              <div className = "farm rank-box"><span className = "rank">{this.state.farmingRank}</span><span>&nbsp;gpm</span></div>
+                              <div className = "farm rank-box"><span className = "rank">{this.state.farmingRank}</span><span></span></div>
                               <div className = "cs rank-box"><span className = "rank">{this.state.csRank}</span><span>&nbsp;Lh/10</span></div>
                               <div className = "kda rank-box"><span className = "rank">{this.state.kdaRank}</span><span>&nbsp;kda</span></div>
                               {/* <div className = "ward-life rank-box"><span>ObD:&nbsp;</span><span className = "rank">{this.state.wardLifespan}%&nbsp;/&nbsp;{this.state.wardsTimingArray.length}</span></div> */}
                               <div className = "carry-score rank-box has-hover">
-                                    <span className = "rank">Carry: {this.state.carryRank}</span>
+                                    <span className = "rank">{this.state.carryRank}</span>
                                     <div className = "rank-box-hover">
                                           <span className="hover-rank-text hover-rank-header">{gamesCount}-game Avg:</span>
                                           <span className="hover-rank-text">GPM: {this.state.farmingRank}<span className = "hover-sub-score">({(gpmWeightCarry * this.state.farmingRank).toFixed(2)})</span></span>
@@ -332,7 +332,7 @@ export default class LeaderboardDetailItem extends Component {
                                     </div>
                               </div>
                               <div className = "support-score rank-box has-hover">
-                                    <span className = "rank">Support: {this.state.supportRank}</span>
+                                    <span className = "rank">{this.state.supportRank}</span>
                                     <div className = "rank-box-hover">
                                           <span className="hover-rank-text hover-rank-header">{gamesCount}-game Avg:</span>
                                           <span className="hover-rank-text">Stuns: {this.state.stunsRank}s <span className = "hover-sub-score">({(stunsWeightSupport * this.state.stunsRank).toFixed(2)})</span></span>
